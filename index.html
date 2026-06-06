@@ -276,6 +276,41 @@
     .view { display: none; }
     .view.active { display: block; }
 
+    /* Modal / Bottom Sheet */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45); z-index: 200;
+    }
+    .modal-overlay.open { display: block; }
+    .modal-sheet {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--card); border-radius: 20px 20px 0 0;
+      padding: 20px 20px 32px; z-index: 201;
+      max-height: 80vh; overflow-y: auto;
+    }
+    .modal-sheet.open { display: block; }
+    .modal-title { font-weight: 600; font-size: 17px; margin-bottom: 16px; }
+    .modal-option {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; border-radius: var(--radius-sm);
+      background: var(--input-bg); margin-bottom: 8px;
+      cursor: pointer; border: none; width: 100%;
+      font-family: inherit; font-size: 16px; font-weight: 500;
+      text-align: left;
+    }
+    .modal-option:active { opacity: 0.7; }
+    .modal-option-icon { font-size: 22px; width: 32px; text-align: center; }
+    .modal-cancel {
+      width: 100%; margin-top: 8px; padding: 14px;
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: white; font-size: 16px; cursor: pointer;
+      font-family: inherit; color: var(--text-sec);
+    }
+
+    /* DG-Sektion */
+    .dg-section { background: #fff8f0; border: 1px solid #ffd6a0; border-radius: var(--radius-sm); padding: 14px; margin-bottom: 12px; }
+    .dg-section-title { font-size: 13px; font-weight: 600; color: #c75000; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+
     /* Empty state */
     .empty-state {
       text-align: center;
@@ -577,6 +612,43 @@
       </div>
     </div>
 
+    <!-- DG-Sektion (nur sichtbar wenn DG) -->
+    <div id="dg-sektion" style="display:none;">
+      <div class="card">
+        <div class="dg-section-title">🔺 Dachschräge</div>
+        <div class="dg-section">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Kniestock (cm) <span style="color:var(--primary);font-size:12px;">Disto</span></label>
+              <input type="number" class="disto-input" id="g-kniestock" placeholder="cm" oninput="saveGeschossField('dach_kniestock', this.value)">
+            </div>
+            <div class="form-group">
+              <label>Dachneigung (°)</label>
+              <input type="number" id="g-winkel" placeholder="z.B. 35" oninput="saveGeschossField('dach_winkel', this.value)">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-header">
+          <div class="section-title">🪟 Gauben</div>
+          <button class="btn btn-sm btn-secondary" onclick="addGaube()">+ Gaube</button>
+        </div>
+        <div id="gauben-list"></div>
+        <div id="gauben-leer" style="color:var(--text-sec);font-size:14px;padding:8px 0;">Keine Gauben</div>
+      </div>
+
+      <div class="card">
+        <div class="section-header">
+          <div class="section-title">🔲 Dachfenster</div>
+          <span class="section-count" id="dachfenster-count">0</span>
+        </div>
+        <div id="dachfenster-list"></div>
+        <button class="btn btn-secondary btn-full" onclick="addDachfenster()" style="margin-top:8px;">+ Dachfenster hinzufügen</button>
+      </div>
+    </div>
+
     <!-- Räume -->
     <div class="card">
       <div class="section-header">
@@ -587,6 +659,14 @@
       <div id="raum-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch kein Raum angelegt</div>
     </div>
   </div>
+</div>
+
+<!-- MODAL: Geschoss wählen -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+<div class="modal-sheet" id="modal-geschoss">
+  <div class="modal-title">Geschoss hinzufügen</div>
+  <div id="modal-geschoss-options"></div>
+  <button class="modal-cancel" onclick="closeModal()">Abbrechen</button>
 </div>
 
 <!-- VIEW: Raum -->
@@ -756,8 +836,17 @@ function load() {
   if (raw) {
     try { state = JSON.parse(raw); } catch(e) {}
   }
-  // Heute als Default-Datum
   if (!state.projekte) state.projekte = [];
+  // Rückwärtskompatibilität: fehlende Felder ergänzen
+  state.projekte.forEach(p => {
+    p.geschosse.forEach(g => {
+      if (!g.gauben) g.gauben = [];
+      if (!g.dachfenster) g.dachfenster = [];
+      if (g.isDG === undefined) g.isDG = (g.name === 'DG');
+      if (!g.dach_kniestock) g.dach_kniestock = '';
+      if (!g.dach_winkel) g.dach_winkel = '';
+    });
+  });
 }
 
 function uuid() {
@@ -789,6 +878,12 @@ function getProjekt() {
 function neuesProjekt() {
   const name = prompt('Projektname (z.B. Müller Frankfurt Sachsenhausen):');
   if (!name) return;
+  const eg = {
+    id: uuid(), name: 'EG', beheizung: 'beheizt',
+    bodendicke: '', dachwinkel: '',
+    isDG: false, dach_kniestock: '', dach_winkel: '',
+    gauben: [], dachfenster: [], raeume: []
+  };
   const p = {
     id: uuid(),
     name,
@@ -801,7 +896,7 @@ function neuesProjekt() {
     heizanlage: { hersteller: '', typ: '', baujahr: '', modell: '', notiz: '' },
     heizanlage_foto: null,
     schornstein: { lage: '', form: '', breite: '', tiefe: '' },
-    geschosse: []
+    geschosse: [eg]
   };
   state.projekte.push(p);
   state.aktivesProjektId = p.id;
@@ -898,23 +993,50 @@ function getGeschoss() {
   return p.geschosse.find(g => g.id === state.aktivesGeschossId);
 }
 
+const GESCHOSS_OPTIONEN = [
+  { name: 'KG',         label: 'Kellergeschoss',      icon: '⬇' },
+  { name: '1.OG',       label: '1. Obergeschoss',     icon: '⬆' },
+  { name: '2.OG',       label: '2. Obergeschoss',     icon: '⬆' },
+  { name: '3.OG',       label: '3. Obergeschoss',     icon: '⬆' },
+  { name: 'DG',         label: 'Dachgeschoss',        icon: '🔺' },
+  { name: 'Spitzboden', label: 'Spitzboden',          icon: '△' },
+];
+
 function addGeschoss() {
   const p = getProjekt();
-  const namen = ['KG', 'EG', 'OG', 'DG', 'Spitzboden'];
   const vorhandene = p.geschosse.map(g => g.name);
-  const vorschlag = namen.find(n => !vorhandene.includes(n)) || ('Geschoss ' + (p.geschosse.length + 1));
-  const name = prompt('Geschossbezeichnung:', vorschlag) || vorschlag;
+  const verfuegbar = GESCHOSS_OPTIONEN.filter(o => !vorhandene.includes(o.name));
+  if (!verfuegbar.length) { alert('Alle Geschosstypen bereits angelegt.'); return; }
+  const opts = document.getElementById('modal-geschoss-options');
+  opts.innerHTML = verfuegbar.map(o => `
+    <button class="modal-option" onclick="selectGeschoss('${o.name}')">
+      <span class="modal-option-icon">${o.icon}</span>
+      <span><strong>${o.name}</strong> — ${o.label}</span>
+    </button>
+  `).join('');
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('modal-geschoss').classList.add('open');
+}
+
+function selectGeschoss(name) {
+  closeModal();
+  const p = getProjekt();
+  const isDG = name === 'DG';
   const g = {
-    id: uuid(),
-    name,
-    beheizung: 'beheizt',
-    bodendicke: '',
-    dachwinkel: '',
-    raeume: []
+    id: uuid(), name,
+    beheizung: isDG ? 'beheizt' : 'beheizt',
+    bodendicke: '', dachwinkel: '',
+    isDG, dach_kniestock: '', dach_winkel: '',
+    gauben: [], dachfenster: [], raeume: []
   };
   p.geschosse.push(g);
   save();
   renderGeschossliste();
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.getElementById('modal-geschoss').classList.remove('open');
 }
 
 function openGeschoss(id) {
@@ -937,6 +1059,43 @@ function saveGeschossField(field, value) {
   if (!g) return;
   g[field] = value;
   save();
+}
+
+// ============================================================
+//  GAUBEN & DACHFENSTER (DG)
+// ============================================================
+function addGaube() {
+  const g = getGeschoss();
+  if (!g.gauben) g.gauben = [];
+  g.gauben.push({ id: uuid(), lichte_breite: '', boden_uk: '', kniestock: '', lichte_hoehe: '' });
+  save(); renderGaubenListe();
+}
+function deleteGaube(id) {
+  const g = getGeschoss();
+  g.gauben = g.gauben.filter(x => x.id !== id);
+  save(); renderGaubenListe();
+}
+function saveGaubeField(id, field, value) {
+  const g = getGeschoss();
+  const ga = g.gauben.find(x => x.id === id);
+  if (ga) { ga[field] = value; save(); }
+}
+
+function addDachfenster() {
+  const g = getGeschoss();
+  if (!g.dachfenster) g.dachfenster = [];
+  g.dachfenster.push({ id: uuid(), breite: '', hoehe: '', neigung: '', verglasung: '2-fach', notiz: '' });
+  save(); renderDachfensterListe();
+}
+function deleteDachfenster(id) {
+  const g = getGeschoss();
+  g.dachfenster = g.dachfenster.filter(x => x.id !== id);
+  save(); renderDachfensterListe();
+}
+function saveDachfensterField(id, field, value) {
+  const g = getGeschoss();
+  const df = g.dachfenster.find(x => x.id === id);
+  if (df) { df[field] = value; save(); }
 }
 
 // ============================================================
@@ -1247,7 +1406,98 @@ function renderGeschossView() {
   document.getElementById('g-beheizung').value = g.beheizung || 'beheizt';
   document.getElementById('g-bodendicke').value = g.bodendicke || '';
   document.getElementById('g-dachwinkel').value = g.dachwinkel || '';
+  // DG-Sektion
+  const dgSek = document.getElementById('dg-sektion');
+  if (g.isDG || g.name === 'DG') {
+    dgSek.style.display = 'block';
+    document.getElementById('g-kniestock').value = g.dach_kniestock || '';
+    document.getElementById('g-winkel').value = g.dach_winkel || '';
+    renderGaubenListe();
+    renderDachfensterListe();
+  } else {
+    dgSek.style.display = 'none';
+  }
   renderRaumliste();
+}
+
+function renderGaubenListe() {
+  const g = getGeschoss();
+  const list = g.gauben || [];
+  const container = document.getElementById('gauben-list');
+  const leer = document.getElementById('gauben-leer');
+  if (!list.length) { container.innerHTML = ''; leer.style.display = 'block'; return; }
+  leer.style.display = 'none';
+  container.innerHTML = list.map((ga, i) => `
+    <div class="sub-item">
+      <div class="sub-item-header">
+        <div class="sub-item-title">Gaube ${i + 1}</div>
+        <button onclick="deleteGaube('${ga.id}')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">✕ Löschen</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Lichte Breite (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
+          <input type="number" class="disto-input" value="${ga.lichte_breite}" placeholder="cm" oninput="saveGaubeField('${ga.id}','lichte_breite',this.value)">
+        </div>
+        <div class="form-group">
+          <label>Boden bis UK Gaube (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
+          <input type="number" class="disto-input" value="${ga.boden_uk}" placeholder="cm" oninput="saveGaubeField('${ga.id}','boden_uk',this.value)">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Kniestock Gaube (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
+          <input type="number" class="disto-input" value="${ga.kniestock}" placeholder="cm" oninput="saveGaubeField('${ga.id}','kniestock',this.value)">
+        </div>
+        <div class="form-group">
+          <label>Lichte Raumhöhe (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
+          <input type="number" class="disto-input" value="${ga.lichte_hoehe}" placeholder="cm" oninput="saveGaubeField('${ga.id}','lichte_hoehe',this.value)">
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderDachfensterListe() {
+  const g = getGeschoss();
+  const list = g.dachfenster || [];
+  const container = document.getElementById('dachfenster-list');
+  document.getElementById('dachfenster-count').textContent = list.length;
+  if (!list.length) { container.innerHTML = ''; return; }
+  container.innerHTML = list.map((df, i) => `
+    <div class="sub-item">
+      <div class="sub-item-header">
+        <div class="sub-item-title">Dachfenster ${i + 1}</div>
+        <button onclick="deleteDachfenster('${df.id}')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">✕ Löschen</button>
+      </div>
+      <div class="form-row-3">
+        <div class="form-group">
+          <label>Breite (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
+          <input type="number" class="disto-input" value="${df.breite}" placeholder="cm" oninput="saveDachfensterField('${df.id}','breite',this.value)">
+        </div>
+        <div class="form-group">
+          <label>Höhe (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
+          <input type="number" class="disto-input" value="${df.hoehe}" placeholder="cm" oninput="saveDachfensterField('${df.id}','hoehe',this.value)">
+        </div>
+        <div class="form-group">
+          <label>Neigung (°)</label>
+          <input type="number" value="${df.neigung}" placeholder="°" oninput="saveDachfensterField('${df.id}','neigung',this.value)">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Verglasung</label>
+          <select onchange="saveDachfensterField('${df.id}','verglasung',this.value)">
+            <option value="2-fach" ${df.verglasung==='2-fach'?'selected':''}>2-fach</option>
+            <option value="3-fach" ${df.verglasung==='3-fach'?'selected':''}>3-fach</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Notiz</label>
+          <input type="text" value="${df.notiz||''}" placeholder="z.B. Velux GGL..." oninput="saveDachfensterField('${df.id}','notiz',this.value)">
+        </div>
+      </div>
+    </div>
+  `).join('');
 }
 
 function renderRaumliste() {
@@ -1543,6 +1793,25 @@ function generateExportText(p) {
     sub('GESCHOSS ' + (gi + 1) + ': ' + g.name + ' [' + g.beheizung + ']');
     line('  Bodendicke:  ' + (g.bodendicke ? g.bodendicke + ' cm' : '—'));
     if (g.dachwinkel) line('  Dachwinkel:  ' + g.dachwinkel + '°');
+    if (g.isDG || g.name === 'DG') {
+      line('  ── Dachschräge ──');
+      line('  Kniestock:   ' + (g.dach_kniestock ? g.dach_kniestock + ' cm' : '—'));
+      line('  Neigung:     ' + (g.dach_winkel ? g.dach_winkel + '°' : '—'));
+      const gauben = g.gauben || [];
+      if (gauben.length) {
+        line('  ── Gauben (' + gauben.length + ') ──');
+        gauben.forEach((ga, gi2) => {
+          line('  Gaube ' + (gi2+1) + ':  Breite=' + (ga.lichte_breite||'—') + 'cm  Boden→UK=' + (ga.boden_uk||'—') + 'cm  Kniestock=' + (ga.kniestock||'—') + 'cm  l.Höhe=' + (ga.lichte_hoehe||'—') + 'cm');
+        });
+      }
+      const dachfen = g.dachfenster || [];
+      if (dachfen.length) {
+        line('  ── Dachfenster (' + dachfen.length + ') ──');
+        dachfen.forEach((df, di) => {
+          line('  DF' + (di+1) + ':  ' + (df.breite||'—') + '×' + (df.hoehe||'—') + 'cm  Neigung=' + (df.neigung||'—') + '°  ' + df.verglasung + (df.notiz ? '  ' + df.notiz : ''));
+        });
+      }
+    }
 
     g.raeume.forEach((r, ri) => {
       line('');
