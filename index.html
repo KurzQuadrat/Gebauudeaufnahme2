@@ -1432,6 +1432,58 @@ function saveGeschossField(field, value) {
 }
 
 // ============================================================
+//  RAUM
+// ============================================================
+function getRaum() {
+  const g = getGeschoss();
+  if (!g) return null;
+  return g.raeume.find(r => r.id === state.aktivesRaumId);
+}
+
+function addRaum() {
+  const g = getGeschoss();
+  if (!g) return;
+  const n = g.raeume.length + 1;
+  const last = state.last_iw || {};
+  const r = {
+    id: uuid(), name: 'Raum ' + n,
+    nutzung: '', beheizt: true,
+    deckenhoehe: '', bodenbelag: '',
+    aw_dicke: '', aw_typ: '', aw_daemmung: false, aw_notiz: '',
+    iw_dicke: last.dicke || '', iw_typ: last.typ || '',
+    wand_n1:'', wand_n2:'', wand_o1:'', wand_o2:'',
+    wand_s1:'', wand_s2:'', wand_w1:'', wand_w2:'',
+    vsp_n_b:'', vsp_n_t:'', vsp_o_b:'', vsp_o_t:'',
+    vsp_s_b:'', vsp_s_t:'', vsp_w_b:'', vsp_w_t:'',
+    sch_kniestock: (g.isDG||g.name==='DG') ? (g.dach_kniestock||'') : '',
+    sch_winkel:    (g.isDG||g.name==='DG') ? (g.dach_winkel||'') : '',
+    sch_richtung: 'N',
+    gaube_breite: '', gaube_lichtehoehe: '',
+    normtemp: '', u_werte: {}, grenzt_an: {},
+    fenster: [], tueren: [], heizkoerper: [], nieschen: []
+  };
+  g.raeume.push(r);
+  state.aktivesRaumId = r.id;
+  save();
+  showView('raum');
+}
+
+function openRaum(id) {
+  state.aktivesRaumId = id;
+  save();
+  showView('raum');
+}
+
+function deleteRaum(id, e) {
+  e.stopPropagation();
+  if (!confirm('Raum löschen?')) return;
+  const g = getGeschoss();
+  g.raeume = g.raeume.filter(r => r.id !== id);
+  save();
+  renderRaumliste();
+}
+
+// ============================================================
 //  NIESCHEN (pro Raum)
 // ============================================================
 function addNiesche() {
@@ -1586,7 +1638,6 @@ function saveRaumField(field, value) {
   }
   save();
 }
-function saveLastIW() { const r = getRaum(); if (!r) return; if (r.iw_dicke || r.iw_typ) { state.last_iw = {dicke: r.iw_dicke, typ: r.iw_typ}; save(); } }
 
 // ============================================================
 //  FENSTER / TÜREN / HK
