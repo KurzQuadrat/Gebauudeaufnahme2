@@ -387,16 +387,53 @@
     @media (min-width: 480px) {
       .content { padding: 20px; }
     }
+
+    /* Analyzing overlay */
+    .analyzing-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55); z-index: 300;
+      flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+      color: white; font-size: 16px; font-weight: 500;
+    }
+    .analyzing-overlay.show { display: flex; }
+    .spinner {
+      width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.3);
+      border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #1d1d1f; color: white; padding: 12px 20px; border-radius: 12px;
+      font-size: 14px; z-index: 400; max-width: 90%; text-align: center;
+      opacity: 0; transition: opacity 0.2s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+
+    /* Analysis result badge */
+    .analysis-badge {
+      background: #e3f9e8; border: 1px solid #34c759; border-radius: 8px;
+      padding: 8px 12px; font-size: 13px; color: #248a3d; margin-top: 8px;
+    }
   </style>
 </head>
 <body>
+
+<!-- OVERLAYS -->
+<div class="analyzing-overlay" id="analyzing-overlay">
+  <div class="spinner"></div>
+  <div>Foto wird analysiert…</div>
+</div>
+<div class="toast" id="toast"></div>
 
 <!-- VIEW: Projektliste -->
 <div id="view-projekte" class="view active">
   <div class="header">
     <h1>Gebäudeaufnahme</h1>
     <div class="header-actions">
-      <button class="btn btn-sm btn-secondary" onclick="exportAll()">Alle exportieren</button>
+      <button class="btn btn-sm btn-secondary" onclick="showSettings()">⚙</button>
+      <button class="btn btn-sm btn-secondary" onclick="exportAll()">Export</button>
     </div>
   </div>
   <div class="content">
@@ -661,12 +698,33 @@
   </div>
 </div>
 
-<!-- MODAL: Geschoss wählen -->
-<div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeAllModals()"></div>
+
 <div class="modal-sheet" id="modal-geschoss">
   <div class="modal-title">Geschoss hinzufügen</div>
   <div id="modal-geschoss-options"></div>
-  <button class="modal-cancel" onclick="closeModal()">Abbrechen</button>
+  <button class="modal-cancel" onclick="closeAllModals()">Abbrechen</button>
+</div>
+
+<div class="modal-sheet" id="modal-copy-room">
+  <div class="modal-title">In welchen Raum kopieren?</div>
+  <div id="copy-room-options"></div>
+  <button class="modal-cancel" onclick="closeAllModals()">Abbrechen</button>
+</div>
+
+<div class="modal-sheet" id="modal-settings">
+  <div class="modal-title">⚙ Einstellungen</div>
+  <div class="form-group">
+    <label>Anthropic API-Key (für Foto-Analyse)</label>
+    <input type="password" id="settings-key" placeholder="sk-ant-...">
+    <div style="font-size:12px;color:var(--text-sec);margin-top:6px;">
+      Holen: <a href="https://console.anthropic.com/settings/keys" target="_blank" style="color:var(--primary);">console.anthropic.com</a> → API Keys → Create Key<br>
+      Der Key wird nur lokal auf deinem Gerät gespeichert.
+    </div>
+  </div>
+  <button class="btn btn-primary btn-full" onclick="saveSettings()">Speichern</button>
+  <button class="modal-cancel" style="margin-top:8px;" onclick="closeAllModals()">Abbrechen</button>
 </div>
 
 <!-- VIEW: Raum -->
@@ -704,6 +762,13 @@
       <div class="checkbox-row">
         <input type="checkbox" id="r-beheizt" onchange="saveRaumField('beheizt', this.checked)">
         <label for="r-beheizt">Raum beheizt</label>
+      </div>
+      <div id="r-normtemp-row" style="display:none; margin-top:12px;">
+        <div style="background:#f0f7ff; border:1px solid #b3d4f7; border-radius:8px; padding:10px 14px; display:flex; align-items:center; gap:12px;">
+          <span style="font-size:13px; color:#0051a2;">🌡 Normtemperatur nach DIN EN 12831:</span>
+          <input type="number" id="r-normtemp" step="0.5" style="width:80px; padding:6px 10px; border:1px solid #b3d4f7; border-radius:6px; background:white; font-size:15px; font-weight:600; color:#0051a2;" oninput="saveRaumField('normtemp', this.value)">
+          <span style="font-size:13px; color:#0051a2;">°C</span>
+        </div>
       </div>
     </div>
 
@@ -761,6 +826,123 @@
       </div>
     </div>
 
+    <!-- Wandlängen -->
+    <div class="card">
+      <div class="card-title">Wandlängen <span style="color:var(--primary);font-size:11px;font-weight:400;">← Disto (cm)</span></div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <thead><tr>
+          <th style="text-align:left;padding:4px 0;color:var(--text-sec);font-weight:500;width:40px;"></th>
+          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Segment 1</th>
+          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Segment 2</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:4px 0;font-weight:600;">N</td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wn1" placeholder="cm" oninput="saveRaumField('wand_n1',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wn2" placeholder="cm" oninput="saveRaumField('wand_n2',this.value)" style="padding:8px;"></td></tr>
+          <tr><td style="padding:4px 0;font-weight:600;">O</td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wo1" placeholder="cm" oninput="saveRaumField('wand_o1',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wo2" placeholder="cm" oninput="saveRaumField('wand_o2',this.value)" style="padding:8px;"></td></tr>
+          <tr><td style="padding:4px 0;font-weight:600;">S</td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ws1" placeholder="cm" oninput="saveRaumField('wand_s1',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ws2" placeholder="cm" oninput="saveRaumField('wand_s2',this.value)" style="padding:8px;"></td></tr>
+          <tr><td style="padding:4px 0;font-weight:600;">W</td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ww1" placeholder="cm" oninput="saveRaumField('wand_w1',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ww2" placeholder="cm" oninput="saveRaumField('wand_w2',this.value)" style="padding:8px;"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Nieschen -->
+    <div class="card">
+      <div class="section-header">
+        <div class="section-title">Nieschen</div>
+        <button class="btn btn-sm btn-secondary" onclick="addNiesche()">+ Hinzufügen</button>
+      </div>
+      <div id="nieschen-list"></div>
+      <div id="nieschen-leer" style="color:var(--text-sec);font-size:14px;padding:4px 0;">Keine Nieschen</div>
+    </div>
+
+    <!-- Vorsprünge -->
+    <div class="card">
+      <div class="card-title">Vorsprünge <span style="color:var(--primary);font-size:11px;font-weight:400;">← Disto (cm)</span></div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <thead><tr>
+          <th style="text-align:left;padding:4px 0;color:var(--text-sec);font-weight:500;width:40px;"></th>
+          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Breite (cm)</th>
+          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Tiefe (cm)</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:4px 0;font-weight:600;">N</td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspnb" placeholder="cm" oninput="saveRaumField('vsp_n_b',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspnt" placeholder="cm" oninput="saveRaumField('vsp_n_t',this.value)" style="padding:8px;"></td></tr>
+          <tr><td style="padding:4px 0;font-weight:600;">O</td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspob" placeholder="cm" oninput="saveRaumField('vsp_o_b',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspot" placeholder="cm" oninput="saveRaumField('vsp_o_t',this.value)" style="padding:8px;"></td></tr>
+          <tr><td style="padding:4px 0;font-weight:600;">S</td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspsb" placeholder="cm" oninput="saveRaumField('vsp_s_b',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspst" placeholder="cm" oninput="saveRaumField('vsp_s_t',this.value)" style="padding:8px;"></td></tr>
+          <tr><td style="padding:4px 0;font-weight:600;">W</td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspwb" placeholder="cm" oninput="saveRaumField('vsp_w_b',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspwt" placeholder="cm" oninput="saveRaumField('vsp_w_t',this.value)" style="padding:8px;"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Schräge & Gaube (Raum) -->
+    <div class="card" id="r-schraege-card">
+      <div class="card-title">🔺 Dachschräge (Raum)</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Kniestock (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
+          <input type="number" class="disto-input" id="r-sch-kniestock" placeholder="cm" oninput="saveRaumField('sch_kniestock',this.value)">
+        </div>
+        <div class="form-group">
+          <label>Neigung (°)</label>
+          <input type="number" id="r-sch-winkel" placeholder="z.B. 35" oninput="saveRaumField('sch_winkel',this.value)">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Schräge zeigt nach</label>
+          <select id="r-sch-richtung" onchange="saveRaumField('sch_richtung',this.value)">
+            <option value="N">Nord</option><option value="O">Ost</option>
+            <option value="S">Süd</option><option value="W">West</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Gaube Breite (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
+          <input type="number" class="disto-input" id="r-gaube-b" placeholder="cm" oninput="saveRaumField('gaube_breite',this.value)">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Gaube lichte Höhe (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
+        <input type="number" class="disto-input" id="r-gaube-h" placeholder="cm" oninput="saveRaumField('gaube_lichtehoehe',this.value)">
+      </div>
+    </div>
+
+    <!-- Innenwand -->
+    <div class="card">
+      <div class="card-title">Innenwand</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Dicke IW (cm) <span style="color:var(--primary);font-size:12px;">Disto</span></label>
+          <input type="number" class="disto-input" id="r-iw-dicke" placeholder="cm" oninput="saveRaumField('iw_dicke', this.value); saveLastIW()">
+        </div>
+        <div class="form-group">
+          <label>Wandtyp IW</label>
+          <select id="r-iw-typ" onchange="saveRaumField('iw_typ', this.value); saveLastIW()">
+            <option value="">Unbekannt</option>
+            <option value="Massiv Ziegel">Massiv Ziegel</option>
+            <option value="KS">Kalksandstein</option>
+            <option value="Poroton">Poroton</option>
+            <option value="Massiv Beton">Massiv Beton</option>
+            <option value="Gipskarton">Gipskarton/Trockenbau</option>
+            <option value="Leichtbau">Leichtbau</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
     <!-- Fenster -->
     <div class="card">
       <div class="section-header">
@@ -789,6 +971,25 @@
       </div>
       <div id="hk-list"></div>
       <button class="btn btn-secondary btn-full" onclick="addHK()" style="margin-top:8px;">+ Heizkörper hinzufügen</button>
+    </div>
+
+    <!-- Flächen & Heizlast -->
+    <div class="card">
+      <div class="section-header">
+        <div class="section-title">📐 Flächen & Heizlast</div>
+        <button class="btn btn-sm btn-primary" onclick="berechneUndZeige()">Berechnen</button>
+      </div>
+      <div id="heizlast-result" style="display:none;">
+        <!-- U-Wert Eingaben -->
+        <div style="background:var(--input-bg);border-radius:8px;padding:12px;margin-bottom:12px;">
+          <div style="font-size:12px;font-weight:600;color:var(--text-sec);text-transform:uppercase;margin-bottom:10px;">U-Werte & Grenzt an</div>
+          <div id="u-wert-inputs"></div>
+        </div>
+        <!-- Ergebnistabelle -->
+        <div id="flaechen-tabelle"></div>
+        <!-- Heizlast Ergebnis -->
+        <div id="heizlast-ergebnis"></div>
+      </div>
     </div>
 
   </div>
@@ -845,6 +1046,18 @@ function load() {
       if (g.isDG === undefined) g.isDG = (g.name === 'DG');
       if (!g.dach_kniestock) g.dach_kniestock = '';
       if (!g.dach_winkel) g.dach_winkel = '';
+      g.raeume.forEach(r => {
+        if (!r.iw_dicke) r.iw_dicke = '';
+        if (!r.iw_typ) r.iw_typ = '';
+        if (!r.nieschen) r.nieschen = [];
+        if (!r.u_werte) r.u_werte = {};
+        if (!r.grenzt_an) r.grenzt_an = {};
+        ['wand_n1','wand_n2','wand_o1','wand_o2','wand_s1','wand_s2','wand_w1','wand_w2',
+         'vsp_n_b','vsp_n_t','vsp_o_b','vsp_o_t','vsp_s_b','vsp_s_t','vsp_w_b','vsp_w_t',
+         'sch_kniestock','sch_winkel','sch_richtung','gaube_breite','gaube_lichtehoehe'].forEach(f => {
+          if (r[f] === undefined) r[f] = f === 'sch_richtung' ? 'N' : '';
+        });
+      });
     });
   });
 }
@@ -965,21 +1178,29 @@ function handleFoto(input, key) {
   const file = input.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = (e) => {
+  reader.onload = async (e) => {
+    const b64 = e.target.result;
     if (key === 'heizanlage') {
       const p = getProjekt();
-      p.heizanlage_foto = e.target.result;
+      p.heizanlage_foto = b64;
       save();
-      const label = document.getElementById('foto-heizanlage-label');
-      label.classList.add('has-photo');
-      label.querySelector('span').textContent = '✓';
+      document.getElementById('foto-heizanlage-label').classList.add('has-photo');
+      document.getElementById('foto-heizanlage-label').querySelector('span').textContent = '✓';
       const prev = document.getElementById('foto-heizanlage-preview');
-      prev.src = e.target.result;
-      prev.style.display = 'block';
+      prev.src = b64; prev.style.display = 'block';
+      // KI-Analyse
+      const res = await analyzePhoto(b64, 'heizanlage');
+      if (res) {
+        if (res.hersteller) { p.heizanlage.hersteller = res.hersteller; document.getElementById('p-hz-hersteller').value = res.hersteller; }
+        if (res.typ) { p.heizanlage.typ = res.typ; document.getElementById('p-hz-typ').value = res.typ; }
+        if (res.modell) { p.heizanlage.modell = res.modell; document.getElementById('p-hz-modell').value = res.modell; }
+        if (res.baujahr) { p.heizanlage.baujahr = res.baujahr; document.getElementById('p-hz-baujahr').value = res.baujahr; }
+        save();
+        showToast('✓ Heizanlage erkannt: ' + Object.values(res).filter(Boolean).join(' · '));
+      }
     }
-    // Sub-item fotos werden im jeweiligen Kontext behandelt
     const cb = window._fotoCallback;
-    if (cb) { cb(e.target.result); window._fotoCallback = null; }
+    if (cb) { cb(b64); window._fotoCallback = null; }
   };
   reader.readAsDataURL(file);
 }
@@ -1019,24 +1240,173 @@ function addGeschoss() {
 }
 
 function selectGeschoss(name) {
-  closeModal();
+  closeAllModals();
   const p = getProjekt();
   const isDG = name === 'DG';
   const g = {
     id: uuid(), name,
-    beheizung: isDG ? 'beheizt' : 'beheizt',
+    beheizung: 'beheizt',
     bodendicke: '', dachwinkel: '',
     isDG, dach_kniestock: '', dach_winkel: '',
     gauben: [], dachfenster: [], raeume: []
   };
   p.geschosse.push(g);
+  state.aktivesGeschossId = g.id;
   save();
-  renderGeschossliste();
+  showView('geschoss');
 }
 
-function closeModal() {
+function closeAllModals() {
   document.getElementById('modal-overlay').classList.remove('open');
-  document.getElementById('modal-geschoss').classList.remove('open');
+  ['modal-geschoss','modal-copy-room','modal-settings'].forEach(id => {
+    document.getElementById(id).classList.remove('open');
+  });
+}
+// Legacy alias
+const closeModal = closeAllModals;
+
+// ============================================================
+//  SETTINGS & API KEY
+// ============================================================
+function showSettings() {
+  document.getElementById('settings-key').value = localStorage.getItem('anthropic_key') || '';
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('modal-settings').classList.add('open');
+}
+function saveSettings() {
+  const key = document.getElementById('settings-key').value.trim();
+  localStorage.setItem('anthropic_key', key);
+  closeAllModals();
+  showToast(key ? '✓ API-Key gespeichert — Fotos werden automatisch analysiert' : 'API-Key entfernt');
+}
+
+// ============================================================
+//  TOAST & LOADING
+// ============================================================
+function showToast(msg, duration = 3000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+function showAnalyzing(on) {
+  document.getElementById('analyzing-overlay').classList.toggle('show', on);
+}
+
+// ============================================================
+//  KI-FOTO-ANALYSE
+// ============================================================
+async function analyzePhoto(base64DataUrl, context) {
+  const apiKey = localStorage.getItem('anthropic_key') || '';
+  if (!apiKey) return null;
+  const prompts = {
+    heizanlage: 'Du siehst eine Heizanlage oder deren Typenschild. Extrahiere als JSON: {"hersteller":null,"modell":null,"typ":null,"baujahr":null}. Typ muss einer sein von: Gas-Brennwert, Gas-Therme, Öl-Brennwert, Öl-Therme, Wärmepumpe, Pellet, Fernwärme, Elektro. Nur JSON ausgeben.',
+    heizkoerper: 'Du siehst einen Heizkörper oder dessen Typenschild. Extrahiere als JSON: {"hersteller":null,"typ":null,"breite_cm":null,"hoehe_cm":null}. Typ ist eine Zahl wie 10,11,20,21,22,33 etc. Nur JSON.',
+    ventil: 'Du siehst ein Heizkörperventil. Extrahiere als JSON: {"hersteller":null,"ventil_typ":null,"voreinstellung":null}. ventil_typ: thermostat|hand|durchgang. Nur JSON.',
+    fenster: 'Du siehst ein Fenster oder Fenster-Typenschild. Extrahiere als JSON: {"verglasung":null,"uw":null,"rahmen":null,"notiz":null}. verglasung: 1-fach|2-fach|3-fach. rahmen: kunststoff|holz|alu|holz-alu. Nur JSON.'
+  };
+  try {
+    showAnalyzing(true);
+    const imgData = base64DataUrl.split(',')[1];
+    const mtype = base64DataUrl.startsWith('data:image/png') ? 'image/png' : 'image/jpeg';
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+        'anthropic-dangerous-allow-browser': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 256,
+        messages: [{ role: 'user', content: [
+          { type: 'image', source: { type: 'base64', media_type: mtype, data: imgData } },
+          { type: 'text', text: prompts[context] || prompts.heizanlage }
+        ]}]
+      })
+    });
+    showAnalyzing(false);
+    if (!resp.ok) { showToast('Analyse fehlgeschlagen (' + resp.status + ')'); return null; }
+    const data = await resp.json();
+    const text = (data.content[0].text || '').trim();
+    const match = text.match(/\{[\s\S]*\}/);
+    if (!match) return null;
+    const result = JSON.parse(match[0]);
+    // Remove null values
+    Object.keys(result).forEach(k => { if (result[k] === null || result[k] === '') delete result[k]; });
+    return Object.keys(result).length ? result : null;
+  } catch(e) {
+    showAnalyzing(false);
+    showToast('Analyse-Fehler: ' + e.message);
+    return null;
+  }
+}
+
+// ============================================================
+//  COPY TO OTHER ROOM
+// ============================================================
+let _copyCtx = null;
+
+function showCopyToRoomModal(type, itemId) {
+  _copyCtx = { type, itemId };
+  const p = getProjekt();
+  const curRaumId = state.aktivesRaumId;
+  let html = '';
+  p.geschosse.forEach(g => {
+    const rooms = g.raeume.filter(r => r.id !== curRaumId);
+    if (!rooms.length) return;
+    html += `<div style="font-size:12px;font-weight:600;color:var(--text-sec);margin:10px 0 6px;text-transform:uppercase;padding:0 4px;">${g.name}</div>`;
+    rooms.forEach(r => {
+      html += `<button class="modal-option" onclick="executeCopyToRoom('${r.id}')">
+        <span class="modal-option-icon">🛋</span>
+        <div><div style="font-weight:500;">${r.name}</div><div style="font-size:13px;color:var(--text-sec);">${g.name}${r.nutzung ? ' · ' + r.nutzung : ''}</div></div>
+      </button>`;
+    });
+  });
+  if (!html) { showToast('Keine anderen Räume vorhanden'); return; }
+  document.getElementById('copy-room-options').innerHTML = html;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('modal-copy-room').classList.add('open');
+}
+
+function executeCopyToRoom(destRaumId) {
+  closeAllModals();
+  const p = getProjekt();
+  let srcItem = null;
+  for (const g of p.geschosse) {
+    for (const r of g.raeume) {
+      const lists = { fenster: r.fenster, tuer: r.tueren, heizkoerper: r.heizkoerper };
+      const arr = lists[_copyCtx.type];
+      if (arr) { const f = arr.find(x => x.id === _copyCtx.itemId); if (f) { srcItem = f; break; } }
+    }
+    if (srcItem) break;
+  }
+  if (!srcItem) return;
+  for (const g of p.geschosse) {
+    const dest = g.raeume.find(r => r.id === destRaumId);
+    if (dest) {
+      const kopie = Object.assign({}, srcItem, { id: uuid(), foto: null, foto_hk: null, foto_typenschild: null, foto_ventil: null });
+      if (_copyCtx.type === 'fenster') dest.fenster.push(kopie);
+      else if (_copyCtx.type === 'tuer') dest.tueren.push(kopie);
+      else if (_copyCtx.type === 'heizkoerper') dest.heizkoerper.push(kopie);
+      save();
+      showToast('✓ Kopiert nach ' + g.name + ' · ' + dest.name);
+      break;
+    }
+  }
+}
+
+// ============================================================
+//  INNENWAND LAST VALUE
+// ============================================================
+function saveLastIW() {
+  const r = getRaum();
+  if (!r) return;
+  if (r.iw_dicke || r.iw_typ) {
+    state.last_iw = { dicke: r.iw_dicke, typ: r.iw_typ };
+    save();
+  }
 }
 
 function openGeschoss(id) {
@@ -1059,6 +1429,293 @@ function saveGeschossField(field, value) {
   if (!g) return;
   g[field] = value;
   save();
+}
+
+// ============================================================
+//  NIESCHEN (pro Raum)
+// ============================================================
+function addNiesche() {
+  const r = getRaum();
+  if (!r.nieschen) r.nieschen = [];
+  r.nieschen.push({ id: uuid(), breite: '', hoehe: '', tiefe: '' });
+  save(); renderNieschen();
+}
+function deleteNiesche(id) {
+  const r = getRaum();
+  r.nieschen = r.nieschen.filter(x => x.id !== id);
+  save(); renderNieschen();
+}
+function saveNiescheField(id, field, value) {
+  const r = getRaum();
+  const n = (r.nieschen || []).find(x => x.id === id);
+  if (n) { n[field] = value; save(); }
+}
+function renderNieschen() {
+  const r = getRaum();
+  const list = r.nieschen || [];
+  const container = document.getElementById('nieschen-list');
+  const leer = document.getElementById('nieschen-leer');
+  if (!list.length) { container.innerHTML = ''; leer.style.display='block'; return; }
+  leer.style.display = 'none';
+  container.innerHTML = list.map((ni, i) => `
+    <div class="sub-item" style="margin-bottom:8px;">
+      <div class="sub-item-header">
+        <div class="sub-item-title">Niesche ${i+1}</div>
+        <button onclick="deleteNiesche('${ni.id}')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:12px;font-weight:500;padding:5px 8px;border-radius:6px;cursor:pointer;">✕</button>
+      </div>
+      <div class="form-row-3">
+        <div class="form-group">
+          <label>Breite (cm)</label>
+          <input type="number" class="disto-input" value="${ni.breite}" placeholder="cm" oninput="saveNiescheField('${ni.id}','breite',this.value)">
+        </div>
+        <div class="form-group">
+          <label>Höhe (cm)</label>
+          <input type="number" class="disto-input" value="${ni.hoehe}" placeholder="cm" oninput="saveNiescheField('${ni.id}','hoehe',this.value)">
+        </div>
+        <div class="form-group">
+          <label>Tiefe (cm)</label>
+          <input type="number" class="disto-input" value="${ni.tiefe}" placeholder="cm" oninput="saveNiescheField('${ni.id}','tiefe',this.value)">
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+//  FLÄCHEN & HEIZLAST BERECHNUNG (DIN EN 12831)
+// ============================================================
+const FX = {
+  'aussen':       { label: 'Außenluft',              fx: 1.0 },
+  'erdreich':     { label: 'Erdreich',               fx: 0.45 },
+  'keller':       { label: 'Unbeheizter Keller',     fx: 0.5 },
+  'dach_kalt':    { label: 'Kalter Dachraum',        fx: 0.5 },
+  'treppenhaus':  { label: 'Unbeh. Treppenhaus',     fx: 0.4 },
+  'garage':       { label: 'Garage/Carport',         fx: 0.5 },
+  'beheizt':      { label: 'Beheizter Raum (gleich)',fx: 0.0 },
+  'beheizt_kalt': { label: 'Beheizter Raum (kälter)',fx: 0.2 },
+};
+const THETA_E = -12; // Frankfurt DIN EN 12831 Anhang NA
+
+function cm(v) { return (parseFloat(v) || 0) / 100; }
+
+function berechneRaumGeometrie(r) {
+  const h = parseFloat(r.deckenhoehe) || 0;
+  const n1=cm(r.wand_n1), n2=cm(r.wand_n2);
+  const o1=cm(r.wand_o1), o2=cm(r.wand_o2);
+  const s1=cm(r.wand_s1), s2=cm(r.wand_s2);
+  const w1=cm(r.wand_w1), w2=cm(r.wand_w2);
+
+  // Excel-Formel B56: =((B8+D8)/2)*((C8+E8)/2)  [N1,O1,S1,W1]
+  const A_boden = ((n1+s1)/2) * ((o1+w1)/2);
+
+  // Wandflächen: h × (seg1 + seg2)
+  const A_wN = h*(n1+n2), A_wO = h*(o1+o2);
+  const A_wS = h*(s1+s2), A_wW = h*(w1+w2);
+
+  // Öffnungen (cm → m²)
+  const A_fenster = (r.fenster||[]).reduce((s,f) => s + cm(f.breite)*cm(f.hoehe), 0);
+  const A_tuer_aussen = (r.tueren||[]).filter(t=>t.art==='aussen'||t.art==='keller').reduce((s,t) => s + cm(t.breite)*cm(t.hoehe), 0);
+  const A_tuer_innen  = (r.tueren||[]).filter(t=>t.art!=='aussen'&&t.art!=='keller').reduce((s,t) => s + cm(t.breite)*cm(t.hoehe), 0);
+
+  // Nieschen-Volumen: Σ(B×H×T)
+  const V_nieschen = (r.nieschen||[]).reduce((s,ni) => s + cm(ni.breite)*cm(ni.hoehe)*cm(ni.tiefe), 0);
+
+  // Vorsprünge-Fläche: Σ(B×T) je Richtung, Volumen × h
+  const A_vsp = cm(r.vsp_n_b)*cm(r.vsp_n_t) + cm(r.vsp_o_b)*cm(r.vsp_o_t) +
+                cm(r.vsp_s_b)*cm(r.vsp_s_t) + cm(r.vsp_w_b)*cm(r.vsp_w_t);
+  const V_vorsprunge = A_vsp * h;
+
+  // Schräge: Excel B63 = ((h−kniestock)² × tan(α)) / 2
+  const kniestock = cm(r.sch_kniestock);
+  const winkel    = parseFloat(r.sch_winkel) || 0;
+  const richtung  = r.sch_richtung || 'N';
+  let A_schraege_proj = 0, A_schraege_real = 0, V_schraege = 0;
+  if (kniestock > 0 && winkel > 0 && h > kniestock) {
+    const h_rel = h - kniestock;
+    const tanA  = Math.tan(winkel * Math.PI / 180);
+    const cosA  = Math.cos(winkel * Math.PI / 180);
+    A_schraege_proj = (h_rel * tanA * h_rel) / 2; // Excel-Projektionsfläche
+    // Länge der Schräge (Hypothenuse): h_rel / sin(α), mal Wandlänge → Heizlastfläche
+    const wandLen = richtung==='N'?(n1+n2):richtung==='O'?(o1+o2):richtung==='S'?(s1+s2):(w1+w2);
+    A_schraege_real = (h_rel / (cosA > 0.01 ? cosA : 1)) * wandLen; // tatsächliche Fläche
+    V_schraege = A_schraege_proj * wandLen; // Excel E58
+  }
+
+  // Gaube-Volumen: Excel E59 = (((C51−B47)×(tan(α)×(h−B47)))/2)×B51
+  let V_gaube = 0;
+  const gaube_b = cm(r.gaube_breite);
+  const gaube_h = cm(r.gaube_lichtehoehe);
+  if (gaube_b>0 && gaube_h>0 && kniestock>0 && winkel>0 && h>kniestock) {
+    const tanA = Math.tan(winkel * Math.PI / 180);
+    V_gaube = (((gaube_h - kniestock) * (tanA * (h - kniestock))) / 2) * gaube_b;
+  }
+
+  const V_brutto   = A_boden * h;
+  const V_abzgl    = V_vorsprunge + V_schraege;
+  const V_zusaetzl = V_gaube + V_nieschen;
+  const V_netto    = V_brutto - V_abzgl + V_zusaetzl;
+
+  return { h, A_boden, A_fenster, A_tuer_aussen, A_tuer_innen,
+           A_wN, A_wO, A_wS, A_wW, A_schraege_proj, A_schraege_real,
+           A_vsp, V_nieschen, V_vorsprunge, V_schraege, V_gaube,
+           V_brutto, V_abzgl, V_zusaetzl, V_netto };
+}
+
+function berechneUndZeige() {
+  const r = getRaum();
+  if (!r) return;
+  const geo = berechneRaumGeometrie(r);
+  document.getElementById('heizlast-result').style.display = 'block';
+  renderUWertInputs(r, geo);
+  renderFlaechenTabelle(r, geo);
+  renderHeizlastErgebnis(r, geo);
+}
+
+function renderUWertInputs(r, geo) {
+  if (!r.u_werte) r.u_werte = {};
+  if (!r.grenzt_an) r.grenzt_an = {};
+  const u = r.u_werte, ga = r.grenzt_an;
+
+  const gaSelect = (key, defVal) => `
+    <select onchange="saveUGA('${key}',this.value,'ga')" style="width:100%;padding:6px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--input-bg);">
+      ${Object.entries(FX).map(([k,v]) => `<option value="${k}" ${(ga[key]||defVal)===k?'selected':''}>${v.label} (fx=${v.fx})</option>`).join('')}
+    </select>`;
+
+  const surfaces = [
+    { key: 'aw',      label: 'Außenwand',     A: geo.A_wN+geo.A_wO+geo.A_wS+geo.A_wW - geo.A_fenster - geo.A_tuer_aussen, ga_def: 'aussen', vis: true },
+    { key: 'fenster', label: 'Fenster',        A: geo.A_fenster,    ga_def: 'aussen', vis: geo.A_fenster > 0 },
+    { key: 'tuer_a',  label: 'Außentür',       A: geo.A_tuer_aussen, ga_def: 'aussen', vis: geo.A_tuer_aussen > 0 },
+    { key: 'tuer_i',  label: 'Innentür',       A: geo.A_tuer_innen, ga_def: 'beheizt', vis: geo.A_tuer_innen > 0 },
+    { key: 'boden',   label: 'Boden',          A: geo.A_boden,      ga_def: 'erdreich', vis: true },
+    { key: 'decke',   label: 'Decke',          A: geo.A_boden,      ga_def: 'dach_kalt', vis: true },
+    { key: 'schraege',label: 'Dachschräge',    A: geo.A_schraege_real, ga_def: 'aussen', vis: geo.A_schraege_real > 0 },
+  ].filter(s => s.vis && s.A > 0.001);
+
+  document.getElementById('u-wert-inputs').innerHTML = surfaces.map(s => `
+    <div style="display:grid;grid-template-columns:1fr 80px 1fr;gap:8px;align-items:center;margin-bottom:10px;">
+      <div style="font-size:13px;font-weight:500;">${s.label}<br><span style="font-size:11px;color:var(--text-sec);">${s.A.toFixed(2)} m²</span></div>
+      <div><input type="number" step="0.01" value="${u[s.key]||''}" placeholder="U" style="width:100%;padding:7px;border:1px solid var(--border);border-radius:6px;font-size:13px;" oninput="saveUGA('${s.key}',this.value,'u')"></div>
+      <div>${gaSelect(s.key, s.ga_def)}</div>
+    </div>
+  `).join('');
+  // Store surfaces for later use
+  window._lastSurfaces = surfaces;
+}
+
+function saveUGA(key, value, type) {
+  const r = getRaum();
+  if (!r.u_werte) r.u_werte = {};
+  if (!r.grenzt_an) r.grenzt_an = {};
+  if (type === 'u') r.u_werte[key] = parseFloat(value) || null;
+  else r.grenzt_an[key] = value;
+  save();
+  // Update Heizlast live
+  const geo = berechneRaumGeometrie(r);
+  renderFlaechenTabelle(r, geo);
+  renderHeizlastErgebnis(r, geo);
+}
+
+function renderFlaechenTabelle(r, geo) {
+  const fmt = (v) => v.toFixed(2);
+  const rows = [
+    ['Boden',      fmt(geo.A_boden),       'm²', '—',    '—',   '—'],
+    ['Fenster',    fmt(geo.A_fenster),      'm²', '—',    '—',   '—'],
+    ['Türen ges.', fmt(geo.A_tuer_aussen+geo.A_tuer_innen), 'm²','—','—','—'],
+    ['Wand N',     fmt(geo.A_wN),           'm²', '—',    '—',   '—'],
+    ['Wand O',     fmt(geo.A_wO),           'm²', '—',    '—',   '—'],
+    ['Wand S',     fmt(geo.A_wS),           'm²', '—',    '—',   '—'],
+    ['Wand W',     fmt(geo.A_wW),           'm²', '—',    '—',   '—'],
+    ['Schräge (proj.)', fmt(geo.A_schraege_proj), 'm²', '—', '—', '—'],
+    ['Vorsprünge', fmt(geo.A_vsp),          'm²', '—',    '—',   '—'],
+    ['', '', '', '', '', ''],
+    ['Volumen',    '',                       '',   '',     '',    ''],
+    ['V Brutto',   fmt(geo.V_brutto),        'm³', '—',    '—',   '—'],
+    ['V Abzgl.',   fmt(geo.V_abzgl),         'm³', '—',    '—',   '—'],
+    ['V Zusätzl.', fmt(geo.V_zusaetzl),      'm³', '—',    '—',   '—'],
+    ['V Netto',    fmt(geo.V_netto),          'm³', '—',    '—',   '—'],
+  ].filter(r => r[0]);
+
+  document.getElementById('flaechen-tabelle').innerHTML = `
+    <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px;">
+      <thead><tr style="background:var(--input-bg);">
+        <th style="padding:6px 8px;text-align:left;font-weight:600;">Fläche/Volumen</th>
+        <th style="padding:6px 8px;text-align:right;font-weight:600;">Wert</th>
+        <th style="padding:6px 8px;text-align:left;font-weight:600;">Einheit</th>
+      </tr></thead>
+      <tbody>
+        ${rows.map(row => row[0] === '' ? '<tr><td colspan="3" style="padding:4px;"></td></tr>' :
+          `<tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:5px 8px;${row[0].startsWith('V Netto') ? 'font-weight:700;' : ''}">${row[0]}</td>
+            <td style="padding:5px 8px;text-align:right;font-weight:600;${row[0].startsWith('V Netto') ? 'color:var(--primary);' : ''}">${row[1]}</td>
+            <td style="padding:5px 8px;color:var(--text-sec);">${row[2]}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+function renderHeizlastErgebnis(r, geo) {
+  const u = r.u_werte || {};
+  const ga = r.grenzt_an || {};
+  const theta_int = parseFloat(r.normtemp) || 20;
+  const dT = theta_int - THETA_E;
+  const surfaces = window._lastSurfaces || [];
+
+  let rows = '';
+  let sumAUfx = 0;
+
+  surfaces.forEach(s => {
+    const U = parseFloat(u[s.key]);
+    const gaKey = ga[s.key] || s.ga_def;
+    const fx = FX[gaKey] ? FX[gaKey].fx : 1.0;
+    const A = s.A;
+    if (!isNaN(U) && U > 0) {
+      const AUfx = A * U * fx;
+      sumAUfx += AUfx;
+      rows += `<tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:5px 8px;">${s.label}</td>
+        <td style="padding:5px 8px;text-align:right;">${A.toFixed(2)}</td>
+        <td style="padding:5px 8px;text-align:right;">${U.toFixed(2)}</td>
+        <td style="padding:5px 8px;text-align:right;">${fx}</td>
+        <td style="padding:5px 8px;text-align:right;font-weight:600;">${AUfx.toFixed(2)}</td>
+      </tr>`;
+    }
+  });
+
+  const phi_T = sumAUfx * dT;
+  const hasData = rows.length > 0;
+
+  document.getElementById('heizlast-ergebnis').innerHTML = hasData ? `
+    <div style="font-size:12px;font-weight:600;color:var(--text-sec);text-transform:uppercase;margin-bottom:8px;">
+      Transmissions-Wärmeverlust Φ<sub>T</sub> (DIN EN 12831)
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px;">
+      <thead><tr style="background:var(--input-bg);">
+        <th style="padding:6px 8px;text-align:left;">Bauteil</th>
+        <th style="padding:6px 8px;text-align:right;">A (m²)</th>
+        <th style="padding:6px 8px;text-align:right;">U</th>
+        <th style="padding:6px 8px;text-align:right;">fx</th>
+        <th style="padding:6px 8px;text-align:right;">A·U·fx</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div style="background:#f0f7ff;border:1px solid #b3d4f7;border-radius:8px;padding:12px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+        <span style="font-size:13px;color:#0051a2;">Σ A·U·fx</span>
+        <span style="font-weight:700;color:#0051a2;">${sumAUfx.toFixed(3)} W/K</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+        <span style="font-size:13px;color:#0051a2;">ΔT (${theta_int}°C − ${THETA_E}°C)</span>
+        <span style="font-weight:700;color:#0051a2;">${dT} K</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid #b3d4f7;">
+        <span style="font-size:15px;font-weight:700;color:#0051a2;">Φ<sub>T</sub></span>
+        <span style="font-size:18px;font-weight:700;color:#0051a2;">${phi_T.toFixed(0)} W</span>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text-sec);margin-top:8px;">θ<sub>e</sub> = −12°C (Frankfurt, DIN EN 12831 NA)</div>
+  ` : `<div style="color:var(--text-sec);font-size:14px;padding:8px 0;">
+    U-Werte eingeben und auf Berechnen tippen.
+  </div>`;
 }
 
 // ============================================================
@@ -1109,9 +1766,10 @@ function getRaum() {
 
 function addRaum() {
   const g = getGeschoss();
+  const lastIW = state.last_iw || {};
   const r = {
     id: uuid(),
-    name: 'Raum ' + (g.raeume.length + 1),
+    name: g.name + ' · Raum ' + (g.raeume.length + 1),
     nutzung: '',
     beheizt: true,
     deckenhoehe: '',
@@ -1120,10 +1778,26 @@ function addRaum() {
     aw_typ: '',
     aw_daemmung: false,
     aw_notiz: '',
+    iw_dicke: lastIW.dicke || '',
+    iw_typ: lastIW.typ || '',
+    wand_n1:'', wand_n2:'', wand_o1:'', wand_o2:'',
+    wand_s1:'', wand_s2:'', wand_w1:'', wand_w2:'',
+    nieschen: [],
+    vsp_n_b:'', vsp_n_t:'', vsp_o_b:'', vsp_o_t:'',
+    vsp_s_b:'', vsp_s_t:'', vsp_w_b:'', vsp_w_t:'',
+    sch_kniestock:'', sch_winkel:'', sch_richtung:'N',
+    gaube_breite:'', gaube_lichtehoehe:'',
+    u_werte: {}, grenzt_an: {},
     fenster: [],
     tueren: [],
     heizkoerper: []
   };
+  // Wenn im DG: Schräge-Werte vom Geschoss übernehmen
+  const g = getGeschoss();
+  if (g && (g.isDG || g.name==='DG')) {
+    r.sch_kniestock = g.dach_kniestock || '';
+    r.sch_winkel = g.dach_winkel || '';
+  }
   g.raeume.push(r);
   state.aktivesRaumId = r.id;
   save();
@@ -1145,10 +1819,24 @@ function deleteRaum(id, e) {
   renderRaumliste();
 }
 
+const NORMTEMPS = {
+  'Wohnen': 20, 'Schlafen': 18, 'Bad': 24, 'Küche': 20,
+  'Flur': 15, 'Büro': 20, 'Keller': 10, 'Abstellraum': 10, 'Sonstiges': 20
+};
+
 function saveRaumField(field, value) {
   const r = getRaum();
   if (!r) return;
   r[field] = value;
+  if (field === 'nutzung') {
+    const norm = NORMTEMPS[value];
+    if (norm && !r.normtemp) {
+      r.normtemp = norm;
+      document.getElementById('r-normtemp').value = norm;
+    }
+    const row = document.getElementById('r-normtemp-row');
+    if (row) row.style.display = value ? 'block' : 'none';
+  }
   save();
 }
 
@@ -1239,16 +1927,31 @@ function saveHKField(id, field, value) {
 
 function triggerFoto(hkId, fotoKey) {
   const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  input.setAttribute('capture', 'environment');
-  input.onchange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  input.type = 'file'; input.accept = 'image/*'; input.setAttribute('capture', 'environment');
+  input.onchange = async (e) => {
+    const file = e.target.files[0]; if (!file) return;
     const reader = new FileReader();
-    reader.onload = (ev) => {
-      saveHKField(hkId, fotoKey, ev.target.result);
+    reader.onload = async (ev) => {
+      const b64 = ev.target.result;
+      saveHKField(hkId, fotoKey, b64);
       renderHKListe();
+      // KI-Analyse je nach Foto-Typ
+      const ctx = fotoKey === 'foto_ventil' ? 'ventil' : 'heizkoerper';
+      const res = await analyzePhoto(b64, ctx);
+      if (res) {
+        if (ctx === 'heizkoerper') {
+          if (res.hersteller) saveHKField(hkId, 'hersteller', res.hersteller);
+          if (res.typ) saveHKField(hkId, 'typ', res.typ);
+          if (res.breite_cm) saveHKField(hkId, 'breite', String(res.breite_cm));
+          if (res.hoehe_cm) saveHKField(hkId, 'hoehe', String(res.hoehe_cm));
+        } else if (ctx === 'ventil') {
+          if (res.hersteller) saveHKField(hkId, 'ventil_hersteller', res.hersteller);
+          if (res.ventil_typ) saveHKField(hkId, 'ventil_typ', res.ventil_typ);
+          if (res.voreinstellung) saveHKField(hkId, 'ventil_voreinstellung', res.voreinstellung);
+        }
+        renderHKListe();
+        showToast('✓ ' + Object.values(res).filter(Boolean).join(' · '));
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -1257,16 +1960,23 @@ function triggerFoto(hkId, fotoKey) {
 
 function triggerFensterFoto(fenId) {
   const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  input.setAttribute('capture', 'environment');
-  input.onchange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  input.type = 'file'; input.accept = 'image/*'; input.setAttribute('capture', 'environment');
+  input.onchange = async (e) => {
+    const file = e.target.files[0]; if (!file) return;
     const reader = new FileReader();
-    reader.onload = (ev) => {
-      saveFensterField(fenId, 'foto', ev.target.result);
+    reader.onload = async (ev) => {
+      const b64 = ev.target.result;
+      saveFensterField(fenId, 'foto', b64);
       renderFensterListe();
+      const res = await analyzePhoto(b64, 'fenster');
+      if (res) {
+        if (res.verglasung) saveFensterField(fenId, 'verglasung', res.verglasung);
+        if (res.uw) saveFensterField(fenId, 'uw', res.uw);
+        if (res.rahmen) saveFensterField(fenId, 'rahmen', res.rahmen);
+        if (res.notiz) saveFensterField(fenId, 'notiz', res.notiz);
+        renderFensterListe();
+        showToast('✓ Fenster: ' + Object.values(res).filter(Boolean).join(' · '));
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -1542,21 +2252,63 @@ function renderRaumView() {
   document.getElementById('r-aw-typ').value = r.aw_typ || '';
   document.getElementById('r-aw-daemmung').checked = r.aw_daemmung || false;
   document.getElementById('r-aw-notiz').value = r.aw_notiz || '';
+  document.getElementById('r-iw-dicke').value = r.iw_dicke || '';
+  document.getElementById('r-iw-typ').value = r.iw_typ || '';
+  // Wandlängen
+  ['n1','n2','o1','o2','s1','s2','w1','w2'].forEach(k => {
+    const el = document.getElementById('r-w'+k);
+    if (el) el.value = r['wand_'+k] || '';
+  });
+  // Vorsprünge
+  ['nb','nt','ob','ot','sb','st','wb','wt'].forEach(k => {
+    const el = document.getElementById('r-vsp'+k);
+    if (el) el.value = r['vsp_'+k[0]+'_'+k[1]] || '';
+  });
+  // Schräge
+  const scK = document.getElementById('r-sch-kniestock');
+  const scW = document.getElementById('r-sch-winkel');
+  const scR = document.getElementById('r-sch-richtung');
+  const gbB = document.getElementById('r-gaube-b');
+  const gbH = document.getElementById('r-gaube-h');
+  if (scK) scK.value = r.sch_kniestock || '';
+  if (scW) scW.value = r.sch_winkel || '';
+  if (scR) scR.value = r.sch_richtung || 'N';
+  if (gbB) gbB.value = r.gaube_breite || '';
+  if (gbH) gbH.value = r.gaube_lichtehoehe || '';
+  renderNieschen();
+  // Heizlast zurücksetzen
+  document.getElementById('heizlast-result').style.display = 'none';
+  const normRow = document.getElementById('r-normtemp-row');
+  if (normRow) normRow.style.display = r.nutzung ? 'block' : 'none';
+  const normInput = document.getElementById('r-normtemp');
+  if (normInput) normInput.value = r.normtemp || (NORMTEMPS[r.nutzung] || '');
   renderFensterListe();
   renderTuerenListe();
   renderHKListe();
 }
 
+function getRaumLabel() {
+  const g = getGeschoss(); const r = getRaum();
+  return (g && r) ? g.name + ' · ' + r.name : '';
+}
+
 function renderFensterListe() {
-  const r = getRaum();
+  const r = getRaum(); const g = getGeschoss();
   const container = document.getElementById('fenster-list');
   document.getElementById('fenster-count').textContent = r.fenster.length;
   if (!r.fenster.length) { container.innerHTML = ''; return; }
   container.innerHTML = r.fenster.map((f, i) => `
     <div class="sub-item">
       <div class="sub-item-header">
-        <div class="sub-item-title">Fenster ${i + 1}</div>
-        <button onclick="deleteFenster('${f.id}')" style="background:none;border:none;color:var(--danger);font-size:18px;cursor:pointer;">✕</button>
+        <div>
+          <div class="sub-item-title">Fenster ${i + 1}</div>
+          <div style="font-size:11px;color:var(--text-sec);">${g.name} · ${r.name}</div>
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;">
+          <button onclick="showCopyToRoomModal('fenster','${f.id}')" style="background:#f5f5f7;border:1px solid var(--border);color:var(--text-sec);font-size:12px;padding:5px 8px;border-radius:6px;cursor:pointer;">→ Raum</button>
+          <button onclick="copyFenster('${f.id}')" style="background:#e3f0fd;border:none;color:var(--primary);font-size:12px;font-weight:500;padding:5px 8px;border-radius:6px;cursor:pointer;">⎘ Kopie</button>
+          <button onclick="deleteFenster('${f.id}')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:12px;font-weight:500;padding:5px 8px;border-radius:6px;cursor:pointer;">✕</button>
+        </div>
       </div>
       <div class="form-row-3">
         <div class="form-group">
@@ -1622,15 +2374,21 @@ function renderFensterListe() {
 }
 
 function renderTuerenListe() {
-  const r = getRaum();
+  const r = getRaum(); const g = getGeschoss();
   const container = document.getElementById('tueren-list');
   document.getElementById('tueren-count').textContent = r.tueren.length;
   if (!r.tueren.length) { container.innerHTML = ''; return; }
   container.innerHTML = r.tueren.map((t, i) => `
     <div class="sub-item">
       <div class="sub-item-header">
-        <div class="sub-item-title">Tür ${i + 1}</div>
-        <button onclick="deleteTuer('${t.id}')" style="background:none;border:none;color:var(--danger);font-size:18px;cursor:pointer;">✕</button>
+        <div>
+          <div class="sub-item-title">Tür ${i + 1}</div>
+          <div style="font-size:11px;color:var(--text-sec);">${g.name} · ${r.name}</div>
+        </div>
+        <div style="display:flex;gap:5px;">
+          <button onclick="showCopyToRoomModal('tuer','${t.id}')" style="background:#f5f5f7;border:1px solid var(--border);color:var(--text-sec);font-size:12px;padding:5px 8px;border-radius:6px;cursor:pointer;">→ Raum</button>
+          <button onclick="deleteTuer('${t.id}')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:12px;font-weight:500;padding:5px 8px;border-radius:6px;cursor:pointer;">✕ Löschen</button>
+        </div>
       </div>
       <div class="form-row">
         <div class="form-group">
@@ -1661,15 +2419,21 @@ function renderTuerenListe() {
 }
 
 function renderHKListe() {
-  const r = getRaum();
+  const r = getRaum(); const g = getGeschoss();
   const container = document.getElementById('hk-list');
   document.getElementById('hk-count').textContent = r.heizkoerper.length;
   if (!r.heizkoerper.length) { container.innerHTML = ''; return; }
   container.innerHTML = r.heizkoerper.map((hk, i) => `
     <div class="sub-item">
       <div class="sub-item-header">
-        <div class="sub-item-title">Heizkörper ${i + 1}</div>
-        <button onclick="deleteHK('${hk.id}')" style="background:none;border:none;color:var(--danger);font-size:18px;cursor:pointer;">✕</button>
+        <div>
+          <div class="sub-item-title">Heizkörper ${i + 1}</div>
+          <div style="font-size:11px;color:var(--text-sec);">${g.name} · ${r.name}</div>
+        </div>
+        <div style="display:flex;gap:5px;">
+          <button onclick="showCopyToRoomModal('heizkoerper','${hk.id}')" style="background:#f5f5f7;border:1px solid var(--border);color:var(--text-sec);font-size:12px;padding:5px 8px;border-radius:6px;cursor:pointer;">→ Raum</button>
+          <button onclick="deleteHK('${hk.id}')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:12px;font-weight:500;padding:5px 8px;border-radius:6px;cursor:pointer;">✕ Löschen</button>
+        </div>
       </div>
       <div class="form-row">
         <div class="form-group">
@@ -1692,15 +2456,24 @@ function renderHKListe() {
       <div class="form-row-3">
         <div class="form-group">
           <label>Breite (cm)</label>
-          <input type="number" class="disto-input" value="${hk.breite}" placeholder="cm" oninput="saveHKField('${hk.id}','breite',this.value)">
+          <select class="disto-input" onchange="saveHKField('${hk.id}','breite',this.value)">
+            <option value="">Wählen/Disto</option>
+            ${[40,50,60,70,80,90,100,110,120,140,160,180,200,220,240,260,280,300].map(v=>`<option value="${v}" ${String(hk.breite)===String(v)?'selected':''}>${v} cm</option>`).join('')}
+          </select>
         </div>
         <div class="form-group">
           <label>Höhe (cm)</label>
-          <input type="number" class="disto-input" value="${hk.hoehe}" placeholder="cm" oninput="saveHKField('${hk.id}','hoehe',this.value)">
+          <select class="disto-input" onchange="saveHKField('${hk.id}','hoehe',this.value)">
+            <option value="">Wählen/Disto</option>
+            ${[30,40,45,50,60,70,90].map(v=>`<option value="${v}" ${String(hk.hoehe)===String(v)?'selected':''}>${v} cm</option>`).join('')}
+          </select>
         </div>
         <div class="form-group">
           <label>Tiefe (cm)</label>
-          <input type="number" value="${hk.tiefe}" placeholder="opt." oninput="saveHKField('${hk.id}','tiefe',this.value)">
+          <select onchange="saveHKField('${hk.id}','tiefe',this.value)">
+            <option value="">opt.</option>
+            ${[6,10,11,13,14,16,22].map(v=>`<option value="${v}" ${String(hk.tiefe)===String(v)?'selected':''}>${v} cm</option>`).join('')}
+          </select>
         </div>
       </div>
       <div class="form-row">
@@ -1818,8 +2591,52 @@ function generateExportText(p) {
       line('  RAUM ' + (ri + 1) + ': ' + r.name + (r.nutzung ? ' [' + r.nutzung + ']' : '') + (r.beheizt ? '' : ' [UNBEHEIZT]'));
       line('    Deckenhöhe:     ' + (r.deckenhoehe ? r.deckenhoehe + ' m' : '—'));
       line('    Bodenbelag:     ' + (r.bodenbelag || '—'));
+      if (r.normtemp) line('    Normtemperatur: ' + r.normtemp + ' °C (DIN EN 12831)');
+      // Geometrie berechnen wenn Wandlängen vorhanden
+      if (r.wand_n1 || r.wand_o1) {
+        try {
+          const geo = berechneRaumGeometrie(r);
+          const f2 = v => v.toFixed(2);
+          line('    ── Berechnete Flächen ──');
+          line('    Boden:       ' + f2(geo.A_boden) + ' m²');
+          if (geo.A_wN > 0) line('    Wand N/S/O/W: ' + f2(geo.A_wN) + ' / ' + f2(geo.A_wS) + ' / ' + f2(geo.A_wO) + ' / ' + f2(geo.A_wW) + ' m²');
+          if (geo.A_fenster > 0) line('    Fenster:     ' + f2(geo.A_fenster) + ' m²');
+          line('    ── Volumen ──');
+          line('    V Brutto:    ' + f2(geo.V_brutto) + ' m³');
+          line('    V Netto:     ' + f2(geo.V_netto) + ' m³');
+          // Heizlast wenn U-Werte vorhanden
+          const u = r.u_werte || {};
+          if (Object.values(u).some(v => v > 0)) {
+            const theta_int = parseFloat(r.normtemp) || 20;
+            const dT = theta_int - THETA_E;
+            let sumAUfx = 0;
+            const srf = [
+              {key:'aw', A: geo.A_wN+geo.A_wO+geo.A_wS+geo.A_wW-geo.A_fenster-geo.A_tuer_aussen, gd:'aussen'},
+              {key:'fenster', A: geo.A_fenster, gd:'aussen'},
+              {key:'tuer_a', A: geo.A_tuer_aussen, gd:'aussen'},
+              {key:'boden', A: geo.A_boden, gd:'erdreich'},
+              {key:'decke', A: geo.A_boden, gd:'dach_kalt'},
+              {key:'schraege', A: geo.A_schraege_real, gd:'aussen'},
+            ];
+            srf.forEach(s => {
+              const U = parseFloat(u[s.key]);
+              if (!isNaN(U) && U > 0 && s.A > 0) {
+                const fx = FX[(r.grenzt_an||{})[s.key] || s.gd]?.fx || 1.0;
+                sumAUfx += s.A * U * fx;
+              }
+            });
+            if (sumAUfx > 0) {
+              line('    ── Heizlast DIN EN 12831 ──');
+              line('    Σ A·U·fx:    ' + sumAUfx.toFixed(3) + ' W/K');
+              line('    ΔT:          ' + dT + ' K  (θint=' + theta_int + '°C / θe=-12°C)');
+              line('    Φ_T:         ' + (sumAUfx * dT).toFixed(0) + ' W');
+            }
+          }
+        } catch(e) {}
+      }
       if (r.aw_dicke) line('    AW-Dicke:       ' + r.aw_dicke + ' cm' + (r.aw_typ ? ' · ' + r.aw_typ : '') + (r.aw_daemmung ? ' · Dämmung erkennbar' : ''));
       if (r.aw_notiz) line('    AW-Notiz:       ' + r.aw_notiz);
+      if (r.iw_dicke) line('    IW-Dicke:       ' + r.iw_dicke + ' cm' + (r.iw_typ ? ' · ' + r.iw_typ : ''));
 
       if (r.fenster.length) {
         line('    FENSTER (' + r.fenster.length + '):');
