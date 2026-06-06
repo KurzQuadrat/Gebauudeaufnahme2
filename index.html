@@ -862,8 +862,11 @@
       <div id="nieschen-leer" style="color:var(--text-sec);font-size:14px;padding:4px 0;">Keine Nieschen</div>
     </div>
 
-    <!-- Vorsprünge -->
-    <div class="card">
+    <!-- Vorsprünge (optional) -->
+    <button class="btn btn-secondary btn-full" id="r-vsp-toggle-btn" onclick="toggleRaumSection('vsp')" style="margin-bottom:12px; text-align:left; justify-content:flex-start; gap:10px;">
+      <span style="font-size:18px; line-height:1;">+</span> Vorsprünge erfassen
+    </button>
+    <div class="card" id="r-vsp-card" style="display:none;">
       <div class="card-title">Vorsprünge <span style="color:var(--primary);font-size:11px;font-weight:400;">← Disto (cm)</span></div>
       <table style="width:100%;border-collapse:collapse;font-size:14px;">
         <thead><tr>
@@ -888,8 +891,11 @@
       </table>
     </div>
 
-    <!-- Schräge & Gaube (Raum) -->
-    <div class="card" id="r-schraege-card">
+    <!-- Schräge & Gaube (Raum, optional) -->
+    <button class="btn btn-secondary btn-full" id="r-schraege-toggle-btn" onclick="toggleRaumSection('schraege')" style="margin-bottom:12px; text-align:left; justify-content:flex-start; gap:10px;">
+      <span style="font-size:18px; line-height:1;">+</span> 🔺 Dachschräge / Gaube
+    </button>
+    <div class="card" id="r-schraege-card" style="display:none;">
       <div class="card-title">🔺 Dachschräge (Raum)</div>
       <div class="form-row">
         <div class="form-group">
@@ -1712,6 +1718,23 @@ function renderHeizlastErgebnis(r,geo) {
 // ============================================================
 function getRaumLabel() { const g=getGeschoss(),r=getRaum(); return (g&&r)?g.name+' · '+r.name:''; }
 
+// Toggle optionaler Raum-Sektionen (Vorsprünge, Dachschräge)
+function toggleRaumSection(key) {
+  const card = document.getElementById('r-' + key + '-card');
+  const btn  = document.getElementById('r-' + key + '-toggle-btn');
+  if (!card || !btn) return;
+  const open = card.style.display !== 'none';
+  const labels = {
+    vsp:      { plus: '+ Vorsprünge erfassen',    minus: '− Vorsprünge' },
+    schraege: { plus: '+ 🔺 Dachschräge / Gaube', minus: '− 🔺 Dachschräge / Gaube' }
+  };
+  card.style.display = open ? 'none' : 'block';
+  const lbl = labels[key] || { plus: '+', minus: '−' };
+  btn.innerHTML = open
+    ? '<span style="font-size:18px;line-height:1;">+</span> ' + lbl.plus.replace(/^\+ /, '')
+    : '<span style="font-size:18px;line-height:1;">−</span> ' + lbl.minus.replace(/^− /, '');
+}
+
 function renderProjektliste() {
   const c=document.getElementById('projekt-items'),l=document.getElementById('projekt-leer');
   if(!state.projekte.length){c.innerHTML='';l.style.display='block';return;}
@@ -1795,6 +1818,22 @@ function renderRaumView() {
   if(ni)ni.value=r.normtemp||(NORMTEMPS[r.nutzung]||'');
   renderNieschen();renderFensterListe();renderTuerenListe();renderHKListe();
   const hr=document.getElementById('heizlast-result');if(hr)hr.style.display='none';
+
+  // Auto-expand Vorsprünge wenn Daten vorhanden
+  const hasVsp=['n_b','n_t','o_b','o_t','s_b','s_t','w_b','w_t'].some(k=>r['vsp_'+k]);
+  const vspCard=document.getElementById('r-vsp-card'),vspBtn=document.getElementById('r-vsp-toggle-btn');
+  if(vspCard){vspCard.style.display=hasVsp?'block':'none';}
+  if(vspBtn){vspBtn.innerHTML=hasVsp
+    ?'<span style="font-size:18px;line-height:1;">−</span> Vorsprünge'
+    :'<span style="font-size:18px;line-height:1;">+</span> Vorsprünge erfassen';}
+
+  // Auto-expand Dachschräge wenn Daten vorhanden
+  const hasSchraege=!!(r.sch_kniestock||r.sch_winkel||r.gaube_breite||r.gaube_lichtehoehe);
+  const schraegeCard=document.getElementById('r-schraege-card'),schraegeBtn=document.getElementById('r-schraege-toggle-btn');
+  if(schraegeCard){schraegeCard.style.display=hasSchraege?'block':'none';}
+  if(schraegeBtn){schraegeBtn.innerHTML=hasSchraege
+    ?'<span style="font-size:18px;line-height:1;">−</span> 🔺 Dachschräge / Gaube'
+    :'<span style="font-size:18px;line-height:1;">+</span> 🔺 Dachschräge / Gaube';}
 }
 
 function renderFensterListe() {
