@@ -230,9 +230,82 @@
         <input type="text" id="p-hl-quelle" placeholder="z.B. Erfahrungswert, Bestandsunterlagen, Baujahresklasse" oninput="saveHeizlastDefaultField('quelle', this.value)">
       </div>
       <div class="form-group">
-        <label><input type="checkbox" id="p-hl-baujahr-aktiv" onchange="saveHeizlastDefaultField('baujahrAbleitungAktiv', this.checked)"> Baujahresabhängige U-Wert-Ableitung aktivieren (Tabellenwerte noch nicht hinterlegt)</label>
+        <label><input type="checkbox" id="p-hl-baujahr-aktiv" onchange="saveHeizlastDefaultField('baujahrAbleitungAktiv', this.checked)"> Baujahresabhängige U-Wert-Vorschläge nutzen (Quelle: Bundesanzeiger BAnz AT 04.12.2020 B1)</label>
       </div>
-      <div style="color:var(--text-sec);font-size:13px;padding:4px 0 0;">Hinweis: Tabellenwerte aus der „Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung im Wohngebäudebestand“ vom 8. Oktober 2020 sind hier noch nicht hinterlegt – es werden keine erfundenen oder geschätzten Werte verwendet. Die Struktur für eine spätere Baujahres-Ableitung ist vorbereitet; die Tabellenwerte folgen in einem späteren Schritt, sobald sie aus der Quelle vorliegen.</div>
+
+      <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px;">
+        <div style="font-weight:600;font-size:14px;margin-bottom:6px;">Baualtersklasse &amp; U-Wert-Vorschläge (Bundesanzeiger BAnz AT 04.12.2020 B1)</div>
+        <div style="color:var(--text-sec);font-size:13px;margin-bottom:8px;">Pauschal-/Erfahrungswerte aus der „Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung im Wohngebäudebestand“ vom 8. Oktober 2020 (BAnz AT 04.12.2020 B1, Tabelle 2/3) – siehe <code>docs/quellen/README.md</code>. Kein normativer Heizlastnachweis, keine Bauteilaufnahme im Einzelfall. Werte werden NICHT automatisch in vorhandene Felder geschrieben, sondern nur über den Button unten und nur in leere Felder übernommen.</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Baualtersklasse Gebäude (für opake Bauteile: Außenwand, Dach, Decken, Türen)</label>
+            <select id="p-hl-baualtersklasse" onchange="saveHeizlastDefaultField('baualtersklasseGebaeude', this.value)">
+              <option value="">– bitte wählen / aus Baujahr ableiten –</option>
+              
+            </select>
+          </div>
+          <div class="form-group" style="display:flex;align-items:flex-end;">
+            <button type="button" class="btn btn-secondary" onclick="leiteBaualtersklasseAusBaujahrAb()">Aus Baujahr Gebäude ableiten</button>
+          </div>
+        </div>
+        <div style="color:var(--text-sec);font-size:12px;margin:-2px 0 10px;">Hinweis Fenster: Tabelle 3 verwendet eigene Baualtersklassen-Grenzen. Die Fenster-Baualtersklasse wird daher unabhängig von obiger Auswahl direkt aus dem Sanierungsjahr Fenster (falls gesetzt) bzw. dem Baujahr des Gebäudes abgeleitet.</div>
+
+        <div class="form-row">
+          <div class="form-group"><label>Außenwand – Bauteilart (Quelle)</label>
+            <select id="p-hl-aw-art" onchange="saveHeizlastDefaultField('awArt', this.value)"></select>
+          </div>
+          <div class="form-group"><label>Außenwand – Sanierungsjahr (optional)</label>
+            <input type="number" id="p-hl-aw-san" placeholder="z.B. 2010" min="1900" max="2030" oninput="saveHeizlastDefaultField('awSanierungsjahr', this.value)">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Dach – Bauteilart (Quelle)</label>
+            <select id="p-hl-dach-art" onchange="saveHeizlastDefaultField('dachArt', this.value)"></select>
+          </div>
+          <div class="form-group"><label>Dach – Sanierungsjahr (optional)</label>
+            <input type="number" id="p-hl-dach-san" placeholder="z.B. 2010" min="1900" max="2030" oninput="saveHeizlastDefaultField('dachSanierungsjahr', this.value)">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Bodenplatte – Bauteilart (Quelle)</label>
+            <select id="p-hl-bodenplatte-art" onchange="saveHeizlastDefaultField('bodenplatteArt', this.value)"></select>
+          </div>
+          <div class="form-group"><label>Bodenplatte – Sanierungsjahr (optional)</label>
+            <input type="number" id="p-hl-bodenplatte-san" placeholder="z.B. 2010" min="1900" max="2030" oninput="saveHeizlastDefaultField('bodenplatteSanierungsjahr', this.value)">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Boden/Decke – Bauteilart (Quelle)</label>
+            <select id="p-hl-boden-art" onchange="saveHeizlastDefaultField('bodenArt', this.value)"></select>
+          </div>
+          <div class="form-group"><label>Boden/Decke – Sanierungsjahr (optional)</label>
+            <input type="number" id="p-hl-boden-san" placeholder="z.B. 2010" min="1900" max="2030" oninput="saveHeizlastDefaultField('bodenSanierungsjahr', this.value)">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Fenster – Bauteilart (Quelle)</label>
+            <select id="p-hl-fenster-art" onchange="saveHeizlastDefaultField('fensterArt', this.value)"></select>
+          </div>
+          <div class="form-group"><label>Fenster – Sanierungsjahr (optional)</label>
+            <input type="number" id="p-hl-fenster-san" placeholder="z.B. 2010" min="1900" max="2030" oninput="saveHeizlastDefaultField('fensterSanierungsjahr', this.value)">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Türen – Bauteilart (Quelle)</label>
+            <select id="p-hl-tuer-art" onchange="saveHeizlastDefaultField('tuerArt', this.value)"></select>
+          </div>
+          <div class="form-group"><label>Türen – Sanierungsjahr (optional)</label>
+            <input type="number" id="p-hl-tuer-san" placeholder="z.B. 2010" min="1900" max="2030" oninput="saveHeizlastDefaultField('tuerSanierungsjahr', this.value)">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button type="button" class="btn btn-secondary" onclick="uebernehmeUWerteAusBaualtersklasse()">U-Werte aus Baualtersklasse übernehmen</button>
+          <div style="color:var(--text-sec);font-size:12px;margin-top:6px;">Übernimmt Vorschlagswerte aus der Quelle ausschließlich in aktuell LEERE U-Wert-Felder oben. Bereits vorhandene manuelle Werte werden nicht überschrieben. Logik je Bauteil: Ist ein Sanierungsjahr hinterlegt, wird die Baualtersklasse für DIESES Bauteil aus dem Sanierungsjahr abgeleitet; ohne Sanierungsjahr gilt die Baualtersklasse des Gebäudes (aus Baujahr oder manueller Auswahl).</div>
+        </div>
+      </div>
+
+      <div style="color:var(--text-sec);font-size:13px;padding:4px 0 0;">Hinweis: Die hinterlegten Tabellenwerte stammen aus der „Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung im Wohngebäudebestand“ vom 8. Oktober 2020 (BAnz AT 04.12.2020 B1) und sind Pauschal-/Erfahrungswerte – kein normativer Heizlastnachweis. Es werden ausschließlich Werte verwendet, die eindeutig aus dieser Quelle entnommen wurden (siehe <code>docs/quellen/README.md</code> und <code>js/uwerte-bundesanzeiger.js</code>); nichts wurde geschätzt oder ergänzt.</div>
     </div>
 
     <!-- Warmwasser -->
@@ -781,6 +854,7 @@
 </div>
 
 <script src="js/config.js"></script>
+<script src="js/uwerte-bundesanzeiger.js"></script>
 <script src="js/heizlast.js"></script>
 <script src="js/state.js"></script>
 <script src="js/export.js"></script>
@@ -838,7 +912,17 @@ function neuesProjekt() {
     heizlastDefaults: {
       awUwert: '', iwUwert: '', dachUwert: '', bodenplatteUwert: '', bodenUwert: '',
       fensterUwert: '', tuerUwert: '', tempAussenNorm: -12, tempUnbeheiztDefault: 7,
-      quelle: '', baujahrAbleitungAktiv: false
+      quelle: '', baujahrAbleitungAktiv: false,
+      // Baualtersklassen-Vorschlagswerte (Bundesanzeiger BAnz AT 04.12.2020 B1) -
+      // siehe js/uwerte-bundesanzeiger.js und docs/quellen/README.md. Rein
+      // optionale Vorbelegungshilfe; überschreibt nie vorhandene manuelle Werte.
+      baualtersklasseGebaeude: '',
+      awArt: 'aw_massiv_poroes', awSanierungsjahr: '',
+      dachArt: 'dach_massiv', dachSanierungsjahr: '',
+      bodenplatteArt: 'boden_erdreich_stahlbeton', bodenplatteSanierungsjahr: '',
+      bodenArt: 'kellerdecke_stahlbeton', bodenSanierungsjahr: '',
+      fensterArt: 'fenster_kunststoff_isolierverglasung', fensterSanierungsjahr: '',
+      tuerArt: 'tueren_holz_kunststoff', tuerSanierungsjahr: '',
     },
     offenePunkte: [],
     geschosse: [eg]
@@ -1348,9 +1432,6 @@ function renderWandlaengen() {
     const seg2 = r['wand_'+d+'2'];
     const seg2Hinweis = (seg2!==undefined && seg2!==null && String(seg2).trim()!=='')
       ? '<div style="font-size:10px;color:#a36b00;margin-top:3px;">Altdaten „Segment 2": '+seg2+' m – wird weiterhin zur Wandfläche addiert, hier nicht mehr separat gepflegt.</div>' : '';
-    const fotoKey = 'wand_'+d+'_foto';
-    const hatFoto = !!r[fotoKey];
-    const fotoBtn = '<button class="photo-btn '+(hatFoto?'has-photo':'')+'" style="margin-top:6px;" onclick="triggerWandFoto(\''+d+'\')">'+(hatFoto?'✓':'📷')+' '+(hatFoto?'Wandfoto '+label+' vorhanden':'Wandfoto '+label)+'</button>'+(hatFoto?'<img src="'+r[fotoKey]+'" class="photo-preview">':'');
     return '<div style="border-bottom:1px solid var(--border);padding:10px 0;">'
       + '<div style="display:grid;grid-template-columns:34px 1fr;gap:8px;align-items:center;">'
       + '<div style="font-weight:700;font-size:15px;">'+label+'</div>'
@@ -1358,7 +1439,6 @@ function renderWandlaengen() {
       + '</div>'
       + seg2Hinweis
       + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0 0 42px;">'+artSel+grenztSel+'</div>'
-      + '<div style="margin-left:42px;">'+fotoBtn+'</div>'
       + '</div>';
   }).join('');
   // aktuelle Werte einsetzen (innerHTML-Neuaufbau erfordert erneutes Befüllen)
@@ -1367,17 +1447,6 @@ function renderWandlaengen() {
     const art=document.getElementById('r-wand-art-'+d); if(art) art.value = r['wand_'+d+'_art']||'';
     const gr=document.getElementById('r-wand-grenzt-'+d); if(gr) gr.value = r['wand_'+d+'_grenzt']||'';
   });
-}
-
-// Wandfoto je Himmelsrichtung (Wandaufbau, Zustand, Anschlüsse, Besonderheiten):
-// gleicher Bedienansatz wie bei anderen Bauteil-Fotos (Komprimierung, Speicherung,
-// Vorschau), bewusst OHNE KI-Fotoanalyse.
-function triggerWandFoto(dir) {
-  const r = getRaum(); if (!r) return;
-  const inp=document.createElement('input'); inp.type='file'; inp.accept='image/*'; inp.setAttribute('capture','environment');
-  inp.onchange=async(e)=>{ const file=e.target.files[0]; if(!file) return; let b; try { b = await getStorablePhoto(file); } catch(err) { showToast('Foto konnte nicht verarbeitet werden: ' + err.message); return; }
-    r['wand_'+dir+'_foto']=b; save(); renderWandlaengen(); };
-  inp.click();
 }
 
 function focusNextMessfeld(currentId) {
@@ -1391,7 +1460,12 @@ function focusNextMessfeld(currentId) {
 }
 
 function handleMessfeldKeydown(e) {
-  if (e.key === 'Enter' || e.keyCode === 13) {
+  // Sowohl Enter (Disto-/Lasermessgerät bestätigt einen Messwert) als auch
+  // Tab (manuelle Tastaturbedienung) springen zuverlässig zum nächsten
+  // Messfeld in der festen Reihenfolge MESSFELD_REIHENFOLGE - nicht in
+  // Dropdowns oder andere Felder. Shift+Tab (rückwärts) wird bewusst dem
+  // Standard-Browserverhalten überlassen.
+  if (e.key === 'Enter' || e.keyCode === 13 || ((e.key === 'Tab' || e.keyCode === 9) && !e.shiftKey)) {
     e.preventDefault();
     focusNextMessfeld(e.target.id);
   }
@@ -1608,17 +1682,149 @@ function renderProjektView() {
   set('p-hz-energietraeger',p.heizanlage.energietraeger);set('p-hz-leistung',p.heizanlage.leistung);
   if(!p.heizlastDefaults) p.heizlastDefaults = { awUwert:'', iwUwert:'', dachUwert:'', bodenplatteUwert:'', bodenUwert:'', fensterUwert:'', tuerUwert:'', tempAussenNorm:-12, tempUnbeheiztDefault:7, quelle:'', baujahrAbleitungAktiv:false };
   const hd=p.heizlastDefaults;
+  // Defensive Ergänzung neuer Baualtersklassen-Felder bei bestehenden Projekten
+  // (kein Datenverlust, keine Überschreibung vorhandener Werte).
+  const hdDefaults = {
+    baualtersklasseGebaeude:'', awArt:'aw_massiv_poroes', awSanierungsjahr:'',
+    dachArt:'dach_massiv', dachSanierungsjahr:'',
+    bodenplatteArt:'boden_erdreich_stahlbeton', bodenplatteSanierungsjahr:'',
+    bodenArt:'kellerdecke_stahlbeton', bodenSanierungsjahr:'',
+    fensterArt:'fenster_kunststoff_isolierverglasung', fensterSanierungsjahr:'',
+    tuerArt:'tueren_holz_kunststoff', tuerSanierungsjahr:'',
+  };
+  Object.keys(hdDefaults).forEach(k => { if (hd[k] === undefined) hd[k] = hdDefaults[k]; });
   set('p-hl-aw-uwert',hd.awUwert);set('p-hl-iw-uwert',hd.iwUwert);set('p-hl-dach-uwert',hd.dachUwert);
   set('p-hl-bodenplatte-uwert',hd.bodenplatteUwert);set('p-hl-boden-uwert',hd.bodenUwert);set('p-hl-fenster-uwert',hd.fensterUwert);
   set('p-hl-tuer-uwert',hd.tuerUwert);set('p-hl-temp-aussen',hd.tempAussenNorm);set('p-hl-temp-unbeheizt',hd.tempUnbeheiztDefault);
   set('p-hl-quelle',hd.quelle);
   const hlBaujahrEl=document.getElementById('p-hl-baujahr-aktiv'); if(hlBaujahrEl) hlBaujahrEl.checked=!!hd.baujahrAbleitungAktiv;
+  fuelleBaualtersklassenUI(p, hd);
   set('p-ww-art',p.warmwasser.art);set('p-ww-speicher-vorhanden',p.warmwasser.speicherVorhanden);set('p-ww-speichervolumen',p.warmwasser.speichervolumen);
   set('p-ww-energietraeger',p.warmwasser.energietraeger);set('p-ww-versorgung',p.warmwasser.versorgung);set('p-ww-baujahr',p.warmwasser.baujahr);
   set('p-ww-hersteller',p.warmwasser.hersteller);set('p-ww-typ',p.warmwasser.typ);set('p-ww-notiz',p.warmwasser.notiz);
   set('p-schorn-lage',p.schornstein.lage);set('p-schorn-form',p.schornstein.form);set('p-schorn-b',p.schornstein.breite);set('p-schorn-t',p.schornstein.tiefe);
   if(p.heizanlage_foto){const prev=document.getElementById('foto-heizanlage-preview');const lbl=document.getElementById('foto-heizanlage-label');if(prev){prev.src=p.heizanlage_foto;prev.style.display='block';}if(lbl)lbl.classList.add('has-photo');}
   renderSanierungen(); renderGeschossliste(); renderOffenePunkte();
+}
+
+// ============================================================
+//  BAUALTERSKLASSEN-UI (Bundesanzeiger BAnz AT 04.12.2020 B1)
+// ============================================================
+// Befüllt die Dropdowns für Baualtersklasse Gebäude und Bauteilart aus der
+// kontrolliert erzeugten Datenstruktur js/uwerte-bundesanzeiger.js und setzt
+// die aktuell gespeicherten Werte. Reine Anzeige-/Auswahlhilfe - berechnet
+// selbst keine Heizlast und überschreibt keine vorhandenen U-Werte.
+function fuelleBaualtersklassenUI(p, hd) {
+  const klasseSel = document.getElementById('p-hl-baualtersklasse');
+  if (klasseSel) {
+    klasseSel.innerHTML = '<option value="">– bitte wählen / aus Baujahr ableiten –</option>'
+      + BAUALTERSKLASSEN_OPAK.map(k => '<option value="'+k.key+'">'+k.label+'</option>').join('');
+    klasseSel.value = hd.baualtersklasseGebaeude || '';
+  }
+  const fuelleArtSelect = (id, gruppe, gespeicherterWert) => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const eintraege = Object.keys(UWERTE_OPAK).filter(k => UWERTE_OPAK[k].gruppe === gruppe)
+      .concat(Object.keys(UWERTE_TRANSPARENT).filter(k => UWERTE_TRANSPARENT[k].gruppe === gruppe));
+    sel.innerHTML = eintraege.map(k => {
+      const kat = UWERTE_OPAK[k] || UWERTE_TRANSPARENT[k];
+      return '<option value="'+k+'">'+kat.label+'</option>';
+    }).join('');
+    if (gespeicherterWert) sel.value = gespeicherterWert;
+  };
+  fuelleArtSelect('p-hl-aw-art', 'aw', hd.awArt);
+  fuelleArtSelect('p-hl-dach-art', 'dach', hd.dachArt);
+  fuelleArtSelect('p-hl-bodenplatte-art', 'og', hd.bodenplatteArt);
+  fuelleArtSelect('p-hl-boden-art', 'og', hd.bodenArt);
+  fuelleArtSelect('p-hl-fenster-art', 'fenster', hd.fensterArt);
+  fuelleArtSelect('p-hl-tuer-art', 'tuer', hd.tuerArt);
+  const setNum = (id, v) => { const el = document.getElementById(id); if (el) el.value = (v===undefined||v===null) ? '' : v; };
+  setNum('p-hl-aw-san', hd.awSanierungsjahr);
+  setNum('p-hl-dach-san', hd.dachSanierungsjahr);
+  setNum('p-hl-bodenplatte-san', hd.bodenplatteSanierungsjahr);
+  setNum('p-hl-boden-san', hd.bodenSanierungsjahr);
+  setNum('p-hl-fenster-san', hd.fensterSanierungsjahr);
+  setNum('p-hl-tuer-san', hd.tuerSanierungsjahr);
+}
+
+// Leitet die Baualtersklasse Gebäude (für opake Bauteile) aus dem erfassten
+// Baujahr des Gebäudes ab und trägt sie in die Auswahl ein. Rein eine
+// Vorbelegungshilfe - bleibt manuell überschreibbar (z.B. wenn das Baujahr
+// unsicher ist oder Gebäudeteile unterschiedlichen Alters sind).
+function leiteBaualtersklasseAusBaujahrAb() {
+  const p = getProjekt(); if (!p) return;
+  const klasse = baualtersklasseOpakFuerJahr(p.baujahr);
+  if (!klasse) { showToast('Baujahr fehlt oder ist keiner Baualtersklasse zuordenbar.'); return; }
+  if (!p.heizlastDefaults) p.heizlastDefaults = {};
+  p.heizlastDefaults.baualtersklasseGebaeude = klasse.key;
+  save();
+  const sel = document.getElementById('p-hl-baualtersklasse'); if (sel) sel.value = klasse.key;
+  showToast('Baualtersklasse Gebäude aus Baujahr abgeleitet: ' + klasse.label);
+}
+
+// Übernimmt U-Wert-Vorschläge aus der Bundesanzeiger-Baualtersklassentabelle
+// AUSSCHLIESSLICH in aktuell leere Felder. Vorhandene manuelle U-Werte bleiben
+// unangetastet (siehe version-1-scope.md "Keine automatische Überschreibung
+// ohne Kontrolle"). Logik je Bauteil: Sanierungsjahr (falls gesetzt) ersetzt
+// für DIESES Bauteil die Baualtersklasse des Gebäudes.
+function uebernehmeUWerteAusBaualtersklasse() {
+  const p = getProjekt(); if (!p) return;
+  const hd = p.heizlastDefaults || {};
+  const istLeer = (v) => v===undefined || v===null || String(v).trim()==='';
+
+  // Bezugsjahr für ein Bauteil: Sanierungsjahr (wenn gesetzt), sonst Baujahr
+  // Gebäude. Die Gebäude-Baualtersklasse (manuell wählbar) wird genutzt, wenn
+  // kein Sanierungsjahr gesetzt ist UND ein Wert ausgewählt wurde; sonst wird
+  // direkt über das Baujahr abgeleitet.
+  const klasseIndexOpak = (sanierungsjahr) => {
+    if (!istLeer(sanierungsjahr)) return findeBaualtersklasseIndex(sanierungsjahr, BAUALTERSKLASSEN_OPAK);
+    if (hd.baualtersklasseGebaeude) {
+      const idx = BAUALTERSKLASSEN_OPAK.findIndex(k => k.key === hd.baualtersklasseGebaeude);
+      if (idx !== -1) return idx;
+    }
+    return findeBaualtersklasseIndex(p.baujahr, BAUALTERSKLASSEN_OPAK);
+  };
+  const klasseIndexTransparent = (sanierungsjahr) => {
+    if (!istLeer(sanierungsjahr)) return findeBaualtersklasseIndex(sanierungsjahr, BAUALTERSKLASSEN_TRANSPARENT);
+    return findeBaualtersklasseIndex(p.baujahr, BAUALTERSKLASSEN_TRANSPARENT);
+  };
+
+  let uebernommen = [], uebersprungen = [], unbekannt = [];
+
+  const versucheOpak = (feld, label, artFeld, sanierungsjahrFeld) => {
+    if (!istLeer(hd[feld])) { uebersprungen.push(label); return; }
+    const kat = UWERTE_OPAK[hd[artFeld]];
+    const idx = klasseIndexOpak(hd[sanierungsjahrFeld]);
+    if (!kat || idx === -1) { unbekannt.push(label); return; }
+    hd[feld] = kat.werte[idx];
+    uebernommen.push(label + ' = ' + kat.werte[idx] + ' W/(m²K) [' + BAUALTERSKLASSEN_OPAK[idx].label + ']');
+  };
+  const versucheTransparent = (feld, label, artFeld, sanierungsjahrFeld) => {
+    if (!istLeer(hd[feld])) { uebersprungen.push(label); return; }
+    const kat = UWERTE_TRANSPARENT[hd[artFeld]];
+    const idx = klasseIndexTransparent(hd[sanierungsjahrFeld]);
+    if (!kat || idx === -1) { unbekannt.push(label); return; }
+    hd[feld] = kat.werte[idx];
+    uebernommen.push(label + ' = ' + kat.werte[idx] + ' W/(m²K) [' + BAUALTERSKLASSEN_TRANSPARENT[idx].label + ']');
+  };
+
+  versucheOpak('awUwert', 'Außenwand', 'awArt', 'awSanierungsjahr');
+  versucheOpak('dachUwert', 'Dach', 'dachArt', 'dachSanierungsjahr');
+  versucheOpak('bodenplatteUwert', 'Bodenplatte', 'bodenplatteArt', 'bodenplatteSanierungsjahr');
+  versucheOpak('bodenUwert', 'Boden/Decke', 'bodenArt', 'bodenSanierungsjahr');
+  versucheOpak('tuerUwert', 'Türen', 'tuerArt', 'tuerSanierungsjahr');
+  versucheTransparent('fensterUwert', 'Fenster', 'fensterArt', 'fensterSanierungsjahr');
+
+  if (uebernommen.length) {
+    if (!hd.quelle) hd.quelle = 'Bundesanzeiger BAnz AT 04.12.2020 B1 (Baualtersklasse)';
+    save();
+    renderProjektView();
+  }
+  let meldung = '';
+  if (uebernommen.length) meldung += 'Übernommen: ' + uebernommen.join('; ') + '. ';
+  if (uebersprungen.length) meldung += 'Nicht verändert (bereits ausgefüllt): ' + uebersprungen.join(', ') + '. ';
+  if (unbekannt.length) meldung += 'Keine Ableitung möglich (Baujahr/Sanierungsjahr bzw. Bauteilart fehlt): ' + unbekannt.join(', ') + '.';
+  showToast(meldung || 'Keine Änderungen.');
 }
 
 function renderSanierungen() {

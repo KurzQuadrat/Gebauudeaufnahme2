@@ -203,6 +203,32 @@ Fehler werden in folgender Reihenfolge priorisiert:
 * Hinweis zur Datenmigration:
   Es wurde **keine automatische Massenmigration** bestehender Werte durchgeführt – die Anwendung war zum Zeitpunkt der Korrektur nicht produktiv im Einsatz und enthielt ausschließlich Testwerte (vom Nutzer bestätigt), sodass eine vollständige Umstellung auf Meter ohne Altdaten-Risiko möglich war. Es wurden keine Daten gelöscht.
 
+## KI-009: Wandfoto-Buttons entfernt (Korrektur einer kurz zuvor ergänzten Funktion) und Tab-Fokus im Messworkflow ergänzt
+
+* Status: behoben
+* Priorität: Bedienbarkeit Raumaufnahme
+* Bereich: Raumaufnahme (`index.html`: `renderWandlaengen()`, `handleMessfeldKeydown()`)
+* Blockiert Nutzung: nein
+* Hintergrund:
+  Im unmittelbar vorausgegangenen Schritt wurde je Wandrichtung ein Wandfoto-Button (`triggerWandFoto`) ergänzt. Auf ausdrücklichen Wunsch wurde diese Funktion direkt danach wieder zurückgenommen: „Wände brauchen keine Foto-Möglichkeit mehr.“ Dies ist eine bewusste, kurzfristige Korrektur und keine schleichende Inkonsistenz.
+* Behebung:
+  Die Wandfoto-Buttons inkl. Vorschau wurden aus `renderWandlaengen()` entfernt, ebenso die Funktion `triggerWandFoto()`. Die zugrunde liegenden Datenfelder (`wand_n_foto`/`wand_o_foto`/`wand_s_foto`/`wand_w_foto`, inkl. defensiver Migration in `js/state.js`) bleiben unverändert bestehen – es gehen dadurch keine ggf. bereits erfassten Fotos verloren, sie werden in der UI nur nicht mehr angezeigt oder neu erfassbar gemacht.
+* Zusätzlich:
+  Die Feldweiterschaltung im Messworkflow (`handleMessfeldKeydown`/`focusNextMessfeld`/`MESSFELD_REIHENFOLGE`) reagiert jetzt zusätzlich zu Enter auch auf Tab (vorwärts) und springt zuverlässig zum nächsten Messfeld in der festen Reihenfolge (lichte Höhe → Wandlängen N/O/S/W), statt z. B. in ein Dropdown zu springen. Shift+Tab (rückwärts) folgt bewusst dem Standard-Browserverhalten, um die Navigation nicht zu verwirren. Es gibt weiterhin keine Bluetooth-/Geräteanbindung – ausschließlich Tastatur-/Fokusverhalten.
+
+## KI-010: Heizlast-Standardwerte – Baualtersklassen-Vorschlagswerte aus dem Bundesanzeiger ergänzt
+
+* Status: behoben (als optionale Vorbelegungshilfe; keine Änderung der Heizlastmethodik)
+* Priorität: Erfassungshilfe / Datenqualität
+* Bereich: Projektansicht Heizlast-Standardwerte (`index.html`, `js/uwerte-bundesanzeiger.js`, `docs/quellen/`)
+* Blockiert Nutzung: nein
+* Hintergrund:
+  Die in KI-008 vorbereitete, aber damals noch leere Struktur für eine baujahresabhängige U-Wert-Ableitung (`heizlastDefaults.baujahrAbleitungAktiv`) wurde nun mit echten, eindeutig aus der Quelle „Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung im Wohngebäudebestand“ vom 8. Oktober 2020 (BAnz AT 04.12.2020 B1) entnommenen Werten hinterlegt – siehe `docs/quellen/README.md` und `js/uwerte-bundesanzeiger.js`.
+* Umsetzung:
+  Es wurde eine Auswahl „Baualtersklasse Gebäude“ ergänzt (mit Ableitungs-Button aus dem Baujahr), je U-Wert-Bauteilgruppe (Außenwand, Dach, Bodenplatte, Boden/Decke, Fenster, Türen) eine Auswahl der konkreten Quellen-Bauteilkategorie sowie ein optionales Sanierungsjahr. Logik: Ist für ein Bauteil ein Sanierungsjahr hinterlegt, wird die Baualtersklasse für DIESES Bauteil aus dem Sanierungsjahr abgeleitet; ohne Sanierungsjahr gilt die Baualtersklasse des Gebäudes (aus Baujahr abgeleitet oder manuell gewählt). Der Button „U-Werte aus Baualtersklasse übernehmen“ überträgt Vorschlagswerte AUSSCHLIESSLICH in aktuell leere U-Wert-Felder; vorhandene manuelle Werte werden nicht überschrieben (siehe `uebernehmeUWerteAusBaualtersklasse()`). Es werden ausschließlich Werte verwendet, die eindeutig aus Tabelle 2/3 der Quelle entnommen wurden – nichts wurde geschätzt oder ergänzt.
+* Wichtige Einordnung:
+  Diese Werte sind Pauschal-/Erfahrungswerte für die überschlägige Datenaufnahme, KEIN normativer Heizlastnachweis nach DIN EN 12831 und ersetzen keine Bauteilaufnahme im Einzelfall. Die bestehende Heizlast-Methodik (Φ_T = Σ A·U·fx·ΔT, Prioritätskette Raum-Override → Projekt-Standard → Bestandswert → unbekannt) bleibt unverändert; die Baualtersklassen-Werte fließen lediglich als optionaler Vorschlag in den Projekt-Standard ein.
+
 ## Noch nicht bewertete Themen
 
 * Fotoanalyse ist im Code vorhanden, wurde aber noch nicht aktiv genutzt oder fachlich getestet.
