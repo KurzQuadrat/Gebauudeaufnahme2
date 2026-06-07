@@ -43,6 +43,19 @@ function load() {
          'sch_kniestock','sch_winkel','sch_richtung','gaube_breite','gaube_lichtehoehe'].forEach(f => {
           if (r[f] === undefined) r[f] = f === 'sch_richtung' ? 'N' : '';
         });
+        // Nieschen: Wandzuordnung defensiv ergänzen (bestehende Nieschen bleiben ohne Zuordnung nutzbar)
+        (r.nieschen || []).forEach(ni => { if (ni.wand === undefined) ni.wand = ''; });
+        // Vorsprünge: von gerichteten Einzelwerten (vsp_n_b/_t ...) in eine Liste überführen,
+        // damit mehrere Vorsprünge je Raum möglich sind. Alte Felder bleiben zur Sicherheit erhalten.
+        if (!r.vorspruenge) {
+          r.vorspruenge = [];
+          [['n','N'],['o','O'],['s','S'],['w','W']].forEach(([k,label]) => {
+            const b = r['vsp_'+k+'_b'], t = r['vsp_'+k+'_t'];
+            if (b || t) r.vorspruenge.push({ id: uuid(), wand: label, breite: b || '', tiefe: t || '', notiz: '' });
+          });
+        }
+        // Gaube: an Dachschräge gekoppelt; defensiver Default aus evtl. vorhandenen Altdaten ableiten
+        if (r.gaubeVorhanden === undefined) r.gaubeVorhanden = !!(r.gaube_breite || r.gaube_lichtehoehe);
       });
     });
   });
@@ -122,6 +135,12 @@ function saveNiescheField(id, field, value) {
   const r = getRaum();
   const n = (r.nieschen || []).find(x => x.id === id);
   if (n) { n[field] = value; save(); }
+}
+
+function saveVorsprungField(id, field, value) {
+  const r = getRaum();
+  const v = (r.vorspruenge || []).find(x => x.id === id);
+  if (v) { v[field] = value; save(); }
 }
 
 function saveFensterField(id,field,value) { const r=getRaum(); const f=r.fenster.find(f=>f.id===id); if(f){f[field]=value;save();} }

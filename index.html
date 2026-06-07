@@ -630,76 +630,59 @@
     <div class="card">
       <div class="section-header">
         <div class="section-title">Nieschen</div>
-        <button class="btn btn-sm btn-secondary" onclick="addNiesche()">+ Hinzufügen</button>
+        <span class="section-count" id="nieschen-count">0</span>
       </div>
       <div id="nieschen-list"></div>
-      <div id="nieschen-leer" style="color:var(--text-sec);font-size:14px;padding:4px 0;">Keine Nieschen</div>
+      <button class="btn btn-secondary btn-full" onclick="addNiesche()" style="margin-top:8px;">+ Niesche hinzufügen</button>
     </div>
 
-    <!-- Vorsprünge (optional, geometrische Disto-Einzelwerte je Himmelsrichtung – fließen direkt in berechneRaumGeometrie ein, daher keine Listen-/Karten-Struktur wie bei Fenster/Türen) -->
+    <!-- Vorsprünge -->
     <div class="card">
       <div class="section-header">
         <div class="section-title">Vorsprünge <span style="color:var(--primary);font-size:11px;font-weight:400;">← Disto (cm)</span></div>
-        <button class="btn btn-sm btn-secondary" id="r-vsp-toggle-btn" onclick="toggleRaumSection('vsp')">+ Erfassen</button>
+        <span class="section-count" id="vorspruenge-count">0</span>
       </div>
-      <div id="r-vsp-card" style="display:none; margin-top:10px;">
-        <table style="width:100%;border-collapse:collapse;font-size:14px;">
-          <thead><tr>
-            <th style="text-align:left;padding:4px 0;color:var(--text-sec);font-weight:500;width:40px;"></th>
-            <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Breite (cm)</th>
-            <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Tiefe (cm)</th>
-          </tr></thead>
-          <tbody>
-            <tr><td style="padding:4px 0;font-weight:600;">N</td>
-              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspnb" placeholder="cm" oninput="saveRaumField('vsp_n_b',this.value)" style="padding:8px;"></td>
-              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspnt" placeholder="cm" oninput="saveRaumField('vsp_n_t',this.value)" style="padding:8px;"></td></tr>
-            <tr><td style="padding:4px 0;font-weight:600;">O</td>
-              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspob" placeholder="cm" oninput="saveRaumField('vsp_o_b',this.value)" style="padding:8px;"></td>
-              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspot" placeholder="cm" oninput="saveRaumField('vsp_o_t',this.value)" style="padding:8px;"></td></tr>
-            <tr><td style="padding:4px 0;font-weight:600;">S</td>
-              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspsb" placeholder="cm" oninput="saveRaumField('vsp_s_b',this.value)" style="padding:8px;"></td>
-              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspst" placeholder="cm" oninput="saveRaumField('vsp_s_t',this.value)" style="padding:8px;"></td></tr>
-            <tr><td style="padding:4px 0;font-weight:600;">W</td>
-              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspwb" placeholder="cm" oninput="saveRaumField('vsp_w_b',this.value)" style="padding:8px;"></td>
-              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspwt" placeholder="cm" oninput="saveRaumField('vsp_w_t',this.value)" style="padding:8px;"></td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div id="vorspruenge-list"></div>
+      <button class="btn btn-secondary btn-full" onclick="addVorsprung()" style="margin-top:8px;">+ Vorsprung hinzufügen</button>
     </div>
 
-    <!-- Dachschräge / Gaube (Raum, optional, geometrische Disto-Einzelwerte – fließen direkt in berechneRaumGeometrie ein, daher keine Listen-/Karten-Struktur wie bei Fenster/Türen; die Geschoss-Gauben g.gauben[] bleiben eine eigene, davon unabhängige Liste) -->
+    <!-- Dachschräge (Raum) -->
     <div class="card">
       <div class="section-header">
-        <div class="section-title">🔺 Dachschräge / Gaube (Raum)</div>
-        <button class="btn btn-sm btn-secondary" id="r-schraege-toggle-btn" onclick="toggleRaumSection('schraege')">+ Erfassen</button>
+        <div class="section-title">🔺 Dachschräge</div>
       </div>
-      <div id="r-schraege-card" style="display:none; margin-top:10px;">
-        <div class="form-row">
-          <div class="form-group">
-            <label>Kniestock (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
-            <input type="number" class="disto-input" id="r-sch-kniestock" placeholder="cm" oninput="saveRaumField('sch_kniestock',this.value)">
-          </div>
-          <div class="form-group">
-            <label>Neigung (°)</label>
-            <input type="number" id="r-sch-winkel" placeholder="z.B. 35" oninput="saveRaumField('sch_winkel',this.value)">
-          </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Kniestock (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
+          <input type="number" class="disto-input" id="r-sch-kniestock" placeholder="cm" oninput="saveRaumField('sch_kniestock',this.value)">
         </div>
+        <div class="form-group">
+          <label>Neigung (°)</label>
+          <input type="number" id="r-sch-winkel" placeholder="z.B. 35" oninput="saveRaumField('sch_winkel',this.value)">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Schräge zeigt nach</label>
+        <select id="r-sch-richtung" onchange="saveRaumField('sch_richtung',this.value)">
+          <option value="N">Nord</option><option value="O">Ost</option>
+          <option value="S">Süd</option><option value="W">West</option>
+        </select>
+      </div>
+      <div class="checkbox-row" style="margin-top:12px;">
+        <input type="checkbox" id="r-gaube-vorhanden" onchange="onGaubeVorhandenChange(this.checked)">
+        <label for="r-gaube-vorhanden">Gaube vorhanden</label>
+      </div>
+      <div id="r-gaube-felder" style="display:none; margin-top:10px;">
+        <div class="card-title" style="font-size:13px;">Gaube</div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Schräge zeigt nach</label>
-            <select id="r-sch-richtung" onchange="saveRaumField('sch_richtung',this.value)">
-              <option value="N">Nord</option><option value="O">Ost</option>
-              <option value="S">Süd</option><option value="W">West</option>
-            </select>
-          </div>
           <div class="form-group">
             <label>Gaube Breite (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
             <input type="number" class="disto-input" id="r-gaube-b" placeholder="cm" oninput="saveRaumField('gaube_breite',this.value)">
           </div>
-        </div>
-        <div class="form-group">
-          <label>Gaube lichte Höhe (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
-          <input type="number" class="disto-input" id="r-gaube-h" placeholder="cm" oninput="saveRaumField('gaube_lichtehoehe',this.value)">
+          <div class="form-group">
+            <label>Gaube lichte Höhe (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
+            <input type="number" class="disto-input" id="r-gaube-h" placeholder="cm" oninput="saveRaumField('gaube_lichtehoehe',this.value)">
+          </div>
         </div>
       </div>
     </div>
@@ -1019,7 +1002,7 @@ function deleteRaum(id, e) {
 function addNiesche() {
   const r = getRaum();
   if (!r.nieschen) r.nieschen = [];
-  r.nieschen.push({ id: uuid(), breite: '', hoehe: '', tiefe: '' });
+  r.nieschen.push({ id: uuid(), wand: '', breite: '', hoehe: '', tiefe: '' });
   save(); renderNieschen();
 }
 function deleteNiesche(id) {
@@ -1028,34 +1011,38 @@ function deleteNiesche(id) {
   save(); renderNieschen();
 }
 function renderNieschen() {
-  const r = getRaum();
+  const r=getRaum(),g=getGeschoss(),c=document.getElementById('nieschen-list'),cnt=document.getElementById('nieschen-count');
   const list = r.nieschen || [];
-  const container = document.getElementById('nieschen-list');
-  const leer = document.getElementById('nieschen-leer');
-  if (!list.length) { container.innerHTML = ''; leer.style.display='block'; return; }
-  leer.style.display = 'none';
-  container.innerHTML = list.map((ni, i) => `
-    <div class="sub-item" style="margin-bottom:8px;">
-      <div class="sub-item-header">
-        <div class="sub-item-title">Niesche ${i+1}</div>
-        <button onclick="deleteNiesche('${ni.id}')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:12px;font-weight:500;padding:5px 8px;border-radius:6px;cursor:pointer;">✕</button>
-      </div>
-      <div class="form-row-3">
-        <div class="form-group">
-          <label>Breite (cm)</label>
-          <input type="number" class="disto-input" value="${ni.breite}" placeholder="cm" oninput="saveNiescheField('${ni.id}','breite',this.value)">
-        </div>
-        <div class="form-group">
-          <label>Höhe (cm)</label>
-          <input type="number" class="disto-input" value="${ni.hoehe}" placeholder="cm" oninput="saveNiescheField('${ni.id}','hoehe',this.value)">
-        </div>
-        <div class="form-group">
-          <label>Tiefe (cm)</label>
-          <input type="number" class="disto-input" value="${ni.tiefe}" placeholder="cm" oninput="saveNiescheField('${ni.id}','tiefe',this.value)">
-        </div>
-      </div>
-    </div>
-  `).join('');
+  cnt.textContent = list.length;
+  if (!list.length) { c.innerHTML=''; return; }
+  const wandOpts = ['','N','O','S','W'];
+  c.innerHTML = list.map((ni, i) => {
+    const wandSel = wandOpts.map(w=>'<option value="'+w+'" '+((ni.wand||'')===w?'selected':'')+'>'+(w||'unbekannt')+'</option>').join('');
+    return '<div class="sub-item"><div class="sub-item-header"><div><div class="sub-item-title">Niesche '+(i+1)+'</div><div style="font-size:11px;color:var(--text-sec);">'+g.name+' · '+r.name+'</div></div><div style="display:flex;gap:5px;"><button onclick="deleteNiesche(\''+ni.id+'\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:12px;font-weight:500;padding:5px 8px;border-radius:6px;cursor:pointer;">✕ Löschen</button></div></div><div class="form-row"><div class="form-group"><label>Wand</label><select onchange="saveNiescheField(\''+ni.id+'\',\'wand\',this.value)">'+wandSel+'</select></div></div><div class="form-row-3"><div class="form-group"><label>Breite (cm)</label><input type="number" class="disto-input" value="'+ni.breite+'" placeholder="cm" oninput="saveNiescheField(\''+ni.id+'\',\'breite\',this.value)"></div><div class="form-group"><label>Höhe (cm)</label><input type="number" class="disto-input" value="'+ni.hoehe+'" placeholder="cm" oninput="saveNiescheField(\''+ni.id+'\',\'hoehe\',this.value)"></div><div class="form-group"><label>Tiefe (cm)</label><input type="number" class="disto-input" value="'+ni.tiefe+'" placeholder="cm" oninput="saveNiescheField(\''+ni.id+'\',\'tiefe\',this.value)"></div></div></div>';
+  }).join('');
+}
+
+function addVorsprung() {
+  const r = getRaum();
+  if (!r.vorspruenge) r.vorspruenge = [];
+  r.vorspruenge.push({ id: uuid(), wand: '', breite: '', tiefe: '', notiz: '' });
+  save(); renderVorspruengeListe();
+}
+function deleteVorsprung(id) {
+  const r = getRaum();
+  r.vorspruenge = (r.vorspruenge||[]).filter(x => x.id !== id);
+  save(); renderVorspruengeListe();
+}
+function renderVorspruengeListe() {
+  const r=getRaum(),g=getGeschoss(),c=document.getElementById('vorspruenge-list'),cnt=document.getElementById('vorspruenge-count');
+  const list = r.vorspruenge || [];
+  cnt.textContent = list.length;
+  if (!list.length) { c.innerHTML=''; return; }
+  const wandOpts = ['','N','O','S','W'];
+  c.innerHTML = list.map((v, i) => {
+    const wandSel = wandOpts.map(w=>'<option value="'+w+'" '+((v.wand||'')===w?'selected':'')+'>'+(w||'unbekannt')+'</option>').join('');
+    return '<div class="sub-item"><div class="sub-item-header"><div><div class="sub-item-title">Vorsprung '+(i+1)+'</div><div style="font-size:11px;color:var(--text-sec);">'+g.name+' · '+r.name+'</div></div><div style="display:flex;gap:5px;"><button onclick="deleteVorsprung(\''+v.id+'\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:12px;font-weight:500;padding:5px 8px;border-radius:6px;cursor:pointer;">✕ Löschen</button></div></div><div class="form-row"><div class="form-group"><label>Wand</label><select onchange="saveVorsprungField(\''+v.id+'\',\'wand\',this.value)">'+wandSel+'</select></div></div><div class="form-row"><div class="form-group"><label>Breite (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label><input type="number" class="disto-input" value="'+v.breite+'" placeholder="cm" oninput="saveVorsprungField(\''+v.id+'\',\'breite\',this.value)"></div><div class="form-group"><label>Tiefe (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label><input type="number" class="disto-input" value="'+v.tiefe+'" placeholder="cm" oninput="saveVorsprungField(\''+v.id+'\',\'tiefe\',this.value)"></div></div><div class="form-group"><label>Notiz</label><input type="text" value="'+(v.notiz||'')+'" placeholder="Besonderheiten..." oninput="saveVorsprungField(\''+v.id+'\',\'notiz\',this.value)"></div></div>';
+  }).join('');
 }
 
 function berechneUndZeige() {
@@ -1233,26 +1220,26 @@ function renderRaumView() {
   set('r-iw-dicke',r.iw_dicke);set('r-iw-typ',r.iw_typ);
   ['n1','n2','o1','o2','s1','s2','w1','w2'].forEach(k=>{const el=document.getElementById('r-w'+k);if(el)el.value=r['wand_'+k]||'';});
   ['n','o','s','w'].forEach(d=>{const el=document.getElementById('r-wand-art-'+d);if(el)el.value=r['wand_'+d+'_art']||'';});
-  ['nb','nt','ob','ot','sb','st','wb','wt'].forEach(k=>{const el=document.getElementById('r-vsp'+k);if(el)el.value=r['vsp_'+k[0]+'_'+k[1]]||'';});
   set('r-sch-kniestock',r.sch_kniestock);set('r-sch-winkel',r.sch_winkel);const scR=document.getElementById('r-sch-richtung');if(scR)scR.value=r.sch_richtung||'N';
   set('r-gaube-b',r.gaube_breite);set('r-gaube-h',r.gaube_lichtehoehe);
+  chk('r-gaube-vorhanden',r.gaubeVorhanden);
+  const gf=document.getElementById('r-gaube-felder');if(gf)gf.style.display=r.gaubeVorhanden?'block':'none';
   const nr=document.getElementById('r-normtemp-row'),ni=document.getElementById('r-normtemp');
   if(nr)nr.style.display=r.nutzung?'block':'none';
   if(ni)ni.value=r.normtemp||(NORMTEMPS[r.nutzung]||'');
-  renderNieschen();renderFensterListe();renderTuerenListe();renderHKListe();
+  renderNieschen();renderVorspruengeListe();renderFensterListe();renderTuerenListe();renderHKListe();
   const hr=document.getElementById('heizlast-result');if(hr)hr.style.display='none';
+}
 
-  // Auto-expand Vorsprünge wenn Daten vorhanden
-  const hasVsp=['n_b','n_t','o_b','o_t','s_b','s_t','w_b','w_t'].some(k=>r['vsp_'+k]);
-  const vspCard=document.getElementById('r-vsp-card'),vspBtn=document.getElementById('r-vsp-toggle-btn');
-  if(vspCard){vspCard.style.display=hasVsp?'block':'none';}
-  if(vspBtn){vspBtn.textContent=hasVsp?'− Ausblenden':'+ Erfassen';}
-
-  // Auto-expand Dachschräge wenn Daten vorhanden
-  const hasSchraege=!!(r.sch_kniestock||r.sch_winkel||r.gaube_breite||r.gaube_lichtehoehe);
-  const schraegeCard=document.getElementById('r-schraege-card'),schraegeBtn=document.getElementById('r-schraege-toggle-btn');
-  if(schraegeCard){schraegeCard.style.display=hasSchraege?'block':'none';}
-  if(schraegeBtn){schraegeBtn.textContent=hasSchraege?'− Ausblenden':'+ Erfassen';}
+// Gaube ist an eine vorhandene Dachschräge gekoppelt: ohne Dachschräge keine freistehende Gaube
+function onGaubeVorhandenChange(checked) {
+  const r=getRaum(); if(!r) return;
+  r.gaubeVorhanden = checked;
+  if (!checked) { r.gaube_breite=''; r.gaube_lichtehoehe=''; }
+  save();
+  const gf=document.getElementById('r-gaube-felder');
+  if(gf) gf.style.display = checked ? 'block' : 'none';
+  if(!checked){ const b=document.getElementById('r-gaube-b'),h=document.getElementById('r-gaube-h'); if(b)b.value=''; if(h)h.value=''; }
 }
 
 function renderFensterListe() {

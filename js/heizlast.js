@@ -26,9 +26,8 @@ function berechneRaumGeometrie(r) {
   // Nieschen-Volumen: Σ(B×H×T)
   const V_nieschen = (r.nieschen||[]).reduce((s,ni) => s + cm(ni.breite)*cm(ni.hoehe)*cm(ni.tiefe), 0);
 
-  // Vorsprünge-Fläche: Σ(B×T) je Richtung, Volumen × h
-  const A_vsp = cm(r.vsp_n_b)*cm(r.vsp_n_t) + cm(r.vsp_o_b)*cm(r.vsp_o_t) +
-                cm(r.vsp_s_b)*cm(r.vsp_s_t) + cm(r.vsp_w_b)*cm(r.vsp_w_t);
+  // Vorsprünge-Fläche: Σ(B×T) über alle Vorsprünge, Volumen × h
+  const A_vsp = (r.vorspruenge||[]).reduce((s,v) => s + cm(v.breite)*cm(v.tiefe), 0);
   const V_vorsprunge = A_vsp * h;
 
   // Schräge: Excel B63 = ((h−kniestock)² × tan(α)) / 2
