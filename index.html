@@ -18,7 +18,7 @@
 <div class="toast" id="toast"></div>
 
 <!-- Refresh-Leiste: für Home-Screen-Nutzung auf dem iPhone, falls Updates nicht sichtbar geladen werden -->
-<div class="refresh-bar">
+<div class="refresh-bar" id="refresh-bar">
   <button class="btn btn-secondary" onclick="refreshApp()">⟳ App aktualisieren</button>
   <span class="app-version">Version: Prototyp</span>
 </div>
@@ -751,6 +751,10 @@ function showView(name) {
   document.getElementById('view-' + name).classList.add('active');
   state.aktivesView = name;
   window.scrollTo(0, 0);
+
+  // Refresh-Leiste nur in der Projektübersicht anzeigen (nicht in Detailansichten)
+  const refreshBar = document.getElementById('refresh-bar');
+  if (refreshBar) refreshBar.style.display = (name === 'projekte') ? '' : 'none';
 
   if (name === 'projekt') renderProjektView();
   if (name === 'geschoss') renderGeschossView();
