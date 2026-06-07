@@ -117,6 +117,31 @@ Fehler werden in folgender Reihenfolge priorisiert:
 
 ---
 
+## KI-005: Einheitenfehler – Disto-Werte in Meter wurden bei Wandlängen als Zentimeter interpretiert
+
+* Status: behoben (für neue Eingaben ab sofort)
+* Priorität: falscher Export oder Bericht
+* Bereich: Raumaufnahme / Raummaße / Wandlängen / Heizlastberechnung (`index.html`, `js/heizlast.js`)
+* Blockiert Nutzung: nein, verfälscht aber Flächen- und Heizlastanzeige erheblich
+* Seit wann bekannt: beim Test mit einem Disto-/Laser-Messgerät aufgefallen
+* Reproduktionsschritte:
+
+  1. Raum öffnen, Bereich „Wandlängen" aufrufen (Felder waren bisher mit „cm" beschriftet und mit `cm()` in Meter umgerechnet, also ÷100).
+  2. Disto-/Lasergerät überträgt einen Messwert in Meter, z. B. „4.00" für 4,00 m.
+  3. Beobachtung: Der Wert „4.00" wurde von der App als 4,00 cm interpretiert (`cm("4.00")` = 0,04 m), wodurch die berechnete Wandfläche um den Faktor 100 zu klein ausfiel.
+* Erwartetes Verhalten:
+  Disto-Werte in Meter (z. B. „2.50", „2,50" oder „2.5") werden als Meter behandelt. Wandfläche = Wandlänge in m × lichte Höhe in m. Beispiel: lichte Höhe 2,50 m, Wand N 4,00 m → 10,00 m²; lichte Höhe 2,40 m, Wand O 3,50 m → 8,40 m².
+* Tatsächliches Verhalten (vor der Korrektur):
+  Die Felder „Wandlängen N/O/S/W" (inkl. Segmente) waren in der UI mit „cm" beschriftet und wurden in `berechneRaumGeometrie()` über `cm(v)` (Division durch 100) ausgewertet – obwohl das Disto-/Lasergerät die Werte in Meter überträgt. Dadurch wurden Wandlängen faktisch um den Faktor 100 zu klein in die Flächen- und Heizlastberechnung übernommen.
+* Vermutung:
+  Uneinheitliche Annahme zur Maßeinheit: Wandlängen wurden wie Bauteilmaße (Fenster, Türen, Nischen, Vorsprünge – dort weiterhin korrekt in cm per Maßband erfasst) behandelt, obwohl sie von einem Disto-/Lasergerät in Meter geliefert werden.
+* Behebung:
+  Die Felder „Wandlängen N/O/S/W" (inkl. Segmente, `wand_n1`…`wand_w2`) werden jetzt eindeutig als Meterfelder geführt: UI-Beschriftung auf „m" geändert (Card-Titel, Spaltenköpfe „Segment 1 (m)"/„Segment 2 (m)", Platzhalter „m"), und in `js/heizlast.js` wertet eine neue Hilfsfunktion `meter()` diese Felder direkt als Meterwert aus (keine Division durch 100, im Unterschied zu `cm()`). Die lichte Höhe war bereits korrekt als Meterfeld geführt und bleibt unverändert. Bauteilmaße (Fenster, Türen, Nischen, Vorsprünge, Dachschräge/Gaube) bleiben unverändert in Zentimeter (`cm()`), da diese fachlich weiterhin per Maßband in cm erfasst werden.
+* Wichtiger Hinweis zu Bestandsdaten:
+  Es erfolgt **keine automatische Migration** bestehender, bereits gespeicherter Wandlängen-Werte. Da nicht zuverlässig erkennbar ist, ob ein gespeicherter Wert wie „400" nach alter Annahme als 400 cm (= 4 m, bisherige Interpretation) oder bereits als 400 m (fehlerhafte Eingabe) gemeint war, würde eine automatische Umrechnung das Risiko falscher Daten lediglich verschieben statt beheben. **Bei Räumen, deren Wandlängen vor dieser Korrektur erfasst wurden, sollten die Werte „Wandlängen N/O/S/W" geprüft und ggf. neu (in Meter, z. B. „4.00" für 4 m) eingegeben werden.** Neue Erfassungen ab sofort sind korrekt, sofern Werte in Meter eingegeben bzw. vom Disto-/Lasergerät übertragen werden.
+
+---
+
 ## Noch nicht bewertete Themen
 
 * Fotoanalyse ist im Code vorhanden, wurde aber noch nicht aktiv genutzt oder fachlich getestet.

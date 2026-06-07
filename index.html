@@ -537,30 +537,30 @@
 
     <!-- Wandlängen -->
     <div class="card">
-      <div class="card-title">Wandlängen <span style="color:var(--primary);font-size:11px;font-weight:400;">← Disto (cm)</span></div>
+      <div class="card-title">Wandlängen <span style="color:var(--primary);font-size:11px;font-weight:400;">← Disto (m)</span></div>
       <table style="width:100%;border-collapse:collapse;font-size:14px;">
         <thead><tr>
           <th style="text-align:left;padding:4px 0;color:var(--text-sec);font-weight:500;width:40px;"></th>
-          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Segment 1</th>
-          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Segment 2</th>
+          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Segment 1 (m)</th>
+          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Segment 2 (m)</th>
           <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Art</th>
         </tr></thead>
         <tbody>
           <tr><td style="padding:4px 0;font-weight:600;">N</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wn1" placeholder="cm" oninput="saveRaumField('wand_n1',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wn2" placeholder="cm" oninput="saveRaumField('wand_n2',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wn1" placeholder="m" oninput="saveRaumField('wand_n1',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wn2" placeholder="m" oninput="saveRaumField('wand_n2',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
             <td style="padding:3px 6px;"><select id="r-wand-art-n" onchange="saveRaumField('wand_n_art',this.value)" style="padding:8px;"><option value="">?</option><option value="AW">AW</option><option value="IW">IW</option></select></td></tr>
           <tr><td style="padding:4px 0;font-weight:600;">O</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wo1" placeholder="cm" oninput="saveRaumField('wand_o1',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wo2" placeholder="cm" oninput="saveRaumField('wand_o2',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wo1" placeholder="m" oninput="saveRaumField('wand_o1',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wo2" placeholder="m" oninput="saveRaumField('wand_o2',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
             <td style="padding:3px 6px;"><select id="r-wand-art-o" onchange="saveRaumField('wand_o_art',this.value)" style="padding:8px;"><option value="">?</option><option value="AW">AW</option><option value="IW">IW</option></select></td></tr>
           <tr><td style="padding:4px 0;font-weight:600;">S</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ws1" placeholder="cm" oninput="saveRaumField('wand_s1',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ws2" placeholder="cm" oninput="saveRaumField('wand_s2',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ws1" placeholder="m" oninput="saveRaumField('wand_s1',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ws2" placeholder="m" oninput="saveRaumField('wand_s2',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
             <td style="padding:3px 6px;"><select id="r-wand-art-s" onchange="saveRaumField('wand_s_art',this.value)" style="padding:8px;"><option value="">?</option><option value="AW">AW</option><option value="IW">IW</option></select></td></tr>
           <tr><td style="padding:4px 0;font-weight:600;">W</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ww1" placeholder="cm" oninput="saveRaumField('wand_w1',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ww2" placeholder="cm" oninput="saveRaumField('wand_w2',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ww1" placeholder="m" oninput="saveRaumField('wand_w1',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ww2" placeholder="m" oninput="saveRaumField('wand_w2',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
             <td style="padding:3px 6px;"><select id="r-wand-art-w" onchange="saveRaumField('wand_w_art',this.value)" style="padding:8px;"><option value="">?</option><option value="AW">AW</option><option value="IW">IW</option></select></td></tr>
         </tbody>
       </table>

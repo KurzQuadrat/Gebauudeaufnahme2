@@ -14,13 +14,20 @@ function parseMesswert(v) {
 
 function cm(v) { const n = parseMesswert(v); return (isNaN(n) ? 0 : n) / 100; }
 
+// Felder, die direkt in Meter erfasst werden (Disto-/Laserwerte, z.B. "2.50"
+// oder "2,50" für 2,50 m). Im Unterschied zu cm() KEINE Division durch 100 -
+// eine Umrechnung würde Meterwerte fälschlich als Zentimeter behandeln.
+function meter(v) { const n = parseMesswert(v); return isNaN(n) ? 0 : n; }
+
 function berechneRaumGeometrie(r) {
   const hRaw = parseMesswert(r.deckenhoehe);
   const h = isNaN(hRaw) ? 0 : hRaw;
-  const n1=cm(r.wand_n1), n2=cm(r.wand_n2);
-  const o1=cm(r.wand_o1), o2=cm(r.wand_o2);
-  const s1=cm(r.wand_s1), s2=cm(r.wand_s2);
-  const w1=cm(r.wand_w1), w2=cm(r.wand_w2);
+  // Wandlängen N/O/S/W (inkl. Segmente) werden als Meterwerte erfasst
+  // (Disto-/Laserwerte, z.B. "4.00" = 4,00 m) - keine cm-Umrechnung.
+  const n1=meter(r.wand_n1), n2=meter(r.wand_n2);
+  const o1=meter(r.wand_o1), o2=meter(r.wand_o2);
+  const s1=meter(r.wand_s1), s2=meter(r.wand_s2);
+  const w1=meter(r.wand_w1), w2=meter(r.wand_w2);
 
   // Excel-Formel B56: =((B8+D8)/2)*((C8+E8)/2)  [N1,O1,S1,W1]
   const A_boden = ((n1+s1)/2) * ((o1+w1)/2);
