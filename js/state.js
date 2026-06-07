@@ -23,6 +23,7 @@ function load() {
     if (p.heizanlage.energietraeger === undefined) p.heizanlage.energietraeger = 'unbekannt';
     if (p.heizanlage.leistung === undefined) p.heizanlage.leistung = '';
     if (!p.warmwasser) p.warmwasser = { art: 'unbekannt', speicherVorhanden: 'unbekannt', speichervolumen: '', energietraeger: 'unbekannt', versorgung: 'unbekannt', baujahr: '', hersteller: '', typ: '', notiz: '' };
+    if (!p.offenePunkte) p.offenePunkte = [];
     p.geschosse.forEach(g => {
       if (!g.gauben) g.gauben = [];
       if (!g.dachfenster) g.dachfenster = [];
@@ -101,6 +102,13 @@ function saveSanierungField(id, field, value) {
   const p = getProjekt();
   const s = p.sanierungen.find(s => s.id === id);
   if (s) { s[field] = value; save(); }
+}
+
+function saveOffenerPunktField(id, field, value) {
+  const p = getProjekt();
+  if (!p) return;
+  const o = (p.offenePunkte || []).find(x => x.id === id);
+  if (o) { o[field] = value; save(); }
 }
 
 function getGeschoss() {

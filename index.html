@@ -322,6 +322,16 @@
       <div id="geschoss-list"></div>
       <div id="geschoss-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch kein Geschoss angelegt</div>
     </div>
+
+    <!-- Offene Punkte -->
+    <div class="card">
+      <div class="section-header">
+        <div class="section-title">Offene Punkte</div>
+        <button class="btn btn-sm btn-secondary" onclick="addOffenerPunkt()">+ Offenen Punkt hinzufügen</button>
+      </div>
+      <div id="offene-punkte-list"></div>
+      <div id="offene-punkte-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch keine offenen Punkte erfasst</div>
+    </div>
   </div>
 </div>
 
@@ -790,6 +800,7 @@ function neuesProjekt() {
     heizanlage_foto: null,
     schornstein: { lage: '', form: '', breite: '', tiefe: '' },
     warmwasser: { art: 'unbekannt', speicherVorhanden: 'unbekannt', speichervolumen: '', energietraeger: 'unbekannt', versorgung: 'unbekannt', baujahr: '', hersteller: '', typ: '', notiz: '' },
+    offenePunkte: [],
     geschosse: [eg]
   };
   state.projekte.push(p);
@@ -826,6 +837,56 @@ function deleteSanierung(id) {
   p.sanierungen = p.sanierungen.filter(s => s.id !== id);
   save();
   renderSanierungen();
+}
+
+// ============================================================
+//  OFFENE PUNKTE
+// ============================================================
+
+function addOffenerPunkt() {
+  const p = getProjekt();
+  if (!p) return;
+  if (!p.offenePunkte) p.offenePunkte = [];
+  p.offenePunkte.push({ id: uuid(), text: '', status: 'offen', prioritaet: 'mittel', bereich: 'Allgemein', notiz: '' });
+  save();
+  renderOffenePunkte();
+}
+
+function deleteOffenerPunkt(id) {
+  const p = getProjekt();
+  if (!p) return;
+  if (!confirm('Offenen Punkt wirklich löschen?')) return;
+  p.offenePunkte = (p.offenePunkte || []).filter(o => o.id !== id);
+  save();
+  renderOffenePunkte();
+}
+
+function renderOffenePunkte() {
+  const p = getProjekt();
+  if (!p) return;
+  const c = document.getElementById('offene-punkte-list');
+  const l = document.getElementById('offene-punkte-leer');
+  const list = p.offenePunkte || [];
+  if (!c) return;
+  if (!list.length) { c.innerHTML = ''; if (l) l.style.display = 'block'; return; }
+  if (l) l.style.display = 'none';
+  const statusOpts = ['offen', 'in Prüfung', 'erledigt', 'zurückgestellt'];
+  const prioOpts = ['niedrig', 'mittel', 'hoch'];
+  const bereichOpts = ['Allgemein', 'Projekt', 'Geschoss', 'Raum', 'Wand', 'Fenster', 'Tür', 'Dach', 'Heizung', 'Warmwasser', 'Foto', 'Export', 'Sonstiges'];
+  c.innerHTML = list.map((o, i) => {
+    const statusSel = statusOpts.map(s => '<option value="' + s + '" ' + (o.status === s ? 'selected' : '') + '>' + s + '</option>').join('');
+    const prioSel = prioOpts.map(pr => '<option value="' + pr + '" ' + (o.prioritaet === pr ? 'selected' : '') + '>' + pr + '</option>').join('');
+    const bereichSel = bereichOpts.map(b => '<option value="' + b + '" ' + (o.bereich === b ? 'selected' : '') + '>' + b + '</option>').join('');
+    return '<div class="sub-item"><div class="sub-item-header"><div class="sub-item-title">Offener Punkt ' + (i + 1) + '</div><button onclick="deleteOffenerPunkt(\'' + o.id + '\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">✕</button></div>'
+      + '<div class="form-group"><label>Offener Punkt</label><textarea placeholder="Was ist offen oder noch zu prüfen?" oninput="saveOffenerPunktField(\'' + o.id + '\',\'text\',this.value)">' + (o.text || '') + '</textarea></div>'
+      + '<div class="form-row-3">'
+      + '<div class="form-group"><label>Status</label><select onchange="saveOffenerPunktField(\'' + o.id + '\',\'status\',this.value)">' + statusSel + '</select></div>'
+      + '<div class="form-group"><label>Priorität</label><select onchange="saveOffenerPunktField(\'' + o.id + '\',\'prioritaet\',this.value)">' + prioSel + '</select></div>'
+      + '<div class="form-group"><label>Bereich</label><select onchange="saveOffenerPunktField(\'' + o.id + '\',\'bereich\',this.value)">' + bereichSel + '</select></div>'
+      + '</div>'
+      + '<div class="form-group"><label>Notiz</label><input type="text" value="' + (o.notiz || '') + '" placeholder="Zusatzinfos..." oninput="saveOffenerPunktField(\'' + o.id + '\',\'notiz\',this.value)"></div>'
+      + '</div>';
+  }).join('');
 }
 
 // ============================================================
@@ -1168,7 +1229,7 @@ function renderProjektView() {
   set('p-ww-hersteller',p.warmwasser.hersteller);set('p-ww-typ',p.warmwasser.typ);set('p-ww-notiz',p.warmwasser.notiz);
   set('p-schorn-lage',p.schornstein.lage);set('p-schorn-form',p.schornstein.form);set('p-schorn-b',p.schornstein.breite);set('p-schorn-t',p.schornstein.tiefe);
   if(p.heizanlage_foto){const prev=document.getElementById('foto-heizanlage-preview');const lbl=document.getElementById('foto-heizanlage-label');if(prev){prev.src=p.heizanlage_foto;prev.style.display='block';}if(lbl)lbl.classList.add('has-photo');}
-  renderSanierungen(); renderGeschossliste();
+  renderSanierungen(); renderGeschossliste(); renderOffenePunkte();
 }
 
 function renderSanierungen() {

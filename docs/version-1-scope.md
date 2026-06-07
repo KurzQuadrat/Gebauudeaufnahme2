@@ -22,6 +22,8 @@ Version 1 ist eine stabile, anonymisierte Vor-Ort-Erfassungs-App für Gebäudeau
 
 Hinweis: Projektstammdaten in der App sind anonymisiert. Statt einer echten Adresse wird eine anonyme Projektkennung / ein Lagehinweis erfasst (intern weiterhin im Feld `adresse` gespeichert, in der UI klar als anonymes Feld beschriftet). Auftragsart und Anzahl Wohneinheiten sind seit diesem Schritt als Stammdatenfelder umgesetzt.
 
+Hinweis offene Punkte: „Offene Punkte“ sind als strukturierte Liste je Projekt umgesetzt (`p.offenePunkte[]`, Karten-/Listenmuster wie bei der Sanierungshistorie). Jeder Punkt enthält `text`, `status` (offen/in Prüfung/erledigt/zurückgestellt, Standard „offen“), `prioritaet` (niedrig/mittel/hoch, Standard „mittel“), `bereich` (Allgemein/Projekt/Geschoss/Raum/Wand/Fenster/Tür/Dach/Heizung/Warmwasser/Foto/Export/Sonstiges, Standard „Allgemein“) und `notiz`. Die Erfassung ist rein manuell, ohne automatische Prüfung oder Generierung und ohne Anbindung an PDF/Bericht. Bestehende Projekte ohne `offenePunkte` erhalten defensiv eine leere Liste; JSON-Export/-Import bleibt unverändert, da die gesamte Projektstruktur inklusive `offenePunkte` übernommen wird.
+
 ## Pflichtstruktur
 
 - Geschosse
