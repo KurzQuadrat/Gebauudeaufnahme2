@@ -332,6 +332,13 @@
       <div id="offene-punkte-list"></div>
       <div id="offene-punkte-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch keine offenen Punkte erfasst</div>
     </div>
+
+    <!-- Raum-/Bauteilliste -->
+    <div class="card">
+      <div class="card-title">Raum-/Bauteilliste</div>
+      <p style="font-size:14px; color:var(--text-sec); margin-bottom:12px;">Strukturierte Übersicht aus den erfassten Geschoss-, Raum- und Bauteildaten — als Lese-Ansicht, ohne Eingabe.</p>
+      <button class="btn btn-secondary btn-full" onclick="showView('raumliste')">Raum-/Bauteilliste anzeigen</button>
+    </div>
   </div>
 </div>
 
@@ -746,6 +753,22 @@
   </div>
 </div>
 
+<!-- VIEW: Raum-/Bauteilliste (Output/Report, kein Editieren) -->
+<div id="view-raumliste" class="view">
+  <div class="header">
+    <button class="header-back" onclick="showView('projekt')">‹ Zurück</button>
+    <h1>Raum-/Bauteilliste</h1>
+  </div>
+  <div class="content">
+    <div class="card">
+      <div class="card-title">Raum-/Bauteilliste</div>
+      <p style="font-size:14px; color:var(--text-sec); margin-bottom:12px;">Strukturierte Übersicht aus den vorhandenen Geschoss-, Raum- und Bauteildaten. Reine Anzeige — kein PDF, kein Editieren an dieser Stelle.</p>
+      <button class="btn btn-secondary btn-full" onclick="copyRaumBauteilliste()" style="margin-bottom:4px;">📋 Als Text kopieren</button>
+    </div>
+    <div id="raumliste-content"></div>
+  </div>
+</div>
+
 <script src="js/config.js"></script>
 <script src="js/heizlast.js"></script>
 <script src="js/state.js"></script>
@@ -770,6 +793,7 @@ function showView(name) {
   if (name === 'geschoss') renderGeschossView();
   if (name === 'raum') renderRaumView();
   if (name === 'projekte') renderProjektliste();
+  if (name === 'raumliste') renderRaumBauteilliste();
 }
 
 // ============================================================
@@ -887,6 +911,121 @@ function renderOffenePunkte() {
       + '<div class="form-group"><label>Notiz</label><input type="text" value="' + (o.notiz || '') + '" placeholder="Zusatzinfos..." oninput="saveOffenerPunktField(\'' + o.id + '\',\'notiz\',this.value)"></div>'
       + '</div>';
   }).join('');
+}
+
+// ============================================================
+//  RAUM-/BAUTEILLISTE (Output/Report aus vorhandenen Daten, kein Editieren)
+// ============================================================
+
+// Liefert die Rohdaten je Raum als einfaches Objekt — Basis für Anzeige und Textkopie
+function sammleRaumBauteilDaten(p) {
+  const dash = v => (v === undefined || v === null || v === '' ? '—' : v);
+  const out = [];
+  (p.geschosse || []).forEach(g => {
+    const raeume = (g.raeume || []).map(r => {
+      const wandTeile = [];
+      [['N', 'wand_n1', 'wand_n2'], ['O', 'wand_o1', 'wand_o2'], ['S', 'wand_s1', 'wand_s2'], ['W', 'wand_w1', 'wand_w2']].forEach(([dir, k1, k2]) => {
+        if (r[k1] || r[k2]) wandTeile.push(dir + ': ' + dash(r[k1]) + ' / ' + dash(r[k2]) + ' cm');
+      });
+      const anzFenster = (r.fenster || []).length;
+      const anzTueren = (r.tueren || []).length;
+      const anzHK = (r.heizkoerper || []).length;
+      const anzNischen = (r.nieschen || []).length;
+      const anzVorspruenge = (r.vorspruenge || []).length;
+      const hatDachschraege = !!(parseFloat(r.sch_kniestock) > 0 && parseFloat(r.sch_winkel) > 0);
+      const hatGaube = !!r.gaubeVorhanden;
+      const bauteile = [];
+      if (anzFenster) bauteile.push(anzFenster + ' Fenster');
+      if (anzTueren) bauteile.push(anzTueren + ' Tür' + (anzTueren === 1 ? '' : 'en'));
+      if (anzHK) bauteile.push(anzHK + ' Heizkörper');
+      if (anzNischen) bauteile.push(anzNischen + ' Nische' + (anzNischen === 1 ? '' : 'n'));
+      if (anzVorspruenge) bauteile.push(anzVorspruenge + ' Vorsprung' + (anzVorspruenge === 1 ? '' : 'sprünge'));
+      if (hatDachschraege) bauteile.push('Dachschräge');
+      if (hatGaube) bauteile.push('Gaube');
+      return {
+        name: r.name,
+        nutzung: dash(r.nutzung),
+        normSolltemperatur: r.normSolltemperatur ? r.normSolltemperatur + ' °C' : '—',
+        kundenwunschTemperatur: r.kundenwunschTemperatur ? r.kundenwunschTemperatur + ' °C' : '—',
+        deckenhoehe: r.deckenhoehe ? r.deckenhoehe + ' m' : '—',
+        wandlaengen: wandTeile.length ? wandTeile.join(' · ') : '—',
+        anzFenster, anzTueren, anzHK, anzNischen, anzVorspruenge,
+        hatDachschraege, hatGaube,
+        bauteiluebersicht: bauteile.length ? bauteile.join(', ') : '—',
+        notiz: dash(r.aw_notiz)
+      };
+    });
+    out.push({ name: g.name, dachfensterAnzahl: (g.dachfenster || []).length, gaubenAnzahlGeschoss: (g.gauben || []).length, raeume });
+  });
+  return out;
+}
+
+function renderRaumBauteilliste() {
+  const p = getProjekt();
+  const c = document.getElementById('raumliste-content');
+  if (!p || !c) return;
+  const ja = v => v ? 'ja' : 'nein';
+  const daten = sammleRaumBauteilDaten(p);
+  if (!daten.length) { c.innerHTML = '<div class="card"><p style="color:var(--text-sec);">Noch keine Geschosse erfasst.</p></div>'; return; }
+  const feld = (label, wert) => '<div><div style="font-size:12px;color:var(--text-sec);">' + label + '</div><div style="font-size:14px;">' + wert + '</div></div>';
+  c.innerHTML = daten.map(g => {
+    let html = '<div class="card"><div class="card-title">Geschoss: ' + g.name + '</div>';
+    html += '<div style="font-size:13px;color:var(--text-sec);margin-bottom:10px;">Dachfenster im Geschoss: ' + g.dachfensterAnzahl + ' · Gauben (Geschoss-Liste): ' + g.gaubenAnzahlGeschoss + '</div>';
+    if (!g.raeume.length) {
+      html += '<p style="color:var(--text-sec);font-size:14px;">Noch keine Räume erfasst.</p>';
+    } else {
+      html += g.raeume.map(r => {
+        const reihen = [
+          [['Nutzungsart', r.nutzung], ['Norm-Solltemperatur', r.normSolltemperatur], ['Kundenwunsch-Temperatur', r.kundenwunschTemperatur]],
+          [['lichte Höhe', r.deckenhoehe], ['Anzahl Fenster', r.anzFenster], ['Anzahl Türen', r.anzTueren]],
+          [['Anzahl Heizkörper', r.anzHK], ['Anzahl Nischen', r.anzNischen], ['Anzahl Vorsprünge', r.anzVorspruenge]],
+          [['Dachschräge vorhanden', ja(r.hatDachschraege)], ['Gaube vorhanden', ja(r.hatGaube)], ['Notiz', r.notiz]]
+        ];
+        let sub = '<div class="sub-item"><div class="sub-item-header"><div class="sub-item-title">' + r.name + '</div></div>';
+        reihen.forEach(reihe => { sub += '<div class="form-row-3">' + reihe.map(([l, w]) => feld(l, w)).join('') + '</div>'; });
+        sub += '<div class="form-group" style="margin-top:6px;"><div style="font-size:12px;color:var(--text-sec);">Wandlängen</div><div style="font-size:14px;">' + r.wandlaengen + '</div></div>';
+        sub += '<div class="form-group" style="margin-top:6px;"><div style="font-size:12px;color:var(--text-sec);">Bauteilübersicht</div><div style="font-size:14px;">' + r.bauteiluebersicht + '</div></div>';
+        sub += '</div>';
+        return sub;
+      }).join('');
+    }
+    html += '</div>';
+    return html;
+  }).join('');
+}
+
+// Erzeugt eine reine Text-Darstellung der Raum-/Bauteilliste — Basis für "Als Text kopieren"
+function generateRaumBauteilText(p) {
+  const ja = v => v ? 'ja' : 'nein';
+  const daten = sammleRaumBauteilDaten(p);
+  let out = 'RAUM-/BAUTEILLISTE: ' + (p.name || '') + '\n';
+  out += '='.repeat(50) + '\n';
+  if (!daten.length) { out += 'Noch keine Geschosse erfasst.\n'; return out; }
+  daten.forEach(g => {
+    out += '\nGESCHOSS: ' + g.name + '\n';
+    out += '  Dachfenster im Geschoss: ' + g.dachfensterAnzahl + ' · Gauben (Geschoss-Liste): ' + g.gaubenAnzahlGeschoss + '\n';
+    if (!g.raeume.length) { out += '  Noch keine Räume erfasst.\n'; return; }
+    g.raeume.forEach(r => {
+      out += '\n  RAUM: ' + r.name + '\n';
+      out += '    Nutzungsart: ' + r.nutzung + '\n';
+      out += '    Norm-Solltemperatur: ' + r.normSolltemperatur + ' / Kundenwunsch-Temperatur: ' + r.kundenwunschTemperatur + '\n';
+      out += '    lichte Höhe: ' + r.deckenhoehe + '\n';
+      out += '    Wandlängen: ' + r.wandlaengen + '\n';
+      out += '    Anzahl Fenster: ' + r.anzFenster + ' / Türen: ' + r.anzTueren + ' / Heizkörper: ' + r.anzHK + ' / Nischen: ' + r.anzNischen + ' / Vorsprünge: ' + r.anzVorspruenge + '\n';
+      out += '    Dachschräge vorhanden: ' + ja(r.hatDachschraege) + ' / Gaube vorhanden: ' + ja(r.hatGaube) + '\n';
+      out += '    Bauteilübersicht: ' + r.bauteiluebersicht + '\n';
+      out += '    Notiz: ' + r.notiz + '\n';
+    });
+  });
+  return out;
+}
+
+function copyRaumBauteilliste() {
+  const p = getProjekt();
+  if (!p) return;
+  const text = generateRaumBauteilText(p);
+  if (navigator.clipboard) { navigator.clipboard.writeText(text).then(() => showToast('Kopiert')); }
+  else { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showToast('Kopiert'); }
 }
 
 // ============================================================

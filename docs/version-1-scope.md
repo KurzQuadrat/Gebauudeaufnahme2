@@ -10,6 +10,8 @@ Version 1 ist eine stabile, anonymisierte Vor-Ort-Erfassungs-App für Gebäudeau
 2. Raum-/Bauteilliste
 3. JSON-Projektdatei zur Sicherung und Wiederaufnahme
 
+Hinweis Raum-/Bauteilliste: Als Zwischenschritt vor dem PDF-Bericht ist die Raum-/Bauteilliste zunächst als strukturierte App-Ansicht umgesetzt (eigene Ansicht „Raum-/Bauteilliste“, erreichbar aus der Projektansicht). Sie fasst je Geschoss und Raum die vorhandenen Daten read-only zusammen (Nutzungsart, Temperaturen, lichte Höhe, Wandlängen, Anzahl Fenster/Türen/Heizkörper/Nischen/Vorsprünge, Dachschräge/Gaube vorhanden ja/nein, Notiz, kurze Bauteilübersicht) und bietet zusätzlich „Als Text kopieren“. Sie ist reine Anzeige ohne Eingabe und ohne PDF-Erzeugung; der PDF-Erfassungsbericht folgt als eigener, späterer Schritt.
+
 ## Pflichtdaten Projekt
 
 - Projekt-ID oder anonymer Projektname
