@@ -200,6 +200,83 @@
       </div>
     </div>
 
+    <!-- Warmwasser -->
+    <div class="card">
+      <div class="card-title">Warmwasser</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Art der Warmwasserbereitung</label>
+          <select id="p-ww-art" onchange="saveWarmwasserField('art', this.value)">
+            <option value="unbekannt">unbekannt</option>
+            <option value="zentral">zentral</option>
+            <option value="dezentral">dezentral</option>
+            <option value="kombiniert mit Heizung">kombiniert mit Heizung</option>
+            <option value="separat">separat</option>
+            <option value="Sonstiges">Sonstiges</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Speicher vorhanden</label>
+          <select id="p-ww-speicher-vorhanden" onchange="saveWarmwasserField('speicherVorhanden', this.value)">
+            <option value="unbekannt">unbekannt</option>
+            <option value="ja">ja</option>
+            <option value="nein">nein</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Speichervolumen in Liter, falls bekannt</label>
+          <input type="text" id="p-ww-speichervolumen" placeholder="z.B. 300" oninput="saveWarmwasserField('speichervolumen', this.value)">
+        </div>
+        <div class="form-group">
+          <label>Energieträger</label>
+          <select id="p-ww-energietraeger" onchange="saveWarmwasserField('energietraeger', this.value)">
+            <option value="unbekannt">unbekannt</option>
+            <option value="Erdgas">Erdgas</option>
+            <option value="Heizöl">Heizöl</option>
+            <option value="Strom">Strom</option>
+            <option value="Wärmepumpe Strom">Wärmepumpe Strom</option>
+            <option value="Fernwärme">Fernwärme</option>
+            <option value="Solarthermie unterstützend">Solarthermie unterstützend</option>
+            <option value="Holz / Pellets">Holz / Pellets</option>
+            <option value="Sonstiges">Sonstiges</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Versorgung</label>
+          <select id="p-ww-versorgung" onchange="saveWarmwasserField('versorgung', this.value)">
+            <option value="unbekannt">unbekannt</option>
+            <option value="gesamte Wohneinheit">gesamte Wohneinheit</option>
+            <option value="mehrere Wohneinheiten">mehrere Wohneinheiten</option>
+            <option value="einzelne Entnahmestellen">einzelne Entnahmestellen</option>
+            <option value="raumweise">raumweise</option>
+            <option value="Sonstiges">Sonstiges</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Baujahr</label>
+          <input type="number" id="p-ww-baujahr" placeholder="z.B. 2005" min="1800" max="2030" onfocus="if(!this.value)this.value=2000" oninput="saveWarmwasserField('baujahr', this.value)">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Hersteller</label>
+          <input type="text" id="p-ww-hersteller" placeholder="z.B. Vaillant" oninput="saveWarmwasserField('hersteller', this.value)">
+        </div>
+        <div class="form-group">
+          <label>Typ</label>
+          <input type="text" id="p-ww-typ" placeholder="Typenbezeichnung" oninput="saveWarmwasserField('typ', this.value)">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Notizen Warmwasser</label>
+        <textarea id="p-ww-notiz" placeholder="Besonderheiten, Zustand..." oninput="saveWarmwasserField('notiz', this.value)"></textarea>
+      </div>
+    </div>
+
     <!-- Schornstein -->
     <div class="card">
       <div class="card-title">Schornstein</div>
@@ -700,6 +777,7 @@ function neuesProjekt() {
     heizanlage: { hersteller: '', typ: '', baujahr: '', modell: '', notiz: '', energietraeger: 'unbekannt', leistung: '' },
     heizanlage_foto: null,
     schornstein: { lage: '', form: '', breite: '', tiefe: '' },
+    warmwasser: { art: 'unbekannt', speicherVorhanden: 'unbekannt', speichervolumen: '', energietraeger: 'unbekannt', versorgung: 'unbekannt', baujahr: '', hersteller: '', typ: '', notiz: '' },
     geschosse: [eg]
   };
   state.projekte.push(p);
@@ -1067,6 +1145,9 @@ function renderProjektView() {
   set('p-wohneinheiten',p.wohneinheiten);set('p-auftragsart',p.auftragsart);
   set('p-hz-hersteller',p.heizanlage.hersteller);set('p-hz-typ',p.heizanlage.typ);set('p-hz-baujahr',p.heizanlage.baujahr);set('p-hz-modell',p.heizanlage.modell);set('p-hz-notiz',p.heizanlage.notiz);
   set('p-hz-energietraeger',p.heizanlage.energietraeger);set('p-hz-leistung',p.heizanlage.leistung);
+  set('p-ww-art',p.warmwasser.art);set('p-ww-speicher-vorhanden',p.warmwasser.speicherVorhanden);set('p-ww-speichervolumen',p.warmwasser.speichervolumen);
+  set('p-ww-energietraeger',p.warmwasser.energietraeger);set('p-ww-versorgung',p.warmwasser.versorgung);set('p-ww-baujahr',p.warmwasser.baujahr);
+  set('p-ww-hersteller',p.warmwasser.hersteller);set('p-ww-typ',p.warmwasser.typ);set('p-ww-notiz',p.warmwasser.notiz);
   set('p-schorn-lage',p.schornstein.lage);set('p-schorn-form',p.schornstein.form);set('p-schorn-b',p.schornstein.breite);set('p-schorn-t',p.schornstein.tiefe);
   if(p.heizanlage_foto){const prev=document.getElementById('foto-heizanlage-preview');const lbl=document.getElementById('foto-heizanlage-label');if(prev){prev.src=p.heizanlage_foto;prev.style.display='block';}if(lbl)lbl.classList.add('has-photo');}
   renderSanierungen(); renderGeschossliste();

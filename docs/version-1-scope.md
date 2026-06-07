@@ -87,6 +87,8 @@ Heizkörper sind nur Pflicht, wenn der Auftrag einen hydraulischen Abgleich umfa
 - Foto
 - Notiz
 
+Hinweis: Die Datenstruktur `warmwasser` (Art, Speicher vorhanden, Speichervolumen, Energieträger, Versorgung, Baujahr, Hersteller, Typ, Notiz) ist umgesetzt. Eine Foto-Erfassung für Warmwasser ist noch nicht enthalten und folgt ggf. in einem späteren Schritt.
+
 ## Nicht Bestandteil Version 1
 
 - direkte Hottgenroth-Befüllung
