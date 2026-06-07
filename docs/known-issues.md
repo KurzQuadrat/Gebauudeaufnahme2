@@ -229,6 +229,19 @@ Fehler werden in folgender Reihenfolge priorisiert:
 * Wichtige Einordnung:
   Diese Werte sind Pauschal-/Erfahrungswerte für die überschlägige Datenaufnahme, KEIN normativer Heizlastnachweis nach DIN EN 12831 und ersetzen keine Bauteilaufnahme im Einzelfall. Die bestehende Heizlast-Methodik (Φ_T = Σ A·U·fx·ΔT, Prioritätskette Raum-Override → Projekt-Standard → Bestandswert → unbekannt) bleibt unverändert; die Baualtersklassen-Werte fließen lediglich als optionaler Vorschlag in den Projekt-Standard ein.
 
+## KI-011: Heizlast-Standardwerte – U-Wert-Ableitung vereinfacht und mit Sanierungshistorie verknüpft (Korrektur einer kurz zuvor ergänzten, zu großen UI)
+
+* Status: behoben
+* Priorität: Erfassungshilfe / Übersichtlichkeit
+* Bereich: Projektansicht Heizlast-Standardwerte und Sanierungshistorie (`index.html`)
+* Blockiert Nutzung: nein
+* Hintergrund:
+  Die in KI-010 ergänzte UI (separate Auswahl „Baualtersklasse Gebäude“, je Bauteil eine „Bauteilart“-Auswahl UND ein eigenes „Sanierungsjahr“-Feld) war sehr groß, unübersichtlich und verdoppelte Informationen, die im Projekt bereits über die Sanierungshistorie (`p.sanierungen[]`) erfasst werden konnten (Jahr + Maßnahme/Details).
+* Umsetzung:
+  Die separaten Bauteilart-/Sanierungsjahr-Felder je Bauteil wurden aus der UI entfernt (Datenfelder bleiben in `heizlastDefaults` zur Vermeidung von Datenverlust erhalten, werden aber nicht mehr angezeigt/ausgewertet). Stattdessen wurde die Sanierungshistorie um ein optionales Auswahlfeld „Detailtyp / Aufbau“ ergänzt (`s.detailtyp`, ein flaches Dropdown mit allen in `js/uwerte-bundesanzeiger.js` hinterlegten U-Wert-Kategorien – bewusst EIN gemeinsames Dropdown statt von der Maßnahme abhängiger Listen, weil das bestehende `massnahme`-Feld keine stabile 1:1-Bauteilstruktur abbildet, z. B. fehlt dort „Türen“). Jeder Detailtyp ist eindeutig genau einem Heizlast-U-Wert-Feld zugeordnet (`DETAILTYP_ZU_HEIZLASTFELD`), sodass z. B. eine Dach-Sanierung nie den Fenster-U-Wert beeinflusst. Die „Baualtersklasse Gebäude“ wird jetzt automatisch und rein informativ aus dem Baujahr angezeigt (`aktualisiereBaualtersklasseAnzeige()`, kein manuelles Auswahlfeld mehr). Eine neue zentrale Funktion `leiteUWerteAusBaujahrUndSanierungAb()` ersetzt die früheren getrennten Funktionen `leiteBaualtersklasseAusBaujahrAb()`/`uebernehmeUWerteAusBaualtersklasse()` und wendet je U-Wert-Feld folgende Prioritätslogik an: 1. Raum-Override, 2. manuell gesetzter Projektwert (wird nie überschrieben), 3. jüngster passender Sanierungseintrag (Detailtyp + Jahr) für GENAU dieses Bauteil, 4. Baujahr Gebäude mit fest hinterlegtem Standard-Detailtyp, 5. keine Ableitung möglich (transparente Meldung). Die Ableitung läuft automatisch bei Änderung des Baujahrs (`pruefeAutoUWerteAusBaujahr()`, sofern die Checkbox „baujahresabhängige U-Wert-Vorschläge nutzen“ aktiv ist) sowie über den Button „U-Werte aus Baujahr/Sanierung ableiten“. Die U-Wert-Zahlenfelder selbst wurden zur Übersichtlichkeit in einen ausklappbaren `<details>`-Bereich „U-Wert-Details anzeigen / manuell bearbeiten“ verschoben; im sichtbaren Bereich verbleiben nur Quelle, Checkbox, automatisch angezeigte Baualtersklasse, Hinweistext und Ableitungs-Button.
+* Wichtige Einordnung:
+  Es wurden keine neuen Bundesanzeiger-Werte erfunden oder ergänzt – die Datenstruktur `js/uwerte-bundesanzeiger.js` und `docs/quellen/README.md` bleiben unverändert die einzige Quelle. Die Heizlast-Methodik (Φ_T = Σ A·U·fx·ΔT) und die übergeordnete Prioritätskette (Raum-Override → Projekt-Standard → Bestandswert → unbekannt) bleiben unverändert; die hier beschriebene Logik bestimmt lediglich, WIE der „Projekt-Standard“-Wert optional automatisch vorbelegt wird. Manuell erfasste oder abweichende Werte haben weiterhin in jedem Fall Vorrang.
+
 ## Noch nicht bewertete Themen
 
 * Fotoanalyse ist im Code vorhanden, wurde aber noch nicht aktiv genutzt oder fachlich getestet.
