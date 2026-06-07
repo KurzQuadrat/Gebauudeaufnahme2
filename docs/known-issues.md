@@ -142,6 +142,31 @@ Fehler werden in folgender Reihenfolge priorisiert:
 
 ---
 
+## KI-006: Innenwände (IW) wurden in der Heizlastberechnung wie Außenwände gegen Außenluft gerechnet
+
+* Status: behoben
+* Priorität: falscher Export oder Bericht
+* Bereich: Raumaufnahme / Heizlastberechnung (`index.html`, `js/heizlast.js`, `js/state.js`)
+* Blockiert Nutzung: nein, führte aber zu spürbar überhöhter Heizlastanzeige bei Räumen mit Innenwänden
+* Seit wann bekannt: bei fachlicher Durchsicht der Heizlast-Vorabschätzung aufgefallen
+* Reproduktionsschritte:
+
+  1. Raum öffnen, Wandlängen N/O/S/W erfassen und mindestens eine Wand als „IW" (Innenwand) klassifizieren.
+  2. Bereich „Flächen & Heizlast" aufrufen, U-Werte eingeben, „Berechnen" tippen.
+  3. Beobachtung: Die als „IW" klassifizierte Wandfläche wurde zusammen mit den Außenwänden in einer einzigen Gruppe „Außenwand" gegen Außenluft (Normaußentemperatur) gerechnet.
+* Erwartetes Verhalten:
+  Außenwände (AW) werden gegen Außenluft / Normaußentemperatur gerechnet. Innenwände (IW) werden NICHT gegen Außenluft gerechnet: bei Angrenzung an einen beheizten Bereich entsteht keine bzw. nur vernachlässigbare Transmissionsheizlast, bei Angrenzung an einen unbeheizten Bereich wird eine eigene Temperaturannahme verwendet (Default 7 °C, projektweit und je Raum überschreibbar). Wände mit unbekannter Klassifizierung werden weder stillschweigend als Außenwand gerechnet noch in die Summe einbezogen, sondern transparent als „Art unbekannt" ausgewiesen.
+* Tatsächliches Verhalten (vor der Korrektur):
+  Die Klassifizierung „AW"/„IW" je Himmelsrichtung (`r.wand_n_art` usw.) wurde zwar erfasst und angezeigt, in `renderUWertInputs()`/`renderHeizlastErgebnis()` jedoch nicht ausgewertet – die gesamte Wandfläche (`A_wN+A_wO+A_wS+A_wW`) floss ungeachtet ihrer Klassifizierung in eine einzige Gruppe „Außenwand" mit `grenzt_an = 'aussen'` (fx = 1,0) ein.
+* Vermutung:
+  Die AW/IW-Klassifizierung wurde zunächst nur als Erfassungsfeld angelegt; die Verknüpfung mit der Heizlastberechnung war ein separater, noch ausstehender Schritt.
+* Behebung:
+  `berechneRaumGeometrie()` (`js/heizlast.js`) ermittelt nun je Himmelsrichtung anhand von `wand_*_art` die Brutto-Wandflächen für „AW", „IW" und „Art unbekannt" (`A_wand_aw`, `A_wand_iw`, `A_wand_unbekannt`). `renderUWertInputs()`/`renderHeizlastErgebnis()` (`index.html`) führen Außenwand und Innenwand als getrennte Bauteilgruppen: Außenwand wird weiterhin gegen Außenluft/Normaußentemperatur gerechnet (ΔT = t_i − θ_e), Innenwand erhält eine eigene, reduzierte Auswahl „angrenzend beheizt" (≈ keine Heizlast, fx = 0) oder „angrenzend unbeheizt" (eigene ΔT = t_i − Temperatur unbeheizter Bereich). Wandflächen mit unbekannter Klassifizierung werden separat als „Wand – Art unbekannt" mit Flächenangabe und Hinweistext ausgewiesen, gehen aber nicht in die Heizlastsumme ein und werden nicht als Außenwand behandelt. Die Norm-Außentemperatur und die Temperatur des unbeheizten Bereichs stammen nun primär aus den neuen projektweiten Heizlast-Standardwerten (`p.heizlastDefaults.tempAussenNorm` / `tempUnbeheiztDefault`, Defaults −12 °C / 7 °C); die bisherige feste Konstante `THETA_E` bleibt als Fallback für Bestandsprojekte ohne `heizlastDefaults` erhalten. Bestehende Projekte/Räume erhalten die neue Struktur defensiv über `load()`; vorhandene `u_werte`/`grenzt_an`-Werte bleiben als Fallback in der U-Wert-Prioritätskette (Raum-Override > Projekt-Standard > Bestandswert > unbekannt) erhalten, sodass keine Daten verloren gehen.
+* Wichtiger Hinweis zu Bundesanzeiger-Tabellenwerten:
+  Die in `heizlastDefaults` vorbereitete Möglichkeit einer baujahresabhängigen U-Wert-Ableitung (`baujahrAbleitungAktiv`) ist als Struktur angelegt, aber inhaltlich noch nicht befüllt: Die konkreten Tabellenwerte aus der „Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung im Wohngebäudebestand" vom 8. Oktober 2020 liegen im Repository noch nicht vor und wurden bewusst nicht erfunden oder geschätzt. Sie müssen in einem späteren Schritt aus der Originalquelle ergänzt werden.
+
+---
+
 ## Noch nicht bewertete Themen
 
 * Fotoanalyse ist im Code vorhanden, wurde aber noch nicht aktiv genutzt oder fachlich getestet.

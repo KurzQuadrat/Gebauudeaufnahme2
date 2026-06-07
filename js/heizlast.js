@@ -36,6 +36,18 @@ function berechneRaumGeometrie(r) {
   const A_wN = h*(n1+n2), A_wO = h*(o1+o2);
   const A_wS = h*(s1+s2), A_wW = h*(w1+w2);
 
+  // AW/IW-Klassifizierung je Himmelsrichtung auswerten und Brutto-Wandflächen
+  // entsprechend zuordnen. Unbekannte/leere Klassifizierung wird NICHT
+  // stillschweigend als Außenwand gerechnet, sondern separat ausgewiesen
+  // ("unbekannt") - siehe known-issues KI-006.
+  const wandKlass = [
+    { art: r.wand_n_art, A: A_wN }, { art: r.wand_o_art, A: A_wO },
+    { art: r.wand_s_art, A: A_wS }, { art: r.wand_w_art, A: A_wW }
+  ];
+  const A_wand_aw = wandKlass.filter(w => w.art === 'AW').reduce((s,w) => s + w.A, 0);
+  const A_wand_iw = wandKlass.filter(w => w.art === 'IW').reduce((s,w) => s + w.A, 0);
+  const A_wand_unbekannt = wandKlass.filter(w => w.art !== 'AW' && w.art !== 'IW').reduce((s,w) => s + w.A, 0);
+
   // Öffnungen (cm → m²)
   const A_fenster = (r.fenster||[]).reduce((s,f) => s + cm(f.breite)*cm(f.hoehe), 0);
   const A_tuer_aussen = (r.tueren||[]).filter(t=>t.art==='aussen'||t.art==='keller').reduce((s,t) => s + cm(t.breite)*cm(t.hoehe), 0);
@@ -79,7 +91,34 @@ function berechneRaumGeometrie(r) {
   const V_netto    = V_brutto - V_abzgl + V_zusaetzl;
 
   return { h, A_boden, A_fenster, A_tuer_aussen, A_tuer_innen,
-           A_wN, A_wO, A_wS, A_wW, A_schraege_proj, A_schraege_real,
+           A_wN, A_wO, A_wS, A_wW, A_wand_aw, A_wand_iw, A_wand_unbekannt,
+           A_schraege_proj, A_schraege_real,
            A_vsp, V_nieschen, V_vorsprunge, V_schraege, V_gaube,
            V_brutto, V_abzgl, V_zusaetzl, V_netto };
+}
+
+// ============================================================
+//  HEIZLAST-DEFAULTS: effektiver Wert nach Prioritätskette
+// ============================================================
+// Priorität: 1. Raum-Override (heizlastOverrides) > 2. projektweiter
+// Heizlast-Default (heizlastDefaults) > 3. bestehender Fallbackwert
+// (z.B. r.u_werte je Bauteilfläche) > 4. leer/unbekannt.
+// Liefert { wert: number|null, quelle: string } - keine stillschweigend
+// erfundenen Werte: bleibt der Wert unbekannt, wird das transparent gemeldet.
+function getEffektiverHeizlastWert(r, p, feldKey, fallbackUWerteKey) {
+  const ov = (r && r.heizlastOverrides) ? r.heizlastOverrides[feldKey] : undefined;
+  if (ov !== undefined && ov !== null && ov !== '' && !isNaN(parseFloat(ov))) {
+    return { wert: parseFloat(ov), quelle: 'Raum-Override' };
+  }
+  const def = (p && p.heizlastDefaults) ? p.heizlastDefaults[feldKey] : undefined;
+  if (def !== undefined && def !== null && def !== '' && !isNaN(parseFloat(def))) {
+    return { wert: parseFloat(def), quelle: 'Projekt-Standard' };
+  }
+  if (fallbackUWerteKey && r && r.u_werte) {
+    const alt = r.u_werte[fallbackUWerteKey];
+    if (alt !== undefined && alt !== null && alt !== '' && !isNaN(parseFloat(alt))) {
+      return { wert: parseFloat(alt), quelle: 'Bestandswert (Raum)' };
+    }
+  }
+  return { wert: null, quelle: 'unbekannt' };
 }

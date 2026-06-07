@@ -23,6 +23,16 @@ function load() {
     if (p.heizanlage.energietraeger === undefined) p.heizanlage.energietraeger = 'unbekannt';
     if (p.heizanlage.leistung === undefined) p.heizanlage.leistung = '';
     if (!p.warmwasser) p.warmwasser = { art: 'unbekannt', speicherVorhanden: 'unbekannt', speichervolumen: '', energietraeger: 'unbekannt', versorgung: 'unbekannt', baujahr: '', hersteller: '', typ: '', notiz: '' };
+    // Heizlast-Standardwerte (projektweit): defensiv ergänzen, bestehende Projekte
+    // erhalten neutrale Defaults (Normaußentemperatur -12°C, unbeheizt 7°C wie bisher
+    // implizit über THETA_E angenommen; U-Werte bleiben leer, keine erfundenen Werte).
+    if (!p.heizlastDefaults) p.heizlastDefaults = { awUwert:'', iwUwert:'', dachUwert:'', bodenplatteUwert:'', bodenUwert:'', fensterUwert:'', tuerUwert:'', tempAussenNorm:-12, tempUnbeheiztDefault:7, quelle:'', baujahrAbleitungAktiv:false };
+    else {
+      ['awUwert','iwUwert','dachUwert','bodenplatteUwert','bodenUwert','fensterUwert','tuerUwert','quelle'].forEach(f => { if (p.heizlastDefaults[f] === undefined) p.heizlastDefaults[f] = ''; });
+      if (p.heizlastDefaults.tempAussenNorm === undefined) p.heizlastDefaults.tempAussenNorm = -12;
+      if (p.heizlastDefaults.tempUnbeheiztDefault === undefined) p.heizlastDefaults.tempUnbeheiztDefault = 7;
+      if (p.heizlastDefaults.baujahrAbleitungAktiv === undefined) p.heizlastDefaults.baujahrAbleitungAktiv = false;
+    }
     if (!p.offenePunkte) p.offenePunkte = [];
     p.geschosse.forEach(g => {
       if (!g.gauben) g.gauben = [];
@@ -36,6 +46,11 @@ function load() {
         if (!r.nieschen) r.nieschen = [];
         if (!r.u_werte) r.u_werte = {};
         if (!r.grenzt_an) r.grenzt_an = {};
+        // Raumbezogene Heizlast-Overrides defensiv ergänzen (überschreiben bei Bedarf
+        // die projektweiten Heizlast-Standardwerte). Bestehende u_werte/grenzt_an
+        // bleiben als bisheriger Fallback unverändert erhalten.
+        if (!r.heizlastOverrides) r.heizlastOverrides = { awUwert:'', iwUwert:'', dachUwert:'', bodenplatteUwert:'', bodenUwert:'', fensterUwert:'', tuerUwert:'', tempUnbeheizt:'' };
+        else ['awUwert','iwUwert','dachUwert','bodenplatteUwert','bodenUwert','fensterUwert','tuerUwert','tempUnbeheizt'].forEach(f => { if (r.heizlastOverrides[f] === undefined) r.heizlastOverrides[f] = ''; });
         if (r.normSolltemperatur === undefined) r.normSolltemperatur = '';
         if (r.kundenwunschTemperatur === undefined) r.kundenwunschTemperatur = '';
         ['wand_n1','wand_n2','wand_o1','wand_o2','wand_s1','wand_s2','wand_w1','wand_w2',
@@ -96,6 +111,31 @@ function saveWarmwasserField(field, value) {
   if (!p) return;
   p.warmwasser[field] = value;
   save();
+}
+
+// Heizlast-Standardwerte (projektweit): überschlägige Erfassungshilfe, kein
+// normativer Heizlastnachweis. Speichert U-Wert- und Temperaturannahmen, die
+// als Default für alle Räume gelten und je Raum überschrieben werden können.
+function saveHeizlastDefaultField(field, value) {
+  const p = getProjekt();
+  if (!p) return;
+  if (!p.heizlastDefaults) p.heizlastDefaults = {};
+  if (field === 'baujahrAbleitungAktiv') p.heizlastDefaults[field] = !!value;
+  else p.heizlastDefaults[field] = value;
+  save();
+}
+
+// Raumbezogene Heizlast-Overrides: überschreiben die projektweiten
+// Heizlast-Standardwerte für einzelne Räume (z.B. abweichende Temperatur
+// für angrenzende unbeheizte Bereiche).
+function saveHeizlastOverrideField(field, value) {
+  const r = getRaum();
+  if (!r) return;
+  if (!r.heizlastOverrides) r.heizlastOverrides = { awUwert:'', iwUwert:'', dachUwert:'', bodenplatteUwert:'', bodenUwert:'', fensterUwert:'', tuerUwert:'', tempUnbeheizt:'' };
+  r.heizlastOverrides[field] = value;
+  save();
+  const geo = berechneRaumGeometrie(r);
+  renderHeizlastErgebnis(r, geo);
 }
 
 function saveSanierungField(id, field, value) {

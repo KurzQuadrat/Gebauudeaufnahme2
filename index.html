@@ -206,6 +206,35 @@
       </div>
     </div>
 
+    <!-- Heizlast-Standardwerte (projektweit) -->
+    <div class="card">
+      <div class="card-title">Heizlast-Standardwerte (projektweit)</div>
+      <div style="color:var(--text-sec);font-size:14px;padding:4px 0 8px;">Überschlägige Annahmen für die Heizlast-Vorabschätzung – kein normativer Heizlastnachweis. Die Werte gelten als Standard für alle Räume und können je Raum überschrieben werden.</div>
+      <div class="form-row">
+        <div class="form-group"><label>U-Wert Außenwand AW (W/m²K)</label><input type="number" step="0.01" id="p-hl-aw-uwert" placeholder="z.B. 0.28" oninput="saveHeizlastDefaultField('awUwert', this.value)"></div>
+        <div class="form-group"><label>U-Wert Innenwand IW (W/m²K)</label><input type="number" step="0.01" id="p-hl-iw-uwert" placeholder="z.B. 1.40" oninput="saveHeizlastDefaultField('iwUwert', this.value)"></div>
+        <div class="form-group"><label>U-Wert Dach (W/m²K)</label><input type="number" step="0.01" id="p-hl-dach-uwert" placeholder="z.B. 0.24" oninput="saveHeizlastDefaultField('dachUwert', this.value)"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>U-Wert Bodenplatte (W/m²K)</label><input type="number" step="0.01" id="p-hl-bodenplatte-uwert" placeholder="z.B. 0.35" oninput="saveHeizlastDefaultField('bodenplatteUwert', this.value)"></div>
+        <div class="form-group"><label>U-Wert Boden/Decke (W/m²K)</label><input type="number" step="0.01" id="p-hl-boden-uwert" placeholder="z.B. 0.50" oninput="saveHeizlastDefaultField('bodenUwert', this.value)"></div>
+        <div class="form-group"><label>U-Wert Fenster (W/m²K)</label><input type="number" step="0.01" id="p-hl-fenster-uwert" placeholder="z.B. 1.30" oninput="saveHeizlastDefaultField('fensterUwert', this.value)"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>U-Wert Türen (W/m²K)</label><input type="number" step="0.01" id="p-hl-tuer-uwert" placeholder="z.B. 1.80" oninput="saveHeizlastDefaultField('tuerUwert', this.value)"></div>
+        <div class="form-group"><label>Norm-Außentemperatur (°C)</label><input type="number" step="0.5" id="p-hl-temp-aussen" placeholder="-12" oninput="saveHeizlastDefaultField('tempAussenNorm', this.value)"></div>
+        <div class="form-group"><label>Temperatur unbeheizter Bereich – Standard (°C)</label><input type="number" step="0.5" id="p-hl-temp-unbeheizt" placeholder="7" oninput="saveHeizlastDefaultField('tempUnbeheiztDefault', this.value)"></div>
+      </div>
+      <div class="form-group">
+        <label>Quelle der Annahmen</label>
+        <input type="text" id="p-hl-quelle" placeholder="z.B. Erfahrungswert, Bestandsunterlagen, Baujahresklasse" oninput="saveHeizlastDefaultField('quelle', this.value)">
+      </div>
+      <div class="form-group">
+        <label><input type="checkbox" id="p-hl-baujahr-aktiv" onchange="saveHeizlastDefaultField('baujahrAbleitungAktiv', this.checked)"> Baujahresabhängige U-Wert-Ableitung aktivieren (Tabellenwerte noch nicht hinterlegt)</label>
+      </div>
+      <div style="color:var(--text-sec);font-size:13px;padding:4px 0 0;">Hinweis: Tabellenwerte aus der „Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung im Wohngebäudebestand“ vom 8. Oktober 2020 sind hier noch nicht hinterlegt – es werden keine erfundenen oder geschätzten Werte verwendet. Die Struktur für eine spätere Baujahres-Ableitung ist vorbereitet; die Tabellenwerte folgen in einem späteren Schritt, sobald sie aus der Quelle vorliegen.</div>
+    </div>
+
     <!-- Warmwasser -->
     <div class="card">
       <div class="card-title">Warmwasser</div>
@@ -717,9 +746,21 @@
         <button class="btn btn-sm btn-primary" onclick="berechneUndZeige()">Berechnen</button>
       </div>
       <div id="heizlast-result" style="display:none;">
+        <!-- Heizlast-Override (Raum): überschreibt nur die Temperatur des angrenzenden
+             unbeheizten Bereichs für diesen Raum (z.B. wenn der Keller wärmer/kälter
+             als der projektweite Standard ist). U-Wert-Overrides erfolgen weiterhin
+             über die U-Wert-Felder je Bauteil unten (bestehender Mechanismus). -->
+        <div style="background:var(--input-bg);border-radius:8px;padding:12px;margin-bottom:12px;">
+          <div style="font-size:12px;font-weight:600;color:var(--text-sec);text-transform:uppercase;margin-bottom:6px;">Heizlast-Override (Raum)</div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Temperatur unbeheizter angrenzender Bereich – abweichend von Projekt-Standard (°C)</label>
+            <input type="number" step="0.5" id="r-hl-temp-unbeheizt" placeholder="Projekt-Standard verwenden" oninput="saveHeizlastOverrideField('tempUnbeheizt', this.value)">
+          </div>
+        </div>
         <!-- U-Wert Eingaben -->
         <div style="background:var(--input-bg);border-radius:8px;padding:12px;margin-bottom:12px;">
           <div style="font-size:12px;font-weight:600;color:var(--text-sec);text-transform:uppercase;margin-bottom:10px;">U-Werte & Grenzt an</div>
+          <div style="font-size:11px;color:var(--text-sec);margin-bottom:8px;">Eingaben hier überschreiben die projektweiten Heizlast-Standardwerte für diesen Raum (Priorität: Raum-Wert &gt; Projekt-Standard &gt; unbekannt).</div>
           <div id="u-wert-inputs"></div>
         </div>
         <!-- Ergebnistabelle -->
@@ -824,6 +865,11 @@ function neuesProjekt() {
     heizanlage_foto: null,
     schornstein: { lage: '', form: '', breite: '', tiefe: '' },
     warmwasser: { art: 'unbekannt', speicherVorhanden: 'unbekannt', speichervolumen: '', energietraeger: 'unbekannt', versorgung: 'unbekannt', baujahr: '', hersteller: '', typ: '', notiz: '' },
+    heizlastDefaults: {
+      awUwert: '', iwUwert: '', dachUwert: '', bodenplatteUwert: '', bodenUwert: '',
+      fensterUwert: '', tuerUwert: '', tempAussenNorm: -12, tempUnbeheiztDefault: 7,
+      quelle: '', baujahrAbleitungAktiv: false
+    },
     offenePunkte: [],
     geschosse: [eg]
   };
@@ -1183,6 +1229,10 @@ function addRaum() {
     sch_richtung: 'N',
     gaube_breite: '', gaube_lichtehoehe: '',
     normtemp: '', u_werte: {}, grenzt_an: {},
+    heizlastOverrides: {
+      awUwert: '', iwUwert: '', dachUwert: '', bodenplatteUwert: '', bodenUwert: '',
+      fensterUwert: '', tuerUwert: '', tempUnbeheizt: ''
+    },
     fenster: [], tueren: [], heizkoerper: [], nieschen: []
   };
   g.raeume.push(r);
@@ -1338,21 +1388,54 @@ function deleteDachfenster(id) { const g=getGeschoss(); g.dachfenster=g.dachfens
 // ============================================================
 //  HEIZLAST RENDER
 // ============================================================
+// Zuordnung Bauteilfläche -> Feld in heizlastDefaults/heizlastOverrides
+// (für die U-Wert-Prioritätskette: Raum-Override > Projekt-Standard > Bestandswert).
+const HL_FELD_MAP={aw:'awUwert',iw:'iwUwert',fenster:'fensterUwert',tuer_a:'tuerUwert',tuer_i:'tuerUwert',boden:'bodenplatteUwert',decke:'bodenUwert',schraege:'dachUwert'};
+// Platzhaltertext fürs U-Wert-Eingabefeld: zeigt den aktuell wirksamen
+// Projekt-/Override-Standard an, damit transparent bleibt, welcher Wert
+// ohne eigene Eingabe verwendet würde ("keine stillschweigend erfundenen Werte").
+function hlPlatzhalterFuer(surfaceKey,r,p){
+  const feld=HL_FELD_MAP[surfaceKey];
+  if(!feld) return 'U';
+  const eff=getEffektiverHeizlastWert(r,p,feld,null);
+  if(eff.wert!==null && eff.quelle!=='Bestandswert (Raum)') return 'U (Standard '+eff.wert.toFixed(2)+')';
+  return 'U';
+}
 function renderUWertInputs(r,geo) {
   if(!r.u_werte)r.u_werte={}; if(!r.grenzt_an)r.grenzt_an={};
+  const p=getProjekt();
   const u=r.u_werte,ga=r.grenzt_an;
   const gaS=(key,def)=>'<select onchange="saveUGA(\''+key+'\',this.value,\'ga\')" style="width:100%;padding:6px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--input-bg);">'+Object.entries(FX).map(([k,v])=>'<option value="'+k+'" '+(((ga[key]||def)===k)?'selected':'')+'>'+v.label+' ('+v.fx+')</option>').join('')+'</select>';
+  // Innenwand (IW): bewusst eigener, reduzierter Auswahl-Satz statt der
+  // allgemeinen Außenluft-bezogenen FX-Liste - eine Innenwand wird NICHT
+  // gegen Außenluft/Normaußentemperatur gerechnet (siehe known-issues KI-006).
+  // "angrenzend beheizt" -> keine/vernachlässigbare Heizlast (fx=0, wie Innentür).
+  // "angrenzend unbeheizt" -> eigene Temperaturannahme (Default 7°C, projektweit/raumweise änderbar).
+  const iwGaS=(key,def)=>'<select onchange="saveUGA(\''+key+'\',this.value,\'ga\')" style="width:100%;padding:6px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--input-bg);">'
+    +'<option value="beheizt" '+(((ga[key]||def)==='beheizt')?'selected':'')+'>angrenzend beheizt – ≈ keine Heizlast</option>'
+    +'<option value="unbeheizt" '+(((ga[key]||def)==='unbeheizt')?'selected':'')+'>angrenzend unbeheizt – Temp. unbeheizter Bereich</option>'
+    +'</select>';
+  const A_aw_netto=Math.max(0,geo.A_wand_aw-geo.A_fenster-geo.A_tuer_aussen);
   const surfaces=[
-    {key:'aw',label:'Außenwand',A:geo.A_wN+geo.A_wO+geo.A_wS+geo.A_wW-geo.A_fenster-geo.A_tuer_aussen,ga_def:'aussen',vis:true},
-    {key:'fenster',label:'Fenster',A:geo.A_fenster,ga_def:'aussen',vis:geo.A_fenster>0.001},
-    {key:'tuer_a',label:'Außentür',A:geo.A_tuer_aussen,ga_def:'aussen',vis:geo.A_tuer_aussen>0.001},
-    {key:'tuer_i',label:'Innentür',A:geo.A_tuer_innen,ga_def:'beheizt',vis:geo.A_tuer_innen>0.001},
-    {key:'boden',label:'Boden',A:geo.A_boden,ga_def:'erdreich',vis:true},
-    {key:'decke',label:'Decke',A:geo.A_boden,ga_def:'dach_kalt',vis:true},
-    {key:'schraege',label:'Dachschräge',A:geo.A_schraege_real,ga_def:'aussen',vis:geo.A_schraege_real>0.001},
+    {key:'aw',label:'Außenwand (AW)',A:A_aw_netto,ga_def:'aussen',vis:true,typ:'aw'},
+    {key:'iw',label:'Innenwand (IW)',A:geo.A_wand_iw,ga_def:'beheizt',vis:geo.A_wand_iw>0.001,typ:'iw'},
+    {key:'wand_unbekannt',label:'Wand – Art unbekannt',A:geo.A_wand_unbekannt,vis:geo.A_wand_unbekannt>0.001,typ:'unbekannt'},
+    {key:'fenster',label:'Fenster',A:geo.A_fenster,ga_def:'aussen',vis:geo.A_fenster>0.001,typ:'aussen'},
+    {key:'tuer_a',label:'Außentür',A:geo.A_tuer_aussen,ga_def:'aussen',vis:geo.A_tuer_aussen>0.001,typ:'aussen'},
+    {key:'tuer_i',label:'Innentür',A:geo.A_tuer_innen,ga_def:'beheizt',vis:geo.A_tuer_innen>0.001,typ:'aussen'},
+    {key:'boden',label:'Boden',A:geo.A_boden,ga_def:'erdreich',vis:true,typ:'aussen'},
+    {key:'decke',label:'Decke',A:geo.A_boden,ga_def:'dach_kalt',vis:true,typ:'aussen'},
+    {key:'schraege',label:'Dachschräge',A:geo.A_schraege_real,ga_def:'aussen',vis:geo.A_schraege_real>0.001,typ:'aussen'},
   ].filter(s=>s.vis&&s.A>0.001);
   window._lastSurfaces=surfaces;
-  document.getElementById('u-wert-inputs').innerHTML=surfaces.map(s=>'<div style="display:grid;grid-template-columns:1fr 65px 1fr;gap:6px;align-items:center;margin-bottom:10px;"><div style="font-size:13px;font-weight:500;">'+s.label+'<br><span style="font-size:11px;color:var(--text-sec);">'+s.A.toFixed(2)+' m²</span></div><input type="number" step="0.01" value="'+(u[s.key]||'')+'" placeholder="U" style="padding:7px;border:1px solid var(--border);border-radius:6px;font-size:13px;width:100%;" oninput="saveUGA(\''+s.key+'\',this.value,\'u\')"><div>'+gaS(s.key,s.ga_def)+'</div></div>').join('');
+  document.getElementById('u-wert-inputs').innerHTML=surfaces.map(s=>{
+    const flaeche='<div style="font-size:13px;font-weight:500;">'+s.label+'<br><span style="font-size:11px;color:var(--text-sec);">'+s.A.toFixed(2)+' m²</span></div>';
+    if(s.typ==='unbekannt'){
+      return '<div style="display:grid;grid-template-columns:1fr 2fr;gap:6px;align-items:center;margin-bottom:10px;">'+flaeche+'<div style="font-size:12px;color:var(--text-sec);">Wandart (AW/IW) nicht zugeordnet – Fläche wird in der Heizlastsumme nicht berücksichtigt. Bitte je Himmelsrichtung im Bereich „Wandlängen" AW/IW zuordnen.</div></div>';
+    }
+    const auswahl=(s.typ==='iw')?iwGaS(s.key,s.ga_def):gaS(s.key,s.ga_def);
+    return '<div style="display:grid;grid-template-columns:1fr 65px 1fr;gap:6px;align-items:center;margin-bottom:10px;">'+flaeche+'<input type="number" step="0.01" value="'+(u[s.key]||'')+'" placeholder="'+hlPlatzhalterFuer(s.key,r,p)+'" style="padding:7px;border:1px solid var(--border);border-radius:6px;font-size:13px;width:100%;" oninput="saveUGA(\''+s.key+'\',this.value,\'u\')"><div>'+auswahl+'</div></div>';
+  }).join('');
 }
 function saveUGA(key,value,type) { const r=getRaum(); if(!r.u_werte)r.u_werte={}; if(!r.grenzt_an)r.grenzt_an={}; if(type==='u')r.u_werte[key]=parseFloat(value)||null; else r.grenzt_an[key]=value; save(); const geo=berechneRaumGeometrie(r); renderFlaechenTabelle(r,geo); renderHeizlastErgebnis(r,geo); }
 function renderFlaechenTabelle(r,geo) {
@@ -1360,14 +1443,57 @@ function renderFlaechenTabelle(r,geo) {
   const rows=[['Boden',f2(geo.A_boden),'m²'],['Fenster',f2(geo.A_fenster),'m²'],['Türen',f2(geo.A_tuer_aussen+geo.A_tuer_innen),'m²'],['Wand N',f2(geo.A_wN),'m²'],['Wand O',f2(geo.A_wO),'m²'],['Wand S',f2(geo.A_wS),'m²'],['Wand W',f2(geo.A_wW),'m²'],['','',''],['V Brutto',f2(geo.V_brutto),'m³'],['V Abzgl.',f2(geo.V_abzgl),'m³'],['V Zus.',f2(geo.V_zusaetzl),'m³'],['V Netto',f2(geo.V_netto),'m³']];
   document.getElementById('flaechen-tabelle').innerHTML='<table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px;"><thead><tr style="background:var(--input-bg);"><th style="padding:6px 8px;text-align:left;">Fläche</th><th style="padding:6px 8px;text-align:right;">Wert</th><th style="padding:6px 8px;">Einheit</th></tr></thead><tbody>'+rows.map(row=>row[0]===''?'<tr><td colspan="3" style="padding:3px;"></td></tr>':'<tr style="border-bottom:1px solid var(--border);"><td style="padding:5px 8px;'+(row[0]==='V Netto'?'font-weight:700;':'')+'">'+row[0]+'</td><td style="padding:5px 8px;text-align:right;font-weight:600;'+(row[0]==='V Netto'?'color:var(--primary);':'')+'">'+row[1]+'</td><td style="padding:5px 8px;color:var(--text-sec);">'+row[2]+'</td></tr>').join('')+'</tbody></table>';
 }
+// Heizlast-Ergebnis: überschlägige Vorabschätzung (Φ_T = Σ A·U·fx·ΔT je Bauteil),
+// kein normativer Heizlastnachweis. AW wird gegen Außenluft/Normaußentemperatur
+// gerechnet, IW NICHT gegen Außenluft - sondern entweder ≈ 0 (angrenzend beheizt)
+// oder gegen die Temperatur des unbeheizten angrenzenden Bereichs (Default 7°C,
+// projektweit/raumweise überschreibbar). Siehe known-issues KI-006.
 function renderHeizlastErgebnis(r,geo) {
-  const u=r.u_werte||{},ga=r.grenzt_an||{},ti=parseFloat(r.normtemp)||20,dT=ti-THETA_E,srf=window._lastSurfaces||[];
-  let rows='',sum=0;
-  srf.forEach(s=>{const U=parseFloat(u[s.key]),gk=ga[s.key]||s.ga_def,fx=FX[gk]?FX[gk].fx:1.0,A=s.A;if(!isNaN(U)&&U>0){const v=A*U*fx;sum+=v;rows+='<tr style="border-bottom:1px solid var(--border);"><td style="padding:5px 8px;">'+s.label+'</td><td style="padding:5px 8px;text-align:right;">'+A.toFixed(2)+'</td><td style="padding:5px 8px;text-align:right;">'+U.toFixed(2)+'</td><td style="padding:5px 8px;text-align:right;">'+fx+'</td><td style="padding:5px 8px;text-align:right;font-weight:600;">'+v.toFixed(2)+'</td></tr>';}});
-  const phi=sum*dT;
-  document.getElementById('heizlast-ergebnis').innerHTML=rows?'<table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px;"><thead><tr style="background:var(--input-bg);"><th style="padding:6px 8px;text-align:left;">Bauteil</th><th style="padding:6px 8px;text-align:right;">A</th><th style="padding:6px 8px;text-align:right;">U</th><th style="padding:6px 8px;text-align:right;">fx</th><th style="padding:6px 8px;text-align:right;">A·U·fx</th></tr></thead><tbody>'+rows+'</tbody></table><div style="background:#f0f7ff;border:1px solid #b3d4f7;border-radius:8px;padding:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:13px;color:#0051a2;">Σ A·U·fx</span><span style="font-weight:700;color:#0051a2;">'+sum.toFixed(3)+' W/K</span></div><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:13px;color:#0051a2;">ΔT ('+ti+'°C − '+THETA_E+'°C)</span><span style="font-weight:700;color:#0051a2;">'+dT+' K</span></div><div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid #b3d4f7;"><span style="font-size:15px;font-weight:700;color:#0051a2;">Φ<sub>T</sub></span><span style="font-size:18px;font-weight:700;color:#0051a2;">'+phi.toFixed(0)+' W</span></div></div>'
-    :'<div style="color:var(--text-sec);font-size:14px;padding:8px 0;">U-Werte eingeben und Berechnen tippen.</div>';
+  const p=getProjekt();
+  const ga=r.grenzt_an||{};
+  const ti=parseFloat(r.normtemp)||20;
+  const hd=(p&&p.heizlastDefaults)||{};
+  // Normaußentemperatur: projektweiter Default überschreibt die feste THETA_E-Konstante,
+  // die als Fallback erhalten bleibt (bestehende Projekte ohne heizlastDefaults).
+  const tAussenParsed=parseFloat(hd.tempAussenNorm);
+  const thetaE=(!isNaN(tAussenParsed)) ? tAussenParsed : THETA_E;
+  const dT=ti-thetaE;
+  // Temperatur unbeheizter Bereich (für IW-Wände, die an unbeheizt angrenzen):
+  // Raum-Override > projektweiter Default (tempUnbeheiztDefault) > Fallback 7°C.
+  const ovTU=(r.heizlastOverrides||{}).tempUnbeheizt;
+  const defTU=hd.tempUnbeheiztDefault;
+  let tUnbeheizt, tUnbeheiztQuelle;
+  if(ovTU!==undefined&&ovTU!==null&&ovTU!==''&&!isNaN(parseFloat(ovTU))){ tUnbeheizt=parseFloat(ovTU); tUnbeheiztQuelle='Raum-Override'; }
+  else if(defTU!==undefined&&defTU!==null&&defTU!==''&&!isNaN(parseFloat(defTU))){ tUnbeheizt=parseFloat(defTU); tUnbeheiztQuelle='Projekt-Standard'; }
+  else { tUnbeheizt=7; tUnbeheiztQuelle='Fallback'; }
+  const dT_unbeheizt=ti-tUnbeheizt;
+  const srf=window._lastSurfaces||[];
+  let rows='',phi=0,hinweise=[];
+  srf.forEach(s=>{
+    if(s.typ==='unbekannt'){ hinweise.push('„'+s.label+'" ('+s.A.toFixed(2)+' m²): Wandart nicht zugeordnet – nicht in der Summe enthalten, nicht als Außenwand gerechnet.'); return; }
+    const feldKey=HL_FELD_MAP[s.key];
+    const eff=getEffektiverHeizlastWert(r,p,feldKey,s.key);
+    const U=eff.wert;
+    if(U===null||U<=0){ hinweise.push('„'+s.label+'": kein U-Wert hinterlegt (weder Override noch Projekt-Standard noch Raumwert) – nicht in der Summe enthalten.'); return; }
+    const A=s.A;
+    let fx,dTs,dtLabel;
+    if(s.typ==='iw'){
+      const gk=ga[s.key]||s.ga_def;
+      if(gk==='unbeheizt'){ fx=1; dTs=dT_unbeheizt; dtLabel='ΔT unbeh. ('+tUnbeheizt+'°C, '+tUnbeheiztQuelleKurz(tUnbeheiztQuelle)+')'; }
+      else { fx=FX.beheizt.fx; dTs=dT; dtLabel='angrenzend beheizt'; }
+    } else {
+      const gk=ga[s.key]||s.ga_def;
+      fx=FX[gk]?FX[gk].fx:1.0; dTs=dT; dtLabel='ΔT außen';
+    }
+    const v=A*U*fx*dTs;
+    phi+=v;
+    rows+='<tr style="border-bottom:1px solid var(--border);"><td style="padding:5px 8px;">'+s.label+'</td><td style="padding:5px 8px;text-align:right;">'+A.toFixed(2)+'</td><td style="padding:5px 8px;text-align:right;">'+U.toFixed(2)+'<br><span style="font-size:10px;color:var(--text-sec);">'+eff.quelle+'</span></td><td style="padding:5px 8px;text-align:right;">'+fx+'</td><td style="padding:5px 8px;text-align:right;font-size:11px;color:var(--text-sec);">'+dtLabel+' = '+dTs.toFixed(1)+' K</td><td style="padding:5px 8px;text-align:right;font-weight:600;">'+v.toFixed(0)+' W</td></tr>';
+  });
+  const hinweiseHtml=hinweise.length?'<div style="margin-top:10px;font-size:12px;color:var(--text-sec);">'+hinweise.map(h=>'<div>⚠ '+h+'</div>').join('')+'</div>':'';
+  document.getElementById('heizlast-ergebnis').innerHTML=rows?'<table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px;"><thead><tr style="background:var(--input-bg);"><th style="padding:6px 8px;text-align:left;">Bauteil</th><th style="padding:6px 8px;text-align:right;">A (m²)</th><th style="padding:6px 8px;text-align:right;">U (Quelle)</th><th style="padding:6px 8px;text-align:right;">fx</th><th style="padding:6px 8px;text-align:right;">ΔT</th><th style="padding:6px 8px;text-align:right;">Φ Bauteil</th></tr></thead><tbody>'+rows+'</tbody></table><div style="background:#f0f7ff;border:1px solid #b3d4f7;border-radius:8px;padding:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:13px;color:#0051a2;">ΔT außen (t<sub>i</sub> '+ti+'°C − θ<sub>e</sub> '+thetaE+'°C)</span><span style="font-weight:700;color:#0051a2;">'+dT.toFixed(1)+' K</span></div><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:13px;color:#0051a2;">ΔT unbeheizt (t<sub>i</sub> '+ti+'°C − '+tUnbeheizt+'°C, '+tUnbeheiztQuelleKurz(tUnbeheiztQuelle)+')</span><span style="font-weight:700;color:#0051a2;">'+dT_unbeheizt.toFixed(1)+' K</span></div><div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid #b3d4f7;"><span style="font-size:15px;font-weight:700;color:#0051a2;">Φ<sub>T</sub> (überschlägig)</span><span style="font-size:18px;font-weight:700;color:#0051a2;">'+phi.toFixed(0)+' W</span></div></div>'+hinweiseHtml+'<div style="font-size:11px;color:var(--text-sec);margin-top:8px;">Überschlägige Vorabschätzung, kein normativer Heizlastnachweis nach DIN EN 12831.</div>'
+    :'<div style="color:var(--text-sec);font-size:14px;padding:8px 0;">U-Werte eingeben (oder Heizlast-Standardwerte im Projekt hinterlegen) und Berechnen tippen.</div>'+hinweiseHtml;
 }
+function tUnbeheiztQuelleKurz(q){ return q==='Raum-Override'?'Raum-Override':(q==='Projekt-Standard'?'Projekt-Standard':'Standard 7°C'); }
 
 // ============================================================
 //  RENDER
@@ -1389,6 +1515,13 @@ function renderProjektView() {
   set('p-wohneinheiten',p.wohneinheiten);set('p-auftragsart',p.auftragsart);
   set('p-hz-hersteller',p.heizanlage.hersteller);set('p-hz-typ',p.heizanlage.typ);set('p-hz-baujahr',p.heizanlage.baujahr);set('p-hz-modell',p.heizanlage.modell);set('p-hz-notiz',p.heizanlage.notiz);
   set('p-hz-energietraeger',p.heizanlage.energietraeger);set('p-hz-leistung',p.heizanlage.leistung);
+  if(!p.heizlastDefaults) p.heizlastDefaults = { awUwert:'', iwUwert:'', dachUwert:'', bodenplatteUwert:'', bodenUwert:'', fensterUwert:'', tuerUwert:'', tempAussenNorm:-12, tempUnbeheiztDefault:7, quelle:'', baujahrAbleitungAktiv:false };
+  const hd=p.heizlastDefaults;
+  set('p-hl-aw-uwert',hd.awUwert);set('p-hl-iw-uwert',hd.iwUwert);set('p-hl-dach-uwert',hd.dachUwert);
+  set('p-hl-bodenplatte-uwert',hd.bodenplatteUwert);set('p-hl-boden-uwert',hd.bodenUwert);set('p-hl-fenster-uwert',hd.fensterUwert);
+  set('p-hl-tuer-uwert',hd.tuerUwert);set('p-hl-temp-aussen',hd.tempAussenNorm);set('p-hl-temp-unbeheizt',hd.tempUnbeheiztDefault);
+  set('p-hl-quelle',hd.quelle);
+  const hlBaujahrEl=document.getElementById('p-hl-baujahr-aktiv'); if(hlBaujahrEl) hlBaujahrEl.checked=!!hd.baujahrAbleitungAktiv;
   set('p-ww-art',p.warmwasser.art);set('p-ww-speicher-vorhanden',p.warmwasser.speicherVorhanden);set('p-ww-speichervolumen',p.warmwasser.speichervolumen);
   set('p-ww-energietraeger',p.warmwasser.energietraeger);set('p-ww-versorgung',p.warmwasser.versorgung);set('p-ww-baujahr',p.warmwasser.baujahr);
   set('p-ww-hersteller',p.warmwasser.hersteller);set('p-ww-typ',p.warmwasser.typ);set('p-ww-notiz',p.warmwasser.notiz);
@@ -1456,6 +1589,7 @@ function renderRaumView() {
   set('r-iw-dicke',r.iw_dicke);set('r-iw-typ',r.iw_typ);
   ['n1','n2','o1','o2','s1','s2','w1','w2'].forEach(k=>{const el=document.getElementById('r-w'+k);if(el)el.value=r['wand_'+k]||'';});
   ['n','o','s','w'].forEach(d=>{const el=document.getElementById('r-wand-art-'+d);if(el)el.value=r['wand_'+d+'_art']||'';});
+  set('r-hl-temp-unbeheizt',(r.heizlastOverrides||{}).tempUnbeheizt);
   set('r-sch-kniestock',r.sch_kniestock);set('r-sch-winkel',r.sch_winkel);const scR=document.getElementById('r-sch-richtung');if(scR)scR.value=r.sch_richtung||'N';
   set('r-gaube-b',r.gaube_breite);set('r-gaube-h',r.gaube_lichtehoehe);
   chk('r-gaube-vorhanden',r.gaubeVorhanden);
