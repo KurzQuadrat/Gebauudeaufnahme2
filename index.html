@@ -20,7 +20,7 @@
 <!-- Refresh-Leiste: für Home-Screen-Nutzung auf dem iPhone, falls Updates nicht sichtbar geladen werden -->
 <div class="refresh-bar" id="refresh-bar">
   <button class="btn btn-secondary" onclick="refreshApp()">⟳ App aktualisieren</button>
-  <span class="app-version">Version: Prototyp</span>
+  <span class="app-version" id="app-version-label">Version: Prototyp</span>
 </div>
 
 <!-- VIEW: Projektliste -->
@@ -1757,6 +1757,16 @@ function refreshApp() {
 load();
 renderProjektliste();
 state.aktivesView='projekte';
+
+// Sichtbare App-Version in der Refresh-Leiste (nur Projektübersicht) anzeigen,
+// damit beim Testen über den iPhone-Home-Bildschirm erkennbar ist, welche
+// Version geladen wurde. Quelle: APP_VERSION/APP_BUILD_DATE (js/config.js).
+(function renderAppVersion() {
+  const el = document.getElementById('app-version-label');
+  if (el && typeof APP_VERSION !== 'undefined') {
+    el.textContent = 'Version: ' + APP_VERSION + ' · Build: ' + APP_BUILD_DATE;
+  }
+})();
 </script>
 </body>
 </html>

@@ -1,3 +1,10 @@
+// App-Version & Build-Datum: zentrale Anzeige in der Projektübersicht, damit beim
+// Testen über den iPhone-Home-Bildschirm erkennbar ist, ob die aktuellste Version
+// geladen wurde (siehe refresh-bar in index.html). Bei jedem relevanten Update
+// hier anpassen.
+const APP_VERSION = "v0.1.0-dev";
+const APP_BUILD_DATE = "2026-06-07";
+
 const GESCHOSS_OPTIONEN = [
   { name: 'KG',         label: 'Kellergeschoss',      icon: '⬇' },
   { name: '1.OG',       label: '1. Obergeschoss',     icon: '⬆' },

@@ -111,6 +111,8 @@ Hinweis: Die Datenstruktur `warmwasser` (Art, Speicher vorhanden, Speichervolume
 
 Hinweis Foto-Komprimierung: Neue Fotos werden vor dem Speichern skaliert und komprimiert, um localStorage, JSON-Export und spätere PDF-Berichte stabiler zu halten.
 
+Hinweis Versionsanzeige: In der Projektübersicht wird eine sichtbare App-Version samt Build-Datum angezeigt (`APP_VERSION`/`APP_BUILD_DATE` in `js/config.js`), damit beim Testen über den iPhone-Home-Bildschirm erkennbar ist, ob die aktuellste Version geladen wurde.
+
 ## Raumaufnahme & Heizlastanzeige (Aktualisierung)
 
 - Disto-Werte (Raummaße, lichte Höhe, Wandlängen, Fenster-, Tür-, Heizkörper-, Nischen-, Vorsprung- und Dachschrägen-/Gaubenmaße) werden einheitlich in Metern erfasst und angezeigt; Eingaben mit Komma oder Punkt (z.B. „1,20" oder „1.20") werden gleichermaßen als Meter interpretiert.
