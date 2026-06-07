@@ -160,3 +160,39 @@ Eine neue Funktion wird nur aufgenommen, wenn sie mindestens eines dieser Ziele 
 * sie verbessert die Nachvollziehbarkeit der Vor-Ort-Aufnahme
 
 Funktionen, die nur Komfort bieten oder technisch interessant sind, aber keinen dieser Punkte erfüllen, werden zurückgestellt.
+
+## Langfristige Produktvision
+
+Die Anwendung wird zunächst für Kurz Quadrat entwickelt. Kurz Quadrat ist der erste Nutzer und Pilotkunde. Ziel ist, den realen Arbeitsprozess eines Energieberaters bei der Vor-Ort-Erfassung deutlich zu verbessern.
+
+Langfristig kann aus der Anwendung ein Abo- oder SaaS-Produkt für andere Energieberater entstehen. Deshalb soll die Datenstruktur perspektivisch so gedacht werden, dass spätere Mandantenfähigkeit, Datenbanknutzung, projektübergreifende Analysen und ein kommerzieller Betrieb möglich bleiben.
+
+Version 1 bleibt bewusst lokal, einfach und anonymisiert. Eine zentrale Datenbank, Benutzerverwaltung, Cloud-Synchronisation und Mehrbenutzerbetrieb sind keine Ziele von Version 1.
+
+## Perspektive Datenbank und Analysen
+
+Für spätere Versionen soll geprüft werden:
+
+- zentrale oder mandantenfähige Projektdatenbank
+- Projektarchiv
+- projektübergreifende Auswertungen
+- Wiederverwendung typischer Wandaufbauten
+- Analyse häufiger Gebäudetypen und Baujahre
+- Auswertung typischer Heizungsanlagen und Sanierungsstände
+- Qualitätskontrolle über fehlende oder unplausible Daten
+- Kennzahlen zur Bearbeitungszeit und Projektart
+- Grundlage für ein Abo-/SaaS-Geschäftsmodell
+
+## SaaS-Anforderungen für spätere Versionen
+
+Für eine spätere Nutzung durch andere Energieberater wären zusätzlich erforderlich:
+
+- Benutzerkonten
+- Mandantenfähigkeit
+- Rollen- und Rechtemodell
+- DSGVO- und Datenschutzkonzept
+- Hosting- und Backup-Konzept
+- Lösch- und Exportkonzept
+- Abrechnung und Abo-Verwaltung
+- Support- und Onboarding-Prozess
+- Nutzungsbedingungen und rechtliche Rahmenbedingungen
