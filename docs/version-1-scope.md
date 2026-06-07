@@ -111,6 +111,14 @@ Hinweis: Die Datenstruktur `warmwasser` (Art, Speicher vorhanden, Speichervolume
 
 Hinweis Foto-Komprimierung: Neue Fotos werden vor dem Speichern skaliert und komprimiert, um localStorage, JSON-Export und spätere PDF-Berichte stabiler zu halten.
 
+## Raumaufnahme & Heizlastanzeige (Aktualisierung)
+
+- Disto-Werte (Raummaße, lichte Höhe, Wandlängen, Fenster-, Tür-, Heizkörper-, Nischen-, Vorsprung- und Dachschrägen-/Gaubenmaße) werden einheitlich in Metern erfasst und angezeigt; Eingaben mit Komma oder Punkt (z.B. „1,20" oder „1.20") werden gleichermaßen als Meter interpretiert.
+- Die separate Segment-2-Eingabe für Wandlängen wurde aus der Bedienoberfläche entfernt; je Wandrichtung gibt es ein eindeutiges Längenfeld. Vorhandene Alt-Daten in Segment-2-Feldern bleiben erhalten und fließen weiterhin in die Flächenberechnung ein (mit Hinweis in der Wandliste, falls vorhanden).
+- Wände erhalten neben der Einstufung Außenwand/Innenwand zusätzlich einen direkt erfassten „angrenzenden Bereich" (Außenluft, Erdreich, unbeheizter Raum, beheizter Raum, unbekannt) je Himmelsrichtung; dieser dient als Vorbelegung für die bestehende AW/IW-Heizlastlogik, ohne diese zu ersetzen.
+- Die Vor-Ort-Fotodokumentation eines Raumes umfasst nun zusätzlich ein allgemeines Raumfoto, je Wandrichtung ein Wandfoto sowie ein Foto je Tür - jeweils über die bestehende Foto-Komprimierung mit Vorschau, ohne KI-Fotoanalyse.
+- Die Heizlastanzeige zeigt die berechnete Heizlast (Φ_T) prominent in Watt an; Berechnungsdetails (Wandflächen/Volumen, U-Werte, ΔT, Bauteilbeiträge) sind ausklappbar, während Warnhinweise (z.B. fehlende U-Werte oder unklare Wandart) weiterhin standardmäßig sichtbar bleiben.
+
 ## Nicht Bestandteil Version 1
 
 - direkte Hottgenroth-Befüllung

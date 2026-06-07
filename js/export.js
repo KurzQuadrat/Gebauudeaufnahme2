@@ -17,13 +17,13 @@ function generateExportText(p) {
       if(r.aw_dicke)L('    AW: '+r.aw_dicke+' cm'+(r.aw_typ?' / '+r.aw_typ:'')+(r.aw_daemmung?' / gedammt':''));
       if(r.iw_dicke)L('    IW: '+r.iw_dicke+' cm'+(r.iw_typ?' / '+r.iw_typ:''));
       try{if(r.wand_n1||r.wand_o1){const geo=berechneRaumGeometrie(r);L('    A_Boden='+geo.A_boden.toFixed(2)+'m2 / V_Netto='+geo.V_netto.toFixed(2)+'m3');}}catch(e){}
-      if(r.fenster.length){L('    FENSTER ('+r.fenster.length+'):');r.fenster.forEach((f,fi)=>L('      F'+(fi+1)+': '+(f.breite&&f.hoehe?f.breite+'x'+f.hoehe:'-x-')+' cm'+(f.verglasung?' / '+f.verglasung:'')+(f.uw?' Uw='+f.uw:'')));}
-      if(r.tueren.length){L('    TUEREN ('+r.tueren.length+'):');r.tueren.forEach((t,ti)=>L('      T'+(ti+1)+': '+(t.breite&&t.hoehe?t.breite+'x'+t.hoehe:'-x-')+' cm / '+t.art));}
-      if(r.heizkoerper.length){L('    HEIZKOERPER ('+r.heizkoerper.length+'):');r.heizkoerper.forEach((hk,hi)=>L('      HK'+(hi+1)+': Typ '+hk.typ+(hk.breite&&hk.hoehe?' / '+hk.breite+'x'+hk.hoehe+' cm':'')+(hk.hersteller?' / '+hk.hersteller:'')+(hk.ventil_hersteller?' Ventil: '+hk.ventil_hersteller:'')+(hk.ventil_voreinstellung?' V='+hk.ventil_voreinstellung:'')));}
+      if(r.fenster.length){L('    FENSTER ('+r.fenster.length+'):');r.fenster.forEach((f,fi)=>L('      F'+(fi+1)+': '+(f.breite&&f.hoehe?f.breite+'x'+f.hoehe:'-x-')+' m'+(f.verglasung?' / '+f.verglasung:'')+(f.uw?' Uw='+f.uw:'')));}
+      if(r.tueren.length){L('    TUEREN ('+r.tueren.length+'):');r.tueren.forEach((t,ti)=>L('      T'+(ti+1)+': '+(t.breite&&t.hoehe?t.breite+'x'+t.hoehe:'-x-')+' m / '+t.art));}
+      if(r.heizkoerper.length){L('    HEIZKOERPER ('+r.heizkoerper.length+'):');r.heizkoerper.forEach((hk,hi)=>L('      HK'+(hi+1)+': Typ '+hk.typ+(hk.breite&&hk.hoehe?' / '+hk.breite+'x'+hk.hoehe+' m':'')+(hk.hersteller?' / '+hk.hersteller:'')+(hk.ventil_hersteller?' Ventil: '+hk.ventil_hersteller:'')+(hk.ventil_voreinstellung?' V='+hk.ventil_voreinstellung:'')));}
     });
   });
-  H('5. FENSTERLISTE'); let fn=1; p.geschosse.forEach(g=>g.raeume.forEach(r=>r.fenster.forEach(f=>L('  F'+(fn++)+': '+g.name+' / '+r.name+' | '+(f.breite&&f.hoehe?f.breite+'x'+f.hoehe:'-x-')+' | '+(f.verglasung||'-')+(f.uw?' Uw='+f.uw:'')))));
-  H('6. HEIZKOERPERLISTE'); let hn=1; p.geschosse.forEach(g=>g.raeume.forEach(r=>r.heizkoerper.forEach(hk=>L('  HK'+(hn++)+': '+g.name+' / '+r.name+' | Typ '+hk.typ+(hk.breite&&hk.hoehe?' | '+hk.breite+'x'+hk.hoehe:'')+(hk.hersteller?' | '+hk.hersteller:'')+(hk.ventil_hersteller?' Ventil: '+hk.ventil_hersteller:'')+(hk.ventil_voreinstellung?' V='+hk.ventil_voreinstellung:'')))));
+  H('5. FENSTERLISTE'); let fn=1; p.geschosse.forEach(g=>g.raeume.forEach(r=>r.fenster.forEach(f=>L('  F'+(fn++)+': '+g.name+' / '+r.name+' | '+(f.breite&&f.hoehe?f.breite+'x'+f.hoehe:'-x-')+' m | '+(f.verglasung||'-')+(f.uw?' Uw='+f.uw:'')))));
+  H('6. HEIZKOERPERLISTE'); let hn=1; p.geschosse.forEach(g=>g.raeume.forEach(r=>r.heizkoerper.forEach(hk=>L('  HK'+(hn++)+': '+g.name+' / '+r.name+' | Typ '+hk.typ+(hk.breite&&hk.hoehe?' | '+hk.breite+'x'+hk.hoehe+' m':'')+(hk.hersteller?' | '+hk.hersteller:'')+(hk.ventil_hersteller?' Ventil: '+hk.ventil_hersteller:'')+(hk.ventil_voreinstellung?' V='+hk.ventil_voreinstellung:'')))));
   H('7. CHECKLISTE'); [['Baujahr',!!p.baujahr],['Heizanlage',!!p.heizanlage.typ],['PLZ',!!p.plz],['Geschosse',p.geschosse.length>0],['Alle Deckenhoehen',p.geschosse.every(g=>g.raeume.every(r=>r.deckenhoehe))]].forEach(([l,ok])=>L('  '+(ok?'OK':'XX')+' '+l));
   return out;
 }

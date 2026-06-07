@@ -190,6 +190,19 @@ Fehler werden in folgender Reihenfolge priorisiert:
 
 ---
 
+## KI-008: Uneinheitliche Maßeinheiten in der Raumaufnahme (cm/m gemischt) und verwirrender Heizlast-Override
+
+* Status: behoben
+* Priorität: Verwechslungsgefahr bei der Eingabe / unklare Heizlast-Eingaben
+* Bereich: Raumaufnahme / Heizlastanzeige (`index.html`, `js/heizlast.js`, `js/export.js`, `js/state.js`)
+* Blockiert Nutzung: nein, führte aber zu Verwechslungsgefahr zwischen cm- und m-Eingaben (Disto liefert durchgehend Meterwerte) und zu einer schwer verständlichen Override-Eingabe im Raum
+* Tatsächliches Verhalten (vor der Korrektur):
+  Disto-/Lasermesswerte wurden je nach Feld unterschiedlich interpretiert: Wandlängen bereits als Meter (siehe KI-005), Fenster-, Tür-, Heizkörper-, Nischen-, Vorsprung- und Dachschrägen-/Gaubenmaße dagegen weiterhin mit „cm"-Beschriftung und Umrechnung über `cm()` (Division durch 100) ausgewertet – obwohl auch hier durchgehend Meterwerte vom Messgerät kommen bzw. eingegeben werden. Zusätzlich enthielt die Raumansicht einen schwer verständlichen Block „Heizlast-Override (Raum)" mit der Eingabe „Temperatur unbeheizter angrenzender Bereich", dessen Wirkung in der Praxis unklar war. Außerdem gab es je Wandrichtung zwei Längenfelder („Segment 1"/„Segment 2"), was die Eingabe unnötig verkomplizierte.
+* Behebung:
+  Alle Disto-gemessenen Felder der Raumaufnahme (Fenster-, Tür-, Heizkörper-, Nischen-, Vorsprung- und Dachschrägen-/Gaubenmaße) werden jetzt einheitlich als Meterwerte erfasst und angezeigt (UI-Beschriftung „m", Eingabe mit Komma oder Punkt wird über `parseMesswert()`/`meter()` gleich behandelt; siehe `js/heizlast.js`, `index.html`, `js/export.js`). Die Wandlängen-Eingabe wurde auf ein eindeutiges Längenfeld je Himmelsrichtung reduziert (`renderWandlaengen()`); vorhandene Alt-Werte in den bisherigen Segment-2-Feldern (`wand_*2`) bleiben unverändert erhalten und fließen weiterhin in die Flächenberechnung ein – mit einem sichtbaren Hinweis in der Wandliste, falls solche Alt-Daten vorhanden sind (kein Datenverlust). Der verwirrende Block „Heizlast-Override (Raum)" wurde aus der Bedienoberfläche entfernt; die zugrundeliegende Datenstruktur (`r.heizlastOverrides.tempUnbeheizt`) bleibt bestehen und wird weiterhin in der Heizlast-Prioritätskette berücksichtigt, falls Altwerte vorhanden sind. Zusätzlich wurde je Wandrichtung ein direkt erfassbarer „angrenzender Bereich" (`wand_*_grenzt`: Außenluft/Erdreich/unbeheizter Raum/beheizter Raum/unbekannt) ergänzt, der als Vorbelegung für die bestehende AW/IW-Heizlastauswahl dient (`wandGrenztDefault()`), ohne die bestehende Berechnungsmethodik zu ändern.
+* Hinweis zur Datenmigration:
+  Es wurde **keine automatische Massenmigration** bestehender Werte durchgeführt – die Anwendung war zum Zeitpunkt der Korrektur nicht produktiv im Einsatz und enthielt ausschließlich Testwerte (vom Nutzer bestätigt), sodass eine vollständige Umstellung auf Meter ohne Altdaten-Risiko möglich war. Es wurden keine Daten gelöscht.
+
 ## Noch nicht bewertete Themen
 
 * Fotoanalyse ist im Code vorhanden, wurde aber noch nicht aktiv genutzt oder fachlich getestet.

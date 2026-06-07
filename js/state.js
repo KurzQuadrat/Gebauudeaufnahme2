@@ -55,10 +55,17 @@ function load() {
         if (r.kundenwunschTemperatur === undefined) r.kundenwunschTemperatur = '';
         ['wand_n1','wand_n2','wand_o1','wand_o2','wand_s1','wand_s2','wand_w1','wand_w2',
          'wand_n_art','wand_o_art','wand_s_art','wand_w_art',
+         'wand_n_grenzt','wand_o_grenzt','wand_s_grenzt','wand_w_grenzt',
          'vsp_n_b','vsp_n_t','vsp_o_b','vsp_o_t','vsp_s_b','vsp_s_t','vsp_w_b','vsp_w_t',
          'sch_kniestock','sch_winkel','sch_richtung','gaube_breite','gaube_lichtehoehe'].forEach(f => {
           if (r[f] === undefined) r[f] = f === 'sch_richtung' ? 'N' : '';
         });
+        // Fotos: allgemeines Raumfoto sowie Wandfotos je Himmelsrichtung defensiv ergänzen
+        // (Teil der Vor-Ort-Dokumentation, nutzen die bestehende Foto-Komprimierung).
+        if (r.raumFoto === undefined) r.raumFoto = null;
+        ['wand_n_foto','wand_o_foto','wand_s_foto','wand_w_foto'].forEach(f => { if (r[f] === undefined) r[f] = null; });
+        // Türfotos defensiv ergänzen (gleicher Bedienansatz wie Fensterfoto)
+        (r.tueren || []).forEach(t => { if (t.foto === undefined) t.foto = null; });
         // Nieschen: Wandzuordnung defensiv ergänzen (bestehende Nieschen bleiben ohne Zuordnung nutzbar)
         (r.nieschen || []).forEach(ni => { if (ni.wand === undefined) ni.wand = ''; });
         // Vorsprünge: von gerichteten Einzelwerten (vsp_n_b/_t ...) in eine Liste überführen,

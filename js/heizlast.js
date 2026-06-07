@@ -48,20 +48,22 @@ function berechneRaumGeometrie(r) {
   const A_wand_iw = wandKlass.filter(w => w.art === 'IW').reduce((s,w) => s + w.A, 0);
   const A_wand_unbekannt = wandKlass.filter(w => w.art !== 'AW' && w.art !== 'IW').reduce((s,w) => s + w.A, 0);
 
-  // Öffnungen (cm → m²)
-  const A_fenster = (r.fenster||[]).reduce((s,f) => s + cm(f.breite)*cm(f.hoehe), 0);
-  const A_tuer_aussen = (r.tueren||[]).filter(t=>t.art==='aussen'||t.art==='keller').reduce((s,t) => s + cm(t.breite)*cm(t.hoehe), 0);
-  const A_tuer_innen  = (r.tueren||[]).filter(t=>t.art!=='aussen'&&t.art!=='keller').reduce((s,t) => s + cm(t.breite)*cm(t.hoehe), 0);
+  // Öffnungen: Disto liefert Meterwerte (z.B. "1.20" = 1,20 m) - keine cm-Umrechnung
+  // (siehe known-issues: Einheiten von Fenster/Tür/Heizkörper/Nischen/Vorsprüngen/
+  // Dachschräge/Gaube wurden auf Meter vereinheitlicht).
+  const A_fenster = (r.fenster||[]).reduce((s,f) => s + meter(f.breite)*meter(f.hoehe), 0);
+  const A_tuer_aussen = (r.tueren||[]).filter(t=>t.art==='aussen'||t.art==='keller').reduce((s,t) => s + meter(t.breite)*meter(t.hoehe), 0);
+  const A_tuer_innen  = (r.tueren||[]).filter(t=>t.art!=='aussen'&&t.art!=='keller').reduce((s,t) => s + meter(t.breite)*meter(t.hoehe), 0);
 
-  // Nieschen-Volumen: Σ(B×H×T)
-  const V_nieschen = (r.nieschen||[]).reduce((s,ni) => s + cm(ni.breite)*cm(ni.hoehe)*cm(ni.tiefe), 0);
+  // Nieschen-Volumen: Σ(B×H×T) - Meterwerte
+  const V_nieschen = (r.nieschen||[]).reduce((s,ni) => s + meter(ni.breite)*meter(ni.hoehe)*meter(ni.tiefe), 0);
 
-  // Vorsprünge-Fläche: Σ(B×T) über alle Vorsprünge, Volumen × h
-  const A_vsp = (r.vorspruenge||[]).reduce((s,v) => s + cm(v.breite)*cm(v.tiefe), 0);
+  // Vorsprünge-Fläche: Σ(B×T) über alle Vorsprünge, Volumen × h - Meterwerte
+  const A_vsp = (r.vorspruenge||[]).reduce((s,v) => s + meter(v.breite)*meter(v.tiefe), 0);
   const V_vorsprunge = A_vsp * h;
 
-  // Schräge: Excel B63 = ((h−kniestock)² × tan(α)) / 2
-  const kniestock = cm(r.sch_kniestock);
+  // Schräge: Excel B63 = ((h−kniestock)² × tan(α)) / 2 - Kniestock in Meter
+  const kniestock = meter(r.sch_kniestock);
   const winkel    = parseFloat(r.sch_winkel) || 0;
   const richtung  = r.sch_richtung || 'N';
   let A_schraege_proj = 0, A_schraege_real = 0, V_schraege = 0;
@@ -78,8 +80,8 @@ function berechneRaumGeometrie(r) {
 
   // Gaube-Volumen: Excel E59 = (((C51−B47)×(tan(α)×(h−B47)))/2)×B51
   let V_gaube = 0;
-  const gaube_b = cm(r.gaube_breite);
-  const gaube_h = cm(r.gaube_lichtehoehe);
+  const gaube_b = meter(r.gaube_breite);
+  const gaube_h = meter(r.gaube_lichtehoehe);
   if (gaube_b>0 && gaube_h>0 && kniestock>0 && winkel>0 && h>kniestock) {
     const tanA = Math.tan(winkel * Math.PI / 180);
     V_gaube = (((gaube_h - kniestock) * (tanA * (h - kniestock))) / 2) * gaube_b;
@@ -95,6 +97,21 @@ function berechneRaumGeometrie(r) {
            A_schraege_proj, A_schraege_real,
            A_vsp, V_nieschen, V_vorsprunge, V_schraege, V_gaube,
            V_brutto, V_abzgl, V_zusaetzl, V_netto };
+}
+
+// Liefert für eine Wandart ('AW'/'IW') den direkt erfassten "angrenzenden Bereich"
+// (wand_*_grenzt) der ersten passenden Wandrichtung mit gesetztem Wert - als
+// Vorbelegungs-Vorschlag für die aggregierte U-Wert/Heizlast-Auswahl. Rein
+// informativ abgeleitet aus der neuen, granuleren Wanderfassung; baut KEINE
+// neue, eigenständige Heizlastmethodik (die bestehende AW/IW-Berechnung mit
+// fester Bauteilgruppen-Auswahl bleibt unverändert führend).
+function wandGrenztDefault(r, art) {
+  const dirs = [['n','wand_n_art','wand_n_grenzt'],['o','wand_o_art','wand_o_grenzt'],
+                ['s','wand_s_art','wand_s_grenzt'],['w','wand_w_art','wand_w_grenzt']];
+  for (const [,artKey,grenztKey] of dirs) {
+    if (r[artKey] === art && r[grenztKey]) return r[grenztKey];
+  }
+  return null;
 }
 
 // ============================================================
