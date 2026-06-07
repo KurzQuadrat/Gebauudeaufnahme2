@@ -1,9 +1,80 @@
+// ============================================================
+//  FOTO-KOMPRIMIERUNG (vor dem Speichern in state/localStorage)
+// ============================================================
+// Verkleinert ein aufgenommenes Foto auf eine maximale Kantenlänge
+// und kodiert es als JPEG mit reduzierter Qualität, um die Größe
+// in localStorage, JSON-Export und künftigen PDF-Berichten zu senken.
+// Gibt ein Promise<string> mit der komprimierten Daten-URL zurück.
+function compressImageFile(file, options = {}) {
+  const maxEdge = options.maxEdge || 1280;
+  const quality = (options.quality !== undefined) ? options.quality : 0.7;
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Datei konnte nicht gelesen werden'));
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('Bild konnte nicht geladen werden'));
+      img.onload = () => {
+        try {
+          let width = img.naturalWidth || img.width;
+          let height = img.naturalHeight || img.height;
+          if (!width || !height) { reject(new Error('Ungültige Bildabmessungen')); return; }
+          if (width > maxEdge || height > maxEdge) {
+            if (width >= height) {
+              height = Math.round(height * (maxEdge / width));
+              width = maxEdge;
+            } else {
+              width = Math.round(width * (maxEdge / height));
+              height = maxEdge;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) { reject(new Error('Canvas-Kontext nicht verfügbar')); return; }
+          ctx.drawImage(img, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL('image/jpeg', quality);
+          if (!dataUrl || dataUrl === 'data:,') { reject(new Error('Komprimierung lieferte kein Bild')); return; }
+          resolve(dataUrl);
+        } catch (err) {
+          reject(err);
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// Liefert eine speicherbare Foto-Daten-URL: versucht zu komprimieren,
+// fällt bei Fehlern auf das unveränderte Original zurück (kein stiller
+// Datenverlust), informiert den Nutzer dabei per Toast.
+async function getStorablePhoto(file) {
+  try {
+    return await compressImageFile(file);
+  } catch (e) {
+    showToast('Komprimierung fehlgeschlagen – Original wird gespeichert (' + e.message + ')');
+    return await new Promise((resolve, reject) => {
+      const rd = new FileReader();
+      rd.onerror = () => reject(new Error('Foto konnte nicht gelesen werden'));
+      rd.onload = (ev) => resolve(ev.target.result);
+      rd.readAsDataURL(file);
+    });
+  }
+}
+
 function handleFoto(input, key) {
   const file = input.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    const b64 = e.target.result;
+  (async () => {
+    let b64;
+    try {
+      b64 = await getStorablePhoto(file);
+    } catch (e) {
+      showToast('Foto konnte nicht verarbeitet werden: ' + e.message);
+      return;
+    }
     if (key === 'heizanlage') {
       const p = getProjekt();
       p.heizanlage_foto = b64;
@@ -25,8 +96,7 @@ function handleFoto(input, key) {
     }
     const cb = window._fotoCallback;
     if (cb) { cb(b64); window._fotoCallback = null; }
-  };
-  reader.readAsDataURL(file);
+  })();
 }
 
 function showAnalyzing(on) {
