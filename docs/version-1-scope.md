@@ -53,6 +53,12 @@ Je Wand sollen erfasst werden können:
 - Foto
 - Notiz
 
+Hinweis: In der Wandlängen-Erfassung je Raum kann zu jeder Himmelsrichtung (N/O/S/W) zusätzlich eine AW/IW-Klassifizierung ("Außenwand"/"Innenwand"/unbekannt) hinterlegt werden. Bestehende Räume erhalten dabei defensiv den Wert "unbekannt", bis die Klassifizierung nachgetragen wird.
+
+Hinweis Raumdetails: Norm-Solltemperatur und Kundenwunsch-Temperatur können je Raum erfasst werden (reine Erfassungsfelder, ohne eigene Berechnungslogik in Version 1).
+
+Hinweis Layout Vorsprünge/Dachschräge/Gaube (Raum): Diese Bereiche bestehen aus geometrischen Disto-Einzelwerten je Himmelsrichtung bzw. Bauteil, die direkt in die Flächen-/Heizlastberechnung (`berechneRaumGeometrie`) einfließen. Eine Umstellung auf das Listen-/Karten-Muster wie bei Fenster, Türen oder Heizkörpern (Array mit Hinzufügen/Löschen einzelner Einträge) würde eine größere Umstrukturierung des Datenmodells und der Berechnungslogik erfordern und wurde daher bewusst nicht vorgenommen. Stattdessen wurde nur das Layout (Karte mit Abschnittskopf und Aktionsbutton) an die übrigen Bauteilbereiche angeglichen. Die Geschoss-Gauben (`g.gauben[]`) bleiben davon unabhängig eine eigene Liste.
+
 ## Pflichtbauteile je Raum
 
 - Fenster

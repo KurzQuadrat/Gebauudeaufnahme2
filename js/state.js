@@ -35,7 +35,10 @@ function load() {
         if (!r.nieschen) r.nieschen = [];
         if (!r.u_werte) r.u_werte = {};
         if (!r.grenzt_an) r.grenzt_an = {};
+        if (r.normSolltemperatur === undefined) r.normSolltemperatur = '';
+        if (r.kundenwunschTemperatur === undefined) r.kundenwunschTemperatur = '';
         ['wand_n1','wand_n2','wand_o1','wand_o2','wand_s1','wand_s2','wand_w1','wand_w2',
+         'wand_n_art','wand_o_art','wand_s_art','wand_w_art',
          'vsp_n_b','vsp_n_t','vsp_o_b','vsp_o_t','vsp_s_b','vsp_s_t','vsp_w_b','vsp_w_t',
          'sch_kniestock','sch_winkel','sch_richtung','gaube_breite','gaube_lichtehoehe'].forEach(f => {
           if (r[f] === undefined) r[f] = f === 'sch_richtung' ? 'N' : '';

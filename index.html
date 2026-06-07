@@ -476,6 +476,16 @@
           <span style="font-size:13px; color:#0051a2;">°C</span>
         </div>
       </div>
+      <div class="form-row" style="margin-top:12px;">
+        <div class="form-group">
+          <label>Norm-Solltemperatur (°C)</label>
+          <input type="number" step="0.5" id="r-normsoll" placeholder="z.B. 20" oninput="saveRaumField('normSolltemperatur', this.value)">
+        </div>
+        <div class="form-group">
+          <label>Kundenwunsch-Temperatur (°C)</label>
+          <input type="number" step="0.5" id="r-kundenwunschtemp" placeholder="z.B. 22" oninput="saveRaumField('kundenwunschTemperatur', this.value)">
+        </div>
+      </div>
     </div>
 
     <!-- Maße -->
@@ -483,7 +493,7 @@
       <div class="card-title">Maße <span style="color:var(--primary); font-size:11px; font-weight:400;">← Disto</span></div>
       <div class="form-row">
         <div class="form-group">
-          <label>Deckenhöhe (m)</label>
+          <label>lichte Höhe (m)</label>
           <input type="number" step="0.01" class="disto-input" id="r-deckenhoehe" placeholder="z.B. 2.55" oninput="saveRaumField('deckenhoehe', this.value)">
         </div>
         <div class="form-group">
@@ -500,6 +510,37 @@
           </select>
         </div>
       </div>
+    </div>
+
+    <!-- Wandlängen -->
+    <div class="card">
+      <div class="card-title">Wandlängen <span style="color:var(--primary);font-size:11px;font-weight:400;">← Disto (cm)</span></div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <thead><tr>
+          <th style="text-align:left;padding:4px 0;color:var(--text-sec);font-weight:500;width:40px;"></th>
+          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Segment 1</th>
+          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Segment 2</th>
+          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Art</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:4px 0;font-weight:600;">N</td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wn1" placeholder="cm" oninput="saveRaumField('wand_n1',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wn2" placeholder="cm" oninput="saveRaumField('wand_n2',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><select id="r-wand-art-n" onchange="saveRaumField('wand_n_art',this.value)" style="padding:8px;"><option value="">?</option><option value="AW">AW</option><option value="IW">IW</option></select></td></tr>
+          <tr><td style="padding:4px 0;font-weight:600;">O</td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wo1" placeholder="cm" oninput="saveRaumField('wand_o1',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wo2" placeholder="cm" oninput="saveRaumField('wand_o2',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><select id="r-wand-art-o" onchange="saveRaumField('wand_o_art',this.value)" style="padding:8px;"><option value="">?</option><option value="AW">AW</option><option value="IW">IW</option></select></td></tr>
+          <tr><td style="padding:4px 0;font-weight:600;">S</td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ws1" placeholder="cm" oninput="saveRaumField('wand_s1',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ws2" placeholder="cm" oninput="saveRaumField('wand_s2',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><select id="r-wand-art-s" onchange="saveRaumField('wand_s_art',this.value)" style="padding:8px;"><option value="">?</option><option value="AW">AW</option><option value="IW">IW</option></select></td></tr>
+          <tr><td style="padding:4px 0;font-weight:600;">W</td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ww1" placeholder="cm" oninput="saveRaumField('wand_w1',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ww2" placeholder="cm" oninput="saveRaumField('wand_w2',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><select id="r-wand-art-w" onchange="saveRaumField('wand_w_art',this.value)" style="padding:8px;"><option value="">?</option><option value="AW">AW</option><option value="IW">IW</option></select></td></tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- Außenwand -->
@@ -532,106 +573,6 @@
       </div>
     </div>
 
-    <!-- Wandlängen -->
-    <div class="card">
-      <div class="card-title">Wandlängen <span style="color:var(--primary);font-size:11px;font-weight:400;">← Disto (cm)</span></div>
-      <table style="width:100%;border-collapse:collapse;font-size:14px;">
-        <thead><tr>
-          <th style="text-align:left;padding:4px 0;color:var(--text-sec);font-weight:500;width:40px;"></th>
-          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Segment 1</th>
-          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Segment 2</th>
-        </tr></thead>
-        <tbody>
-          <tr><td style="padding:4px 0;font-weight:600;">N</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wn1" placeholder="cm" oninput="saveRaumField('wand_n1',this.value)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wn2" placeholder="cm" oninput="saveRaumField('wand_n2',this.value)" style="padding:8px;"></td></tr>
-          <tr><td style="padding:4px 0;font-weight:600;">O</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wo1" placeholder="cm" oninput="saveRaumField('wand_o1',this.value)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wo2" placeholder="cm" oninput="saveRaumField('wand_o2',this.value)" style="padding:8px;"></td></tr>
-          <tr><td style="padding:4px 0;font-weight:600;">S</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ws1" placeholder="cm" oninput="saveRaumField('wand_s1',this.value)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ws2" placeholder="cm" oninput="saveRaumField('wand_s2',this.value)" style="padding:8px;"></td></tr>
-          <tr><td style="padding:4px 0;font-weight:600;">W</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ww1" placeholder="cm" oninput="saveRaumField('wand_w1',this.value)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ww2" placeholder="cm" oninput="saveRaumField('wand_w2',this.value)" style="padding:8px;"></td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Nieschen -->
-    <div class="card">
-      <div class="section-header">
-        <div class="section-title">Nieschen</div>
-        <button class="btn btn-sm btn-secondary" onclick="addNiesche()">+ Hinzufügen</button>
-      </div>
-      <div id="nieschen-list"></div>
-      <div id="nieschen-leer" style="color:var(--text-sec);font-size:14px;padding:4px 0;">Keine Nieschen</div>
-    </div>
-
-    <!-- Vorsprünge (optional) -->
-    <button class="btn btn-secondary btn-full" id="r-vsp-toggle-btn" onclick="toggleRaumSection('vsp')" style="margin-bottom:12px; text-align:left; justify-content:flex-start; gap:10px;">
-      <span style="font-size:18px; line-height:1;">+</span> Vorsprünge erfassen
-    </button>
-    <div class="card" id="r-vsp-card" style="display:none;">
-      <div class="card-title">Vorsprünge <span style="color:var(--primary);font-size:11px;font-weight:400;">← Disto (cm)</span></div>
-      <table style="width:100%;border-collapse:collapse;font-size:14px;">
-        <thead><tr>
-          <th style="text-align:left;padding:4px 0;color:var(--text-sec);font-weight:500;width:40px;"></th>
-          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Breite (cm)</th>
-          <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Tiefe (cm)</th>
-        </tr></thead>
-        <tbody>
-          <tr><td style="padding:4px 0;font-weight:600;">N</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspnb" placeholder="cm" oninput="saveRaumField('vsp_n_b',this.value)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspnt" placeholder="cm" oninput="saveRaumField('vsp_n_t',this.value)" style="padding:8px;"></td></tr>
-          <tr><td style="padding:4px 0;font-weight:600;">O</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspob" placeholder="cm" oninput="saveRaumField('vsp_o_b',this.value)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspot" placeholder="cm" oninput="saveRaumField('vsp_o_t',this.value)" style="padding:8px;"></td></tr>
-          <tr><td style="padding:4px 0;font-weight:600;">S</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspsb" placeholder="cm" oninput="saveRaumField('vsp_s_b',this.value)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspst" placeholder="cm" oninput="saveRaumField('vsp_s_t',this.value)" style="padding:8px;"></td></tr>
-          <tr><td style="padding:4px 0;font-weight:600;">W</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspwb" placeholder="cm" oninput="saveRaumField('vsp_w_b',this.value)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspwt" placeholder="cm" oninput="saveRaumField('vsp_w_t',this.value)" style="padding:8px;"></td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Schräge & Gaube (Raum, optional) -->
-    <button class="btn btn-secondary btn-full" id="r-schraege-toggle-btn" onclick="toggleRaumSection('schraege')" style="margin-bottom:12px; text-align:left; justify-content:flex-start; gap:10px;">
-      <span style="font-size:18px; line-height:1;">+</span> 🔺 Dachschräge / Gaube
-    </button>
-    <div class="card" id="r-schraege-card" style="display:none;">
-      <div class="card-title">🔺 Dachschräge (Raum)</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Kniestock (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
-          <input type="number" class="disto-input" id="r-sch-kniestock" placeholder="cm" oninput="saveRaumField('sch_kniestock',this.value)">
-        </div>
-        <div class="form-group">
-          <label>Neigung (°)</label>
-          <input type="number" id="r-sch-winkel" placeholder="z.B. 35" oninput="saveRaumField('sch_winkel',this.value)">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Schräge zeigt nach</label>
-          <select id="r-sch-richtung" onchange="saveRaumField('sch_richtung',this.value)">
-            <option value="N">Nord</option><option value="O">Ost</option>
-            <option value="S">Süd</option><option value="W">West</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Gaube Breite (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
-          <input type="number" class="disto-input" id="r-gaube-b" placeholder="cm" oninput="saveRaumField('gaube_breite',this.value)">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Gaube lichte Höhe (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
-        <input type="number" class="disto-input" id="r-gaube-h" placeholder="cm" oninput="saveRaumField('gaube_lichtehoehe',this.value)">
-      </div>
-    </div>
-
     <!-- Innenwand -->
     <div class="card">
       <div class="card-title">Innenwand</div>
@@ -655,16 +596,6 @@
       </div>
     </div>
 
-    <!-- Fenster -->
-    <div class="card">
-      <div class="section-header">
-        <div class="section-title">Fenster</div>
-        <span class="section-count" id="fenster-count">0</span>
-      </div>
-      <div id="fenster-list"></div>
-      <button class="btn btn-secondary btn-full" onclick="addFenster()" style="margin-top:8px;">+ Fenster hinzufügen</button>
-    </div>
-
     <!-- Türen -->
     <div class="card">
       <div class="section-header">
@@ -675,6 +606,16 @@
       <button class="btn btn-secondary btn-full" onclick="addTuer()" style="margin-top:8px;">+ Tür hinzufügen</button>
     </div>
 
+    <!-- Fenster -->
+    <div class="card">
+      <div class="section-header">
+        <div class="section-title">Fenster</div>
+        <span class="section-count" id="fenster-count">0</span>
+      </div>
+      <div id="fenster-list"></div>
+      <button class="btn btn-secondary btn-full" onclick="addFenster()" style="margin-top:8px;">+ Fenster hinzufügen</button>
+    </div>
+
     <!-- Heizkörper -->
     <div class="card">
       <div class="section-header">
@@ -683,6 +624,84 @@
       </div>
       <div id="hk-list"></div>
       <button class="btn btn-secondary btn-full" onclick="addHK()" style="margin-top:8px;">+ Heizkörper hinzufügen</button>
+    </div>
+
+    <!-- Nieschen -->
+    <div class="card">
+      <div class="section-header">
+        <div class="section-title">Nieschen</div>
+        <button class="btn btn-sm btn-secondary" onclick="addNiesche()">+ Hinzufügen</button>
+      </div>
+      <div id="nieschen-list"></div>
+      <div id="nieschen-leer" style="color:var(--text-sec);font-size:14px;padding:4px 0;">Keine Nieschen</div>
+    </div>
+
+    <!-- Vorsprünge (optional, geometrische Disto-Einzelwerte je Himmelsrichtung – fließen direkt in berechneRaumGeometrie ein, daher keine Listen-/Karten-Struktur wie bei Fenster/Türen) -->
+    <div class="card">
+      <div class="section-header">
+        <div class="section-title">Vorsprünge <span style="color:var(--primary);font-size:11px;font-weight:400;">← Disto (cm)</span></div>
+        <button class="btn btn-sm btn-secondary" id="r-vsp-toggle-btn" onclick="toggleRaumSection('vsp')">+ Erfassen</button>
+      </div>
+      <div id="r-vsp-card" style="display:none; margin-top:10px;">
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          <thead><tr>
+            <th style="text-align:left;padding:4px 0;color:var(--text-sec);font-weight:500;width:40px;"></th>
+            <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Breite (cm)</th>
+            <th style="padding:4px 6px;color:var(--text-sec);font-weight:500;">Tiefe (cm)</th>
+          </tr></thead>
+          <tbody>
+            <tr><td style="padding:4px 0;font-weight:600;">N</td>
+              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspnb" placeholder="cm" oninput="saveRaumField('vsp_n_b',this.value)" style="padding:8px;"></td>
+              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspnt" placeholder="cm" oninput="saveRaumField('vsp_n_t',this.value)" style="padding:8px;"></td></tr>
+            <tr><td style="padding:4px 0;font-weight:600;">O</td>
+              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspob" placeholder="cm" oninput="saveRaumField('vsp_o_b',this.value)" style="padding:8px;"></td>
+              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspot" placeholder="cm" oninput="saveRaumField('vsp_o_t',this.value)" style="padding:8px;"></td></tr>
+            <tr><td style="padding:4px 0;font-weight:600;">S</td>
+              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspsb" placeholder="cm" oninput="saveRaumField('vsp_s_b',this.value)" style="padding:8px;"></td>
+              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspst" placeholder="cm" oninput="saveRaumField('vsp_s_t',this.value)" style="padding:8px;"></td></tr>
+            <tr><td style="padding:4px 0;font-weight:600;">W</td>
+              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspwb" placeholder="cm" oninput="saveRaumField('vsp_w_b',this.value)" style="padding:8px;"></td>
+              <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-vspwt" placeholder="cm" oninput="saveRaumField('vsp_w_t',this.value)" style="padding:8px;"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Dachschräge / Gaube (Raum, optional, geometrische Disto-Einzelwerte – fließen direkt in berechneRaumGeometrie ein, daher keine Listen-/Karten-Struktur wie bei Fenster/Türen; die Geschoss-Gauben g.gauben[] bleiben eine eigene, davon unabhängige Liste) -->
+    <div class="card">
+      <div class="section-header">
+        <div class="section-title">🔺 Dachschräge / Gaube (Raum)</div>
+        <button class="btn btn-sm btn-secondary" id="r-schraege-toggle-btn" onclick="toggleRaumSection('schraege')">+ Erfassen</button>
+      </div>
+      <div id="r-schraege-card" style="display:none; margin-top:10px;">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Kniestock (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
+            <input type="number" class="disto-input" id="r-sch-kniestock" placeholder="cm" oninput="saveRaumField('sch_kniestock',this.value)">
+          </div>
+          <div class="form-group">
+            <label>Neigung (°)</label>
+            <input type="number" id="r-sch-winkel" placeholder="z.B. 35" oninput="saveRaumField('sch_winkel',this.value)">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Schräge zeigt nach</label>
+            <select id="r-sch-richtung" onchange="saveRaumField('sch_richtung',this.value)">
+              <option value="N">Nord</option><option value="O">Ost</option>
+              <option value="S">Süd</option><option value="W">West</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Gaube Breite (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
+            <input type="number" class="disto-input" id="r-gaube-b" placeholder="cm" oninput="saveRaumField('gaube_breite',this.value)">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Gaube lichte Höhe (cm) <span style="color:var(--primary);font-size:11px;">Disto</span></label>
+          <input type="number" class="disto-input" id="r-gaube-h" placeholder="cm" oninput="saveRaumField('gaube_lichtehoehe',this.value)">
+        </div>
+      </div>
     </div>
 
     <!-- Flächen & Heizlast -->
@@ -958,10 +977,12 @@ function addRaum() {
     id: uuid(), name: 'Raum ' + n,
     nutzung: '', beheizt: true,
     deckenhoehe: '', bodenbelag: '',
+    normSolltemperatur: '', kundenwunschTemperatur: '',
     aw_dicke: '', aw_typ: '', aw_daemmung: false, aw_notiz: '',
     iw_dicke: last.dicke || '', iw_typ: last.typ || '',
     wand_n1:'', wand_n2:'', wand_o1:'', wand_o2:'',
     wand_s1:'', wand_s2:'', wand_w1:'', wand_w2:'',
+    wand_n_art:'', wand_o_art:'', wand_s_art:'', wand_w_art:'',
     vsp_n_b:'', vsp_n_t:'', vsp_o_b:'', vsp_o_t:'',
     vsp_s_b:'', vsp_s_t:'', vsp_w_b:'', vsp_w_t:'',
     sch_kniestock: (g.isDG||g.name==='DG') ? (g.dach_kniestock||'') : '',
@@ -1207,9 +1228,11 @@ function renderRaumView() {
   const chk=(id,v)=>{const el=document.getElementById(id);if(el)el.checked=!!v;};
   set('r-name',r.name);set('r-nutzung',r.nutzung);chk('r-beheizt',r.beheizt!==false);
   set('r-deckenhoehe',r.deckenhoehe);set('r-boden',r.bodenbelag);
+  set('r-normsoll',r.normSolltemperatur);set('r-kundenwunschtemp',r.kundenwunschTemperatur);
   set('r-aw-dicke',r.aw_dicke);set('r-aw-typ',r.aw_typ);chk('r-aw-daemmung',r.aw_daemmung);set('r-aw-notiz',r.aw_notiz);
   set('r-iw-dicke',r.iw_dicke);set('r-iw-typ',r.iw_typ);
   ['n1','n2','o1','o2','s1','s2','w1','w2'].forEach(k=>{const el=document.getElementById('r-w'+k);if(el)el.value=r['wand_'+k]||'';});
+  ['n','o','s','w'].forEach(d=>{const el=document.getElementById('r-wand-art-'+d);if(el)el.value=r['wand_'+d+'_art']||'';});
   ['nb','nt','ob','ot','sb','st','wb','wt'].forEach(k=>{const el=document.getElementById('r-vsp'+k);if(el)el.value=r['vsp_'+k[0]+'_'+k[1]]||'';});
   set('r-sch-kniestock',r.sch_kniestock);set('r-sch-winkel',r.sch_winkel);const scR=document.getElementById('r-sch-richtung');if(scR)scR.value=r.sch_richtung||'N';
   set('r-gaube-b',r.gaube_breite);set('r-gaube-h',r.gaube_lichtehoehe);
@@ -1223,17 +1246,13 @@ function renderRaumView() {
   const hasVsp=['n_b','n_t','o_b','o_t','s_b','s_t','w_b','w_t'].some(k=>r['vsp_'+k]);
   const vspCard=document.getElementById('r-vsp-card'),vspBtn=document.getElementById('r-vsp-toggle-btn');
   if(vspCard){vspCard.style.display=hasVsp?'block':'none';}
-  if(vspBtn){vspBtn.innerHTML=hasVsp
-    ?'<span style="font-size:18px;line-height:1;">−</span> Vorsprünge'
-    :'<span style="font-size:18px;line-height:1;">+</span> Vorsprünge erfassen';}
+  if(vspBtn){vspBtn.textContent=hasVsp?'− Ausblenden':'+ Erfassen';}
 
   // Auto-expand Dachschräge wenn Daten vorhanden
   const hasSchraege=!!(r.sch_kniestock||r.sch_winkel||r.gaube_breite||r.gaube_lichtehoehe);
   const schraegeCard=document.getElementById('r-schraege-card'),schraegeBtn=document.getElementById('r-schraege-toggle-btn');
   if(schraegeCard){schraegeCard.style.display=hasSchraege?'block':'none';}
-  if(schraegeBtn){schraegeBtn.innerHTML=hasSchraege
-    ?'<span style="font-size:18px;line-height:1;">−</span> 🔺 Dachschräge / Gaube'
-    :'<span style="font-size:18px;line-height:1;">+</span> 🔺 Dachschräge / Gaube';}
+  if(schraegeBtn){schraegeBtn.textContent=hasSchraege?'− Ausblenden':'+ Erfassen';}
 }
 
 function renderFensterListe() {
