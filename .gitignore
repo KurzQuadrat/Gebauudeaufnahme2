@@ -1,0 +1,25 @@
+# Schutz vor versehentlichem Einchecken echter Kundendaten, Exportdateien
+# oder lokaler Sicherungen. Diese Dateien können reale Projektdaten enthalten
+# und gehören nicht ins Repository.
+
+# Export- und Backup-Ordner
+exports/
+backups/
+
+# Backup-Dateien
+*.backup
+*.bak
+
+# Export-/Backup-JSON-Dateien (können echte Projektdaten enthalten)
+*export*.json
+*backup*.json
+
+# Lokale, gerätespezifische Daten (z. B. eigene Test-/Arbeitsstände)
+*.local.json
+
+# Betriebssystem-Dateien
+.DS_Store
+Thumbs.db
+
+# Hinweis: examples/, index.html, README.md und docs/ werden bewusst NICHT
+# ignoriert, da sie für das Projekt bzw. für Doku/Beispieldaten benötigt werden.
