@@ -48,7 +48,7 @@ Fehler werden in folgender Reihenfolge priorisiert:
 
 ## KI-002: Jahreszahlen starten bei Eingabe über Pfeiltasten bei 0
 
-* Status: offen
+* Status: behoben
 * Priorität: niedrig
 * Bereich: UI / Eingabefelder / Jahresauswahl
 * Blockiert Nutzung: nein
@@ -65,8 +65,8 @@ Fehler werden in folgender Reihenfolge priorisiert:
   Die Jahreszahl startet bei 0.
 * Vermutung:
   Das Eingabefeld hat keinen sinnvollen Default-/Min-Wert oder ein leerer Wert wird als 0 interpretiert.
-* Entscheidung:
-  Nicht im Refactoring beheben. In separater Bugfix-Phase prüfen.
+* Behebung:
+  Leere Jahresfelder verwenden nun sinnvolle Startwerte über das `min`-Attribut: Baujahr Projekt startet bei 1977, Baujahr Heizungsanlage und Sanierungsjahr starten bei 2000. Bestehende gespeicherte Werte bleiben unverändert, manuelle Eingabe bleibt weiterhin möglich.
 
 ---
 
