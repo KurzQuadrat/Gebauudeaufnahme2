@@ -74,7 +74,7 @@
       <div class="form-row">
         <div class="form-group">
           <label>Baujahr</label>
-          <input type="number" id="p-baujahr" placeholder="z.B. 1972" min="1977" max="2030" oninput="saveProjektField('baujahr', this.value)">
+          <input type="number" id="p-baujahr" placeholder="z.B. 1972" min="1800" max="2030" onfocus="if(!this.value)this.value=1977" oninput="saveProjektField('baujahr', this.value)">
         </div>
         <div class="form-group">
           <label>Gebäudetyp</label>
@@ -140,7 +140,7 @@
       <div class="form-row">
         <div class="form-group">
           <label>Baujahr</label>
-          <input type="number" id="p-hz-baujahr" placeholder="z.B. 2005" min="2000" max="2030" oninput="saveHeizanlageField('baujahr', this.value)">
+          <input type="number" id="p-hz-baujahr" placeholder="z.B. 2005" min="1800" max="2030" onfocus="if(!this.value)this.value=2000" oninput="saveHeizanlageField('baujahr', this.value)">
         </div>
         <div class="form-group">
           <label>Modell</label>
@@ -1034,7 +1034,7 @@ function renderSanierungen() {
   if(!p.sanierungen.length){c.innerHTML='';l.style.display='block';return;}
   l.style.display='none';
   const opts=['','Fenster','Dach','Fassade','Keller','Heizung','Heizkörper','Lüftung','PV','Sonstiges'];
-  c.innerHTML=p.sanierungen.map(s=>'<div class="sub-item"><div class="sub-item-header"><div class="sub-item-title">Sanierung</div><button onclick="deleteSanierung(\''+s.id+'\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">✕</button></div><div class="form-row"><div class="form-group"><label>Maßnahme</label><select onchange="saveSanierungField(\''+s.id+'\',\'massnahme\',this.value)">'+opts.map(m=>'<option value="'+m+'" '+(s.massnahme===m?'selected':'')+'>'+(m||'Wählen...')+'</option>').join('')+'</select></div><div class="form-group"><label>Jahr</label><input type="number" value="'+(s.jahr||'')+'" placeholder="1979" min="2000" max="2030" oninput="saveSanierungField(\''+s.id+'\',\'jahr\',this.value)"></div></div><div class="form-group"><label>Details</label><input type="text" value="'+(s.details||'')+'" placeholder="z.B. 2-fach Verglasung" oninput="saveSanierungField(\''+s.id+'\',\'details\',this.value)"></div></div>').join('');
+  c.innerHTML=p.sanierungen.map(s=>'<div class="sub-item"><div class="sub-item-header"><div class="sub-item-title">Sanierung</div><button onclick="deleteSanierung(\''+s.id+'\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">✕</button></div><div class="form-row"><div class="form-group"><label>Maßnahme</label><select onchange="saveSanierungField(\''+s.id+'\',\'massnahme\',this.value)">'+opts.map(m=>'<option value="'+m+'" '+(s.massnahme===m?'selected':'')+'>'+(m||'Wählen...')+'</option>').join('')+'</select></div><div class="form-group"><label>Jahr</label><input type="number" value="'+(s.jahr||'')+'" placeholder="1979" min="1800" max="2030" onfocus="if(!this.value)this.value=2000" oninput="saveSanierungField(\''+s.id+'\',\'jahr\',this.value)"></div></div><div class="form-group"><label>Details</label><input type="text" value="'+(s.details||'')+'" placeholder="z.B. 2-fach Verglasung" oninput="saveSanierungField(\''+s.id+'\',\'details\',this.value)"></div></div>').join('');
 }
 
 function renderGeschossliste() {

@@ -66,7 +66,8 @@ Fehler werden in folgender Reihenfolge priorisiert:
 * Vermutung:
   Das Eingabefeld hat keinen sinnvollen Default-/Min-Wert oder ein leerer Wert wird als 0 interpretiert.
 * Behebung:
-  Leere Jahresfelder verwenden nun sinnvolle Startwerte über das `min`-Attribut: Baujahr Projekt startet bei 1977, Baujahr Heizungsanlage und Sanierungsjahr starten bei 2000. Bestehende gespeicherte Werte bleiben unverändert, manuelle Eingabe bleibt weiterhin möglich.
+  Leere Jahresfelder erhalten beim Fokussieren einen sinnvollen Startwert (`onfocus`): Baujahr Projekt startet bei 1977, Baujahr Heizungsanlage und Sanierungsjahr starten bei 2000. Das `min`-Attribut wurde auf 1800 gesetzt, sodass weiterhin ältere Jahreszahlen eingegeben und per Pfeiltaste angefahren werden können. Bestehende gespeicherte Werte bleiben unverändert, manuelle Eingabe bleibt weiterhin möglich.
+  Korrektur: Defaultwerte sind keine Mindestwerte; kleinere Jahreszahlen bleiben möglich.
 
 ---
 
