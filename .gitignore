@@ -21,5 +21,13 @@ backups/
 .DS_Store
 Thumbs.db
 
+# Quelldokumente (z.B. amtliche PDFs) für U-Werte/Heizlast-Standardwerte:
+# bleiben nur lokal abgelegt und werden NICHT eingecheckt (Größe, ggf.
+# Lizenz-/Veröffentlichungsfragen amtlicher Bekanntmachungen). Die daraus
+# kontrolliert erzeugte, dokumentierte Datenstruktur (js/uwerte-bundesanzeiger.js)
+# sowie die Quellen-Doku (docs/quellen/README.md) werden weiterhin versioniert -
+# siehe docs/quellen/README.md für den Hinweis, wo die PDF lokal abzulegen ist.
+docs/quellen/*.pdf
+
 # Hinweis: examples/, index.html, README.md und docs/ werden bewusst NICHT
 # ignoriert, da sie für das Projekt bzw. für Doku/Beispieldaten benötigt werden.

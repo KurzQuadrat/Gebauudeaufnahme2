@@ -9,9 +9,29 @@ aus dem Gedächtnis ergänzt.** Ist ein Wert in der Quelle nicht eindeutig zu
 finden, bleibt das entsprechende Feld leer und wird mit TODO markiert, statt
 einen plausiblen Wert zu erfinden.
 
+## Ablage der Quelldokumente (lokal, nicht im Repository)
+
+Quell-PDFs wie die unten beschriebene Bundesanzeiger-Bekanntmachung werden
+**nur lokal** in diesem Verzeichnis (`docs/quellen/`) abgelegt und **nicht**
+ins Repository eingecheckt (siehe `.gitignore`-Eintrag `docs/quellen/*.pdf`) –
+unter anderem wegen der Dateigröße sowie offener Lizenz-/
+Veröffentlichungsfragen bei amtlichen Bekanntmachungen. Versioniert werden
+stattdessen ausschließlich:
+
+- diese Quellen-Dokumentation (`docs/quellen/README.md`), und
+- die daraus kontrolliert erzeugte, dokumentierte Datenstruktur
+  (`js/uwerte-bundesanzeiger.js`).
+
+**Für neue Arbeitsumgebungen / weitere Mitwirkende:** Um mit den Quellwerten
+weiterzuarbeiten oder neue Werte kontrolliert zu ergänzen, die Original-PDF
+unter dem unten genannten Dateinamen in `docs/quellen/` ablegen (z. B. erneuter
+Download von der Bundesanzeiger-Veröffentlichung BAnz AT 04.12.2020 B1). Die
+Datei wird durch `.gitignore` automatisch von der Versionierung ausgeschlossen.
+
 ## Bundesanzeiger BAnz AT 04.12.2020 B1
 
-- **Datei:** `BAnz-AT-04-12-2020-B1-Wohngebaeudebestand.pdf`
+- **Datei (lokal abzulegen, siehe oben – nicht Teil des Repositories):**
+  `BAnz-AT-04-12-2020-B1-Wohngebaeudebestand.pdf`
 - **Quelle:** Bundesanzeiger, Veröffentlichung BAnz AT 04.12.2020 B1
 - **Titel:** „Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung
   im Wohngebäudebestand“
