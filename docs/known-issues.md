@@ -167,6 +167,29 @@ Fehler werden in folgender Reihenfolge priorisiert:
 
 ---
 
+## KI-007: Regression - Wandflächenanzeige und Raum-Wattzahl nach Heizlast-Umbau (KI-006) nicht sichtbar
+
+* Status: behoben
+* Priorität: wichtige Anzeige verschwunden
+* Bereich: Raumaufnahme / Heizlastberechnung (`index.html`)
+* Blockiert Nutzung: nein, machte die Heizlast-Vorabschätzung für die meisten Bestandsräume aber unbrauchbar (keine Wattzahl, keine Wandfläche/-U-Werte sichtbar)
+* Seit wann bekannt: direkt nach dem Commit „Add project heating load defaults and wall type logic" (095e965) vom Nutzer gemeldet
+* Reproduktionsschritte:
+
+  1. Einen bereits bestehenden Raum öffnen, dessen Wände noch keine AW/IW-Klassifizierung je Himmelsrichtung besitzen (`wand_*_art` leer/„unbekannt" – das ist bei allen vor KI-006 erfassten Räumen der Fall).
+  2. Bereich „Flächen & Heizlast" aufrufen, „Berechnen" tippen.
+  3. Beobachtung: Die Wandfläche(n) erscheinen nicht mehr als editierbares U-Wert-Feld (nur ein Hinweistext „nicht in der Summe enthalten"), die wirksamen U-Werte sind nicht erkennbar/überschreibbar, und die berechnete Raum-Wattzahl (Φ_T) fällt deutlich niedriger aus oder verschwindet faktisch, weil die komplette Wandfläche aus der Summe ausgeschlossen wird.
+* Erwartetes Verhalten:
+  Die Heizlastanzeige im Raum zeigt weiterhin transparent: berechnete Wandflächen (inkl. Flächen mit unbekannter AW/IW-Zuordnung), die wirksamen U-Werte je Bauteil mit Quelle (Projektstandard/Override/Bestandswert), die Möglichkeit, U-Werte je Raum zu überschreiben, sowie die berechnete Wattzahl (Φ_T) je Raum.
+* Tatsächliches Verhalten (vor der Korrektur):
+  Die mit KI-006 eingeführte Behandlung von Wandflächen mit unbekannter AW/IW-Klassifizierung („Art unbekannt") schloss diese Flächen vollständig aus: `renderUWertInputs()` zeigte für sie nur eine reine Infobox ohne Eingabefeld, und `renderHeizlastErgebnis()` nahm sie über ein frühes `return` aus der Φ_T-Summe heraus („… nicht in der Summe enthalten, nicht als Außenwand gerechnet"). Da nahezu alle Bestandsräume noch keine Klassifizierung je Himmelsrichtung besitzen, fiel dadurch praktisch die gesamte Wandfläche dieser Räume aus Anzeige und Berechnung heraus – die Wandflächenanzeige wirkte „verschwunden" und die Raum-Wattzahl war nicht mehr aussagekräftig sichtbar.
+* Vermutung:
+  Die in KI-006 gewählte strikte Auslegung von „keine stillschweigend erfundenen Werte" (unbekannte Klassifizierung weder als AW noch als IW rechnen) wurde zu einem vollständigen Ausschluss aus Anzeige und Summe verschärft, ohne zu berücksichtigen, dass dies für nahezu alle Bestandsräume zum Totalausfall der Anzeige führt.
+* Behebung:
+  Wandflächen mit unbekannter Klassifizierung („Wand – Art unbekannt") erhalten in `renderUWertInputs()` wieder dasselbe editierbare U-Wert-Feld samt „grenzt an"-Auswahl wie Außenwände (Default-Quelle: `awUwert`, Bestandsfallback `u_werte.aw` über die neue Hilfsfunktion `hlFallbackKey()`), ergänzt um einen sichtbaren, nicht-stillschweigenden Warnhinweis „Art unbekannt – vorläufig wie Außenwand gerechnet, bitte AW/IW zuordnen". `renderHeizlastErgebnis()` bezieht diese Flächen entsprechend konservativ wie Außenwand (ΔT gegen Normaußentemperatur) in die Φ_T-Summe ein und weist dies zusätzlich transparent in den Hinweisen aus („… wird vorläufig konservativ wie Außenwand (Normaußentemperatur) gerechnet. Bitte AW/IW zuordnen."). Damit sind Wandflächen, wirksame U-Werte (mit Quellenangabe), deren Überschreibbarkeit je Raum und die berechnete Raum-Wattzahl wieder wie vor dem Umbau sichtbar – und zwar auch für Bestandsräume ohne nachträgliche AW/IW-Zuordnung. Die in KI-006 eingeführte AW/IW-Trennung bleibt für tatsächlich klassifizierte Wände unverändert erhalten (AW gegen Normaußentemperatur, IW gegen „beheizt"/„unbeheizt" mit eigener ΔT-Logik) – es wird nicht „wieder alles wie AW gerechnet", sondern nur die bislang komplett ausgeschlossene Restmenge unklassifizierter Wände transparent und konservativ in die bestehende Berechnung eingegliedert.
+
+---
+
 ## Noch nicht bewertete Themen
 
 * Fotoanalyse ist im Code vorhanden, wurde aber noch nicht aktiv genutzt oder fachlich getestet.
