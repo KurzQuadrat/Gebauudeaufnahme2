@@ -165,6 +165,27 @@
           <input type="text" id="p-hz-modell" placeholder="Modellbezeichnung" oninput="saveHeizanlageField('modell', this.value)">
         </div>
       </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Energieträger</label>
+          <select id="p-hz-energietraeger" onchange="saveHeizanlageField('energietraeger', this.value)">
+            <option value="unbekannt">unbekannt</option>
+            <option value="Erdgas">Erdgas</option>
+            <option value="Heizöl">Heizöl</option>
+            <option value="Flüssiggas">Flüssiggas</option>
+            <option value="Strom">Strom</option>
+            <option value="Wärmepumpe Strom">Wärmepumpe Strom</option>
+            <option value="Holz / Pellets">Holz / Pellets</option>
+            <option value="Fernwärme">Fernwärme</option>
+            <option value="Solarthermie unterstützend">Solarthermie unterstützend</option>
+            <option value="Sonstiges">Sonstiges</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Leistung in kW, falls bekannt</label>
+          <input type="text" id="p-hz-leistung" placeholder="z.B. 18" oninput="saveHeizanlageField('leistung', this.value)">
+        </div>
+      </div>
       <div class="form-group">
         <label>Foto Heizanlage</label>
         <label class="photo-btn" id="foto-heizanlage-label">
@@ -676,7 +697,7 @@ function neuesProjekt() {
     datum: new Date().toISOString().split('T')[0],
     plz: '',
     sanierungen: [],
-    heizanlage: { hersteller: '', typ: '', baujahr: '', modell: '', notiz: '' },
+    heizanlage: { hersteller: '', typ: '', baujahr: '', modell: '', notiz: '', energietraeger: 'unbekannt', leistung: '' },
     heizanlage_foto: null,
     schornstein: { lage: '', form: '', breite: '', tiefe: '' },
     geschosse: [eg]
@@ -1045,6 +1066,7 @@ function renderProjektView() {
   set('p-baujahr',p.baujahr);set('p-typ',p.typ);set('p-adresse',p.adresse);set('p-datum',p.datum);set('p-plz',p.plz);
   set('p-wohneinheiten',p.wohneinheiten);set('p-auftragsart',p.auftragsart);
   set('p-hz-hersteller',p.heizanlage.hersteller);set('p-hz-typ',p.heizanlage.typ);set('p-hz-baujahr',p.heizanlage.baujahr);set('p-hz-modell',p.heizanlage.modell);set('p-hz-notiz',p.heizanlage.notiz);
+  set('p-hz-energietraeger',p.heizanlage.energietraeger);set('p-hz-leistung',p.heizanlage.leistung);
   set('p-schorn-lage',p.schornstein.lage);set('p-schorn-form',p.schornstein.form);set('p-schorn-b',p.schornstein.breite);set('p-schorn-t',p.schornstein.tiefe);
   if(p.heizanlage_foto){const prev=document.getElementById('foto-heizanlage-preview');const lbl=document.getElementById('foto-heizanlage-label');if(prev){prev.src=p.heizanlage_foto;prev.style.display='block';}if(lbl)lbl.classList.add('has-photo');}
   renderSanierungen(); renderGeschossliste();

@@ -20,6 +20,8 @@ function load() {
   state.projekte.forEach(p => {
     if (p.auftragsart === undefined) p.auftragsart = '';
     if (p.wohneinheiten === undefined) p.wohneinheiten = 1;
+    if (p.heizanlage.energietraeger === undefined) p.heizanlage.energietraeger = 'unbekannt';
+    if (p.heizanlage.leistung === undefined) p.heizanlage.leistung = '';
     p.geschosse.forEach(g => {
       if (!g.gauben) g.gauben = [];
       if (!g.dachfenster) g.dachfenster = [];
