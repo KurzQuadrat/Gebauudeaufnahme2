@@ -61,6 +61,8 @@ Hinweis: In der Wandlängen-Erfassung je Raum kann zu jeder Himmelsrichtung (N/O
 
 Hinweis Raumdetails: Norm-Solltemperatur und Kundenwunsch-Temperatur können je Raum erfasst werden (reine Erfassungsfelder, ohne eigene Berechnungslogik in Version 1).
 
+Hinweis Messworkflow Raummaße: Die Erfassung der Raummaße (lichte Höhe, Wandlängen N/O/S/W je Segment) unterstützt eine zuverlässige Feldweiterschaltung per Enter (z. B. bei Übertragung durch ein Disto-/Lasermessgerät) entlang einer festen Reihenfolge. Die Brutto-Wandflächen werden aus Wandlänge (Summe der Segmente) × lichte Höhe berechnet.
+
 Hinweis Nischen: Je Niesche kann zusätzlich eine Wandzuordnung (N/O/S/W bzw. unbekannt) hinterlegt werden. Bestehende Nischen erhalten dabei defensiv den Wert "unbekannt" (leere Zuordnung), bis sie nachgetragen wird.
 
 Hinweis Vorsprünge: Vorsprünge wurden auf das Listen-/Karten-Muster wie bei Fenster, Türen oder Heizkörpern umgestellt – es können nun mehrere Vorsprünge je Raum erfasst werden (jeweils mit Wandzuordnung N/O/S/W, Breite, Tiefe und Notiz). Bestehende, gerichtete Einzelwerte (`vsp_n_b`/`vsp_n_t` usw.) wurden defensiv in die neue Liste überführt (ein Listeneintrag je vorhandener Richtung); die alten Felder bleiben zusätzlich erhalten, sodass keine Daten verloren gehen. Die Flächenberechnung in `berechneRaumGeometrie` (Σ Breite × Tiefe) wurde unverändert auf die neue Liste übertragen.

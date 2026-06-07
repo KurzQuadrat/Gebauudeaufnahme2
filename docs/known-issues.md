@@ -71,6 +71,52 @@ Fehler werden in folgender Reihenfolge priorisiert:
 
 ---
 
+## KI-003: Messworkflow Raummaße – Enter/Fokus springt nicht zuverlässig ins nächste Feld
+
+* Status: behoben
+* Priorität: blockierende Bedienfehler
+* Bereich: Raumaufnahme / Raummaße / Disto-Messworkflow
+* Blockiert Nutzung: teilweise (erschwert zügige Vor-Ort-Erfassung mit Laser-/Distogerät)
+* Seit wann bekannt: beim Test mit einem Disto-/Laser-Messgerät aufgefallen
+* Reproduktionsschritte:
+
+  1. Raum öffnen, Bereich „Raummaße“ (lichte Höhe, Wandlängen N/O/S/W) aufrufen.
+  2. Messwert per Disto-/Lasergerät übertragen (Gerät sendet den Wert inkl. Enter).
+  3. Beobachtung: Der Fokus blieb teils im aktuellen Feld stehen oder sprang in ein fachlich falsches Feld.
+* Erwartetes Verhalten:
+  Nach Enter (bzw. Übertragung vom Messgerät) springt der Fokus zuverlässig zum logisch nächsten Messfeld in der Reihenfolge: lichte Höhe → Wand N Segment 1 → Segment 2 → Wand O Segment 1 → Segment 2 → Wand S Segment 1 → Segment 2 → Wand W Segment 1 → Segment 2 → danach kein automatischer Sprung mehr.
+* Tatsächliches Verhalten (vor der Korrektur):
+  Es existierte keinerlei Enter-/Fokus-Weiterschaltung für die Raummaß-Felder; der Browser blieb beim Standardverhalten, das je nach Tastatur/Gerät uneinheitlich reagiert.
+* Vermutung:
+  Es fehlte eine zentrale, definierte Fokus-Reihenfolge mit Enter-Behandlung für die Messfelder.
+* Behebung:
+  Eine feste Fokus-Reihenfolge (`MESSFELD_REIHENFOLGE`) sowie die Funktionen `focusNextMessfeld()` und `handleMessfeldKeydown()` wurden ergänzt (`index.html`). Bei Enter in einem der neun Raummaß-Felder (lichte Höhe, Wand N/O/S/W je Segment 1/2) springt der Fokus gezielt zum nächsten Feld in der definierten Reihenfolge und der bisherige Wert wird zur Überschreibung markiert (`select()`); danach erfolgt kein weiterer automatischer Sprung. Tabulator-, Maus- und Touch-Bedienung sowie manuelle Eingabe bleiben unverändert nutzbar, da nur die Enter-Taste abgefangen wird.
+
+---
+
+## KI-004: Wandflächenberechnung lieferte bei Komma-Messwerten falsche Ergebnisse
+
+* Status: behoben
+* Priorität: falscher Export oder Bericht
+* Bereich: Raumaufnahme / Heizlastberechnung (`js/heizlast.js`)
+* Blockiert Nutzung: nein, verfälscht aber Flächen- und Heizlastanzeige
+* Seit wann bekannt: beim Test mit einem Disto-/Laser-Messgerät aufgefallen
+* Reproduktionsschritte:
+
+  1. Raum öffnen, lichte Höhe bzw. Wandlänge per Disto-/Lasergerät oder manuell mit Komma als Dezimaltrennzeichen eingeben (z. B. „2,50“ statt „2.50“).
+  2. Berechnung ausführen / Flächen unten ansehen.
+  3. Beobachtung: Die berechneten Wandflächen (und davon abgeleitet U-Wert-Flächen sowie Heizlast) stimmten nicht mit „Wandlänge × lichte Höhe“ überein.
+* Erwartetes Verhalten:
+  Brutto-Wandfläche je Wand = Wandlänge (Summe der vorhandenen Segmente) × lichte Raumhöhe. Beispiel: lichte Höhe 2,50 m, Wand N 4,00 m → 10,00 m²; lichte Höhe 2,40 m, Wand O 3,50 m → 8,40 m².
+* Tatsächliches Verhalten (vor der Korrektur):
+  `parseFloat()` wertete Werte mit Komma als Dezimaltrennzeichen (z. B. „2,50“) nur bis zum Komma aus (Ergebnis 2 statt 2,5), wodurch lichte Höhe und/oder Wandlängen falsch interpretiert und die Wandflächen (und nachgelagert die Heizlast) verfälscht wurden.
+* Vermutung:
+  Disto-/Lasergeräte können Messwerte je nach Geräte-/Spracheinstellung mit Komma als Dezimaltrennzeichen liefern; eine robuste Zahlinterpretation fehlte.
+* Behebung:
+  Eine zentrale Hilfsfunktion `parseMesswert()` wurde ergänzt (`js/heizlast.js`), die ein Komma defensiv in einen Punkt umwandelt, bevor der Wert geparst wird. `cm()` und die Auswertung der lichten Höhe (`h`) nutzen nun `parseMesswert()`. Die fachliche Formel selbst (Brutto-Wandfläche = Summe der Wandsegmente × lichte Höhe, `A_wN = h*(n1+n2)` usw.) war bereits korrekt und wurde unverändert beibehalten – korrigiert wurde ausschließlich die Zahlinterpretation der Eingabewerte. Bestehende, bereits korrekt mit Punkt gespeicherte Werte bleiben unverändert nutzbar.
+
+---
+
 ## Noch nicht bewertete Themen
 
 * Fotoanalyse ist im Code vorhanden, wurde aber noch nicht aktiv genutzt oder fachlich getestet.

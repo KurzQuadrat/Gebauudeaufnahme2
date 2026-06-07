@@ -517,7 +517,7 @@
       <div class="form-row">
         <div class="form-group">
           <label>lichte Höhe (m)</label>
-          <input type="number" step="0.01" class="disto-input" id="r-deckenhoehe" placeholder="z.B. 2.55" oninput="saveRaumField('deckenhoehe', this.value)">
+          <input type="number" step="0.01" class="disto-input" id="r-deckenhoehe" placeholder="z.B. 2.55" oninput="saveRaumField('deckenhoehe', this.value)" onkeydown="handleMessfeldKeydown(event)">
         </div>
         <div class="form-group">
           <label>Bodenbelag</label>
@@ -547,20 +547,20 @@
         </tr></thead>
         <tbody>
           <tr><td style="padding:4px 0;font-weight:600;">N</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wn1" placeholder="cm" oninput="saveRaumField('wand_n1',this.value)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wn2" placeholder="cm" oninput="saveRaumField('wand_n2',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wn1" placeholder="cm" oninput="saveRaumField('wand_n1',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wn2" placeholder="cm" oninput="saveRaumField('wand_n2',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
             <td style="padding:3px 6px;"><select id="r-wand-art-n" onchange="saveRaumField('wand_n_art',this.value)" style="padding:8px;"><option value="">?</option><option value="AW">AW</option><option value="IW">IW</option></select></td></tr>
           <tr><td style="padding:4px 0;font-weight:600;">O</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wo1" placeholder="cm" oninput="saveRaumField('wand_o1',this.value)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wo2" placeholder="cm" oninput="saveRaumField('wand_o2',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wo1" placeholder="cm" oninput="saveRaumField('wand_o1',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-wo2" placeholder="cm" oninput="saveRaumField('wand_o2',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
             <td style="padding:3px 6px;"><select id="r-wand-art-o" onchange="saveRaumField('wand_o_art',this.value)" style="padding:8px;"><option value="">?</option><option value="AW">AW</option><option value="IW">IW</option></select></td></tr>
           <tr><td style="padding:4px 0;font-weight:600;">S</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ws1" placeholder="cm" oninput="saveRaumField('wand_s1',this.value)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ws2" placeholder="cm" oninput="saveRaumField('wand_s2',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ws1" placeholder="cm" oninput="saveRaumField('wand_s1',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ws2" placeholder="cm" oninput="saveRaumField('wand_s2',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
             <td style="padding:3px 6px;"><select id="r-wand-art-s" onchange="saveRaumField('wand_s_art',this.value)" style="padding:8px;"><option value="">?</option><option value="AW">AW</option><option value="IW">IW</option></select></td></tr>
           <tr><td style="padding:4px 0;font-weight:600;">W</td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ww1" placeholder="cm" oninput="saveRaumField('wand_w1',this.value)" style="padding:8px;"></td>
-            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ww2" placeholder="cm" oninput="saveRaumField('wand_w2',this.value)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ww1" placeholder="cm" oninput="saveRaumField('wand_w1',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
+            <td style="padding:3px 6px;"><input type="number" class="disto-input" id="r-ww2" placeholder="cm" oninput="saveRaumField('wand_w2',this.value)" onkeydown="handleMessfeldKeydown(event)" style="padding:8px;"></td>
             <td style="padding:3px 6px;"><select id="r-wand-art-w" onchange="saveRaumField('wand_w_art',this.value)" style="padding:8px;"><option value="">?</option><option value="AW">AW</option><option value="IW">IW</option></select></td></tr>
         </tbody>
       </table>
@@ -1268,6 +1268,32 @@ function berechneUndZeige() {
 // ============================================================
 //  NORMTEMPS & saveRaumField
 // ============================================================
+
+// ============================================================
+//  MESSWORKFLOW: Feldweiterschaltung Raummaße (Disto/Laser, Enter)
+// ============================================================
+// Feste, nachvollziehbare Fokus-Reihenfolge für die Raummaß-Erfassung:
+// lichte Höhe -> Wandsegmente N1/N2/O1/O2/S1/S2/W1/W2 -> kein automatischer Sprung danach.
+// Wird per Enter (z.B. durch Übertragung vom Disto-/Lasermessgerät) ausgelöst,
+// stört aber das normale Tab-/Maus-/Touch-Verhalten nicht.
+const MESSFELD_REIHENFOLGE = ['r-deckenhoehe','r-wn1','r-wn2','r-wo1','r-wo2','r-ws1','r-ws2','r-ww1','r-ww2'];
+
+function focusNextMessfeld(currentId) {
+  const idx = MESSFELD_REIHENFOLGE.indexOf(currentId);
+  if (idx === -1 || idx >= MESSFELD_REIHENFOLGE.length - 1) return;
+  const next = document.getElementById(MESSFELD_REIHENFOLGE[idx + 1]);
+  if (next) {
+    next.focus();
+    try { next.select(); } catch(e) {}
+  }
+}
+
+function handleMessfeldKeydown(e) {
+  if (e.key === 'Enter' || e.keyCode === 13) {
+    e.preventDefault();
+    focusNextMessfeld(e.target.id);
+  }
+}
 
 function saveRaumField(field, value) {
   const r = getRaum(); if (!r) return;

@@ -2,10 +2,21 @@
 //  FLÄCHEN & HEIZLAST BERECHNUNG (DIN EN 12831)
 // ============================================================
 
-function cm(v) { return (parseFloat(v) || 0) / 100; }
+// Robuste Zahl-Auswertung für Messwerte: Disto-/Lasergeräte können je nach
+// Geräte-/Spracheinstellung Werte mit Komma als Dezimaltrennzeichen liefern
+// (z.B. "2,55"). parseFloat allein würde "2,55" als 2 interpretieren und
+// dadurch zu falschen Flächen führen. Komma wird daher defensiv in Punkt
+// umgewandelt, bevor geparst wird. Bestehende Werte mit Punkt bleiben unverändert.
+function parseMesswert(v) {
+  if (v === null || v === undefined || v === '') return NaN;
+  return parseFloat(String(v).trim().replace(',', '.'));
+}
+
+function cm(v) { const n = parseMesswert(v); return (isNaN(n) ? 0 : n) / 100; }
 
 function berechneRaumGeometrie(r) {
-  const h = parseFloat(r.deckenhoehe) || 0;
+  const hRaw = parseMesswert(r.deckenhoehe);
+  const h = isNaN(hRaw) ? 0 : hRaw;
   const n1=cm(r.wand_n1), n2=cm(r.wand_n2);
   const o1=cm(r.wand_o1), o2=cm(r.wand_o2);
   const s1=cm(r.wand_s1), s2=cm(r.wand_s2);
