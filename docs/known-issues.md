@@ -25,7 +25,7 @@ Fehler werden in folgender Reihenfolge priorisiert:
 
 ## KI-001: App startet beim Öffnen nicht in der Projektübersicht
 
-* Status: offen
+* Status: behoben
 * Priorität: niedrig
 * Bereich: UI / Navigation / Startzustand
 * Blockiert Nutzung: nein
@@ -41,8 +41,8 @@ Fehler werden in folgender Reihenfolge priorisiert:
   Beim Öffnen landet der Nutzer in einem Geschoss.
 * Vermutung:
   Der zuletzt gespeicherte View- oder Geschosszustand wird aus dem localStorage wiederhergestellt und direkt geöffnet.
-* Entscheidung:
-  Nicht im Refactoring beheben. In separater Bugfix-Phase prüfen.
+* Behebung:
+  Die App setzt beim Start nun immer `state.aktivesView` auf `'projekte'`, sodass beim Öffnen zuverlässig die Projektübersicht angezeigt wird. Gespeicherte Projekte und Daten bleiben dabei unverändert erhalten.
 
 ---
 

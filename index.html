@@ -1155,12 +1155,7 @@ function renderHKListe() {
 // ============================================================
 load();
 renderProjektliste();
-if(state.aktivesView&&state.aktivesView!=='projekte'){
-  const p=getProjekt();if(!p)state.aktivesView='projekte';
-  else if(state.aktivesView==='geschoss'&&!getGeschoss())state.aktivesView='projekt';
-  else if(state.aktivesView==='raum'&&!getRaum())state.aktivesView='geschoss';
-  showView(state.aktivesView);
-}
+state.aktivesView='projekte';
 </script>
 </body>
 </html>
