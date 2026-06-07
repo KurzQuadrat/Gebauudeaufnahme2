@@ -18,6 +18,8 @@ function load() {
   if (!state.projekte) state.projekte = [];
   // Rückwärtskompatibilität: fehlende Felder ergänzen
   state.projekte.forEach(p => {
+    if (p.auftragsart === undefined) p.auftragsart = '';
+    if (p.wohneinheiten === undefined) p.wohneinheiten = 1;
     p.geschosse.forEach(g => {
       if (!g.gauben) g.gauben = [];
       if (!g.dachfenster) g.dachfenster = [];

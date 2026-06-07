@@ -20,6 +20,8 @@ Version 1 ist eine stabile, anonymisierte Vor-Ort-Erfassungs-App für Gebäudeau
 - Auftragsart
 - offene Punkte
 
+Hinweis: Projektstammdaten in der App sind anonymisiert. Statt einer echten Adresse wird eine anonyme Projektkennung / ein Lagehinweis erfasst (intern weiterhin im Feld `adresse` gespeichert, in der UI klar als anonymes Feld beschriftet). Auftragsart und Anzahl Wohneinheiten sind seit diesem Schritt als Stammdatenfelder umgesetzt.
+
 ## Pflichtstruktur
 
 - Geschosse

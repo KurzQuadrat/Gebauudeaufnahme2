@@ -89,8 +89,8 @@
         </div>
       </div>
       <div class="form-group">
-        <label>Adresse</label>
-        <input type="text" id="p-adresse" placeholder="Musterstr. 1, 60000 Frankfurt" oninput="saveProjektField('adresse', this.value)">
+        <label>Anonyme Projektkennung / Lagehinweis</label>
+        <input type="text" id="p-adresse" placeholder="z.B. Gebäude Nord, Stadtteil Süd" oninput="saveProjektField('adresse', this.value)">
       </div>
       <div class="form-row">
         <div class="form-group">
@@ -100,6 +100,24 @@
         <div class="form-group">
           <label>Klimazone (PLZ)</label>
           <input type="text" id="p-plz" placeholder="60000" oninput="saveProjektField('plz', this.value)">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Anzahl Wohneinheiten</label>
+          <input type="number" id="p-wohneinheiten" placeholder="1" min="1" max="99" oninput="saveProjektField('wohneinheiten', this.value)">
+        </div>
+        <div class="form-group">
+          <label>Auftragsart</label>
+          <select id="p-auftragsart" onchange="saveProjektField('auftragsart', this.value)">
+            <option value="">Wählen...</option>
+            <option value="allgemeine Gebäudeaufnahme">Allgemeine Gebäudeaufnahme</option>
+            <option value="iSFP">iSFP</option>
+            <option value="Einzelmaßnahme">Einzelmaßnahme</option>
+            <option value="hydraulischer Abgleich">Hydraulischer Abgleich</option>
+            <option value="Heizlast später">Heizlast später</option>
+            <option value="Sonstiges">Sonstiges</option>
+          </select>
         </div>
       </div>
     </div>
@@ -639,7 +657,7 @@ function showView(name) {
 // ============================================================
 
 function neuesProjekt() {
-  const name = prompt('Projektname (z.B. Müller Frankfurt Sachsenhausen):');
+  const name = prompt('Anonyme Projektkennung (z.B. "Projekt Nord 01"):');
   if (!name) return;
   const eg = {
     id: uuid(), name: 'EG', beheizung: 'beheizt',
@@ -653,6 +671,8 @@ function neuesProjekt() {
     adresse: '',
     baujahr: '',
     typ: '',
+    auftragsart: '',
+    wohneinheiten: 1,
     datum: new Date().toISOString().split('T')[0],
     plz: '',
     sanierungen: [],
@@ -1015,7 +1035,7 @@ function renderProjektliste() {
   const c=document.getElementById('projekt-items'),l=document.getElementById('projekt-leer');
   if(!state.projekte.length){c.innerHTML='';l.style.display='block';return;}
   l.style.display='none';
-  c.innerHTML=state.projekte.map(p=>'<div class="list-item" onclick="openProjekt(\''+p.id+'\')"><div class="list-item-icon" style="background:#e3f0fd;color:#0071e3;">🏠</div><div class="list-item-body"><div class="list-item-title">'+p.name+'</div><div class="list-item-sub">'+(p.adresse||'Adresse fehlt')+' · '+(p.baujahr||'Baujahr?')+' · '+p.geschosse.length+' Geschoss(e)</div></div><button class="list-item-action" onclick="deleteProjekt(\''+p.id+'\',event)">🗑</button><div class="list-item-arrow">›</div></div>').join('');
+  c.innerHTML=state.projekte.map(p=>'<div class="list-item" onclick="openProjekt(\''+p.id+'\')"><div class="list-item-icon" style="background:#e3f0fd;color:#0071e3;">🏠</div><div class="list-item-body"><div class="list-item-title">'+p.name+'</div><div class="list-item-sub">'+(p.adresse||'Lagehinweis fehlt')+' · '+(p.baujahr||'Baujahr?')+' · '+p.geschosse.length+' Geschoss(e)</div></div><button class="list-item-action" onclick="deleteProjekt(\''+p.id+'\',event)">🗑</button><div class="list-item-arrow">›</div></div>').join('');
 }
 
 function renderProjektView() {
@@ -1023,6 +1043,7 @@ function renderProjektView() {
   document.getElementById('projekt-titel').textContent=p.name;
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
   set('p-baujahr',p.baujahr);set('p-typ',p.typ);set('p-adresse',p.adresse);set('p-datum',p.datum);set('p-plz',p.plz);
+  set('p-wohneinheiten',p.wohneinheiten);set('p-auftragsart',p.auftragsart);
   set('p-hz-hersteller',p.heizanlage.hersteller);set('p-hz-typ',p.heizanlage.typ);set('p-hz-baujahr',p.heizanlage.baujahr);set('p-hz-modell',p.heizanlage.modell);set('p-hz-notiz',p.heizanlage.notiz);
   set('p-schorn-lage',p.schornstein.lage);set('p-schorn-form',p.schornstein.form);set('p-schorn-b',p.schornstein.breite);set('p-schorn-t',p.schornstein.tiefe);
   if(p.heizanlage_foto){const prev=document.getElementById('foto-heizanlage-preview');const lbl=document.getElementById('foto-heizanlage-label');if(prev){prev.src=p.heizanlage_foto;prev.style.display='block';}if(lbl)lbl.classList.add('has-photo');}
