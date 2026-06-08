@@ -26,6 +26,18 @@ Hinweis: Projektstammdaten in der App sind anonymisiert. Statt einer echten Adre
 
 Hinweis offene Punkte: „Offene Punkte“ sind als strukturierte Liste je Projekt umgesetzt (`p.offenePunkte[]`, Karten-/Listenmuster wie bei der Sanierungshistorie). Jeder Punkt enthält `text`, `status` (offen/in Prüfung/erledigt/zurückgestellt, Standard „offen“), `prioritaet` (niedrig/mittel/hoch, Standard „mittel“), `bereich` (Allgemein/Projekt/Geschoss/Raum/Wand/Fenster/Tür/Dach/Heizung/Warmwasser/Foto/Export/Sonstiges, Standard „Allgemein“) und `notiz`. Die Erfassung ist rein manuell, ohne automatische Prüfung oder Generierung und ohne Anbindung an PDF/Bericht. Bestehende Projekte ohne `offenePunkte` erhalten defensiv eine leere Liste; JSON-Export/-Import bleibt unverändert, da die gesamte Projektstruktur inklusive `offenePunkte` übernommen wird.
 
+## Reihenfolge Projektbereiche (ab v0.2.4)
+
+1. Gebäude
+2. Sanierungshistorie
+3. Geschosse
+4. Heizung
+5. Warmwasser
+6. Schornsteine
+7. Heizlast-Standardwerte
+8. Offene Punkte
+9. Raum-/Bauteilliste
+
 ## Pflichtstruktur
 
 - Geschosse
