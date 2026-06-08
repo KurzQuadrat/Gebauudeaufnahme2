@@ -6,6 +6,18 @@ Die Gebäudeerfassungs-App nutzt das Corporate Design von Kurz Quadrat als reine
 CSS-Schicht. Fachlogik, Datenmodell, Heizlast-Berechnung und LocalStorage bleiben
 vollständig unberührt.
 
+**v0.2.5-dev — Designbasis stabilisiert:**
+In v0.2.4-dev hatten verschiedene `--kq-*`-Token-Mappings zu visuellen Inkonsistenzen
+geführt (rosa-getönte Borders `#e6d8dc`, bordeaux-getönte Sekundärtexte `#5a3742`,
+weiße Inputs auf weißen Karten, 8px-Radien). Ab v0.2.5 gilt:
+- `css/brand.css` bleibt Design-Tokens-Quelle (Schrift, --kq-Tokens)
+- `css/style.css` ist maßgeblich für App-Layout und verwendet überwiegend
+  hardcodierte neutrale Werte statt rosa-getönter KQ-Token
+- Bordeaux (`#780129`) NUR für Buttons, Fokus-Ringe, Akzentlinien
+- Neutrale Arbeitsflächen: `--border: #d2d2d7`, `--text-sec: #6e6e73`,
+  `--input-bg: #f5f5f7`, Seitenhintergrund `#f5f5f7`
+- Mobile Nutzbarkeit und Lesbarkeit haben Vorrang vor Brand-Vollintegration
+
 ## Dateien und Schichten
 
 | Datei | Zweck |

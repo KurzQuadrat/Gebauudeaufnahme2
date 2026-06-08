@@ -3,50 +3,37 @@
    Gebäudeerfassung, Kurz Quadrat
 
    Schichtenmodell:
-     1. css/brand.css  — Design-Tokens (--kq-*), keine App-Logik
-     2. css/style.css  — App-Layout, Komponenten, bindet Brand-Tokens ein
+     1. css/brand.css  — Design-Tokens (--kq-*), Schrift
+     2. css/style.css  — App-Layout, maßgeblich für alle Komponenten
 
-   Die App-internen Variablen (--bg, --card, --primary, …) verweisen auf
-   KQ-Brand-Tokens aus brand.css. Damit übernehmen alle bestehenden
-   Klassen automatisch das Corporate Design ohne Struktureingriff.
+   Designprinzipien:
+   - Neutrale Arbeitsflächen (weiß / hellgrau), keine Flächenfarben
+   - Bordeaux (#780129) NUR für Buttons, Fokuszustände, Akzentlinien
+   - Amaranth (#e7024e) NUR für Messfeld-Rahmen (Disto)
+   - Mint: Erfolgsstatus
+   - Keine rosa/bordeaux-getönten Borders, Hintergründe, Sekundärtexte
    ============================================================================ */
 
 :root {
-  /* App-interne Tokens → Kurz-Quadrat-Brand-Tokens (brand.css)
-     ----------------------------------------------------------------
-     --bg:         Seitenhintergrund (warmer Papierton, KQ bg-alt)
-     --card:       Kartenoberfläche  (weiß, KQ surface)
-     --primary:    Primäraktion      (Bordeaux, KQ Hausfarbe)
-     --primary-dark: Hover/Active    (Bordeaux dunkel)
-     --danger:     Fehler / Löschen  (Amaranth, KQ Akzent)
-     --success:    Erfolgsstatus     (Mint-700, grün)
-     --warning:    Warnstatus        (KQ warning)
-     --text:       Fließtext         (warmes Fast-Schwarz)
-     --text-sec:   Sekundärtext      (gedämpft)
-     --border:     Haarlinien        (KQ border)
-     --input-bg:   Eingabefelder     (weiß, KQ surface)
-     --radius:     Standardradius    (8px, knapp wie KQ CD)
-     --radius-sm:  Kleiner Radius    (4px)
-  */
-  --bg:          #f0f0f0;              /* neutrales Hellgrau — kein Warmton, kein Rosa */
-  --card:        var(--kq-surface);   /* Karten weiß */
-  --primary:     var(--kq-bordeaux);
-  --primary-dark: var(--kq-bordeaux-700);
-  --danger:      var(--kq-danger);
-  --success:     var(--kq-success);
-  --warning:     var(--kq-warning);
-  --text:        var(--kq-fg);
-  --text-sec:    var(--kq-fg-muted);
-  --border:      var(--kq-border);
-  --input-bg:    var(--kq-surface);   /* Felder weiß */
-  --radius:      var(--kq-radius-3);  /* 8px */
-  --radius-sm:   var(--kq-radius-2);  /* 4px */
+  --bg:          #f5f5f7;   /* iOS Hellgrau — neutral, kein Warmton */
+  --card:        #ffffff;
+  --primary:     #780129;   /* Bordeaux — Buttons, Fokus, Akzente */
+  --primary-dark:#5c0020;
+  --danger:      #ff3b30;
+  --success:     #34c759;
+  --warning:     #ff9500;
+  --text:        #1d1d1f;
+  --text-sec:    #6e6e73;   /* neutrales Grau — NICHT bordeaux-getönt */
+  --border:      #d2d2d7;   /* neutrales Grau — NICHT rosa-getönt */
+  --input-bg:    #f5f5f7;   /* Hellgrau — sichtbar auf weißen Karten */
+  --radius:      12px;      /* iOS-typisch weich */
+  --radius-sm:   8px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: var(--kq-font);
+  font-family: var(--kq-font);   /* Scandia (wenn verfügbar) via brand.css */
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -97,15 +84,14 @@ body {
   border-radius: var(--radius);
   padding: 16px;
   margin-bottom: 12px;
-  box-shadow: var(--kq-shadow-1);
-  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 .card-title {
   font-size: 13px;
-  font-weight: 700;
-  color: var(--primary);
+  font-weight: 600;
+  color: var(--text-sec);   /* grau, nicht bordeaux — Abschnittsüberschrift, kein Akzent */
   text-transform: uppercase;
-  letter-spacing: var(--kq-tracking-caps);
+  letter-spacing: 0.5px;
   margin-bottom: 12px;
 }
 
@@ -121,27 +107,20 @@ body {
   border-radius: var(--radius-sm);
   border: none;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   font-family: inherit;
-  transition: opacity var(--kq-dur-fast) var(--kq-ease-out),
-              background var(--kq-dur-fast) var(--kq-ease-out);
+  transition: opacity 0.15s;
   white-space: nowrap;
-  letter-spacing: var(--kq-tracking-wide);
 }
-.btn:active { opacity: 0.75; }
-.btn-primary { background: var(--primary); color: var(--kq-fg-inverse); }
+.btn:active { opacity: 0.7; }
+.btn-primary { background: var(--primary); color: white; }
 .btn-primary:hover { background: var(--primary-dark); }
-.btn-secondary {
-  background: var(--input-bg);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
+.btn-secondary { background: var(--input-bg); color: var(--text); border: 1px solid var(--border); }
 .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
-.btn-danger { background: var(--danger); color: var(--kq-fg-inverse); }
-.btn-success { background: var(--success); color: var(--kq-fg-inverse); }
+.btn-danger { background: var(--danger); color: white; }
+.btn-success { background: var(--success); color: white; }
 .btn-ghost { background: none; color: var(--primary); padding: 8px 12px; }
-.btn-ghost:hover { color: var(--kq-amaranth); }
 .btn-full { width: 100%; }
 .btn-sm { padding: 8px 14px; font-size: 14px; }
 
@@ -169,14 +148,13 @@ input[type=text], input[type=number], input[type=date], select, textarea {
   font-family: inherit;
   color: var(--text);
   outline: none;
-  transition: border-color var(--kq-dur-base) var(--kq-ease-out),
-              box-shadow var(--kq-dur-base) var(--kq-ease-out);
+  transition: border-color 0.15s;
   -webkit-appearance: none;
 }
 input:focus, select:focus, textarea:focus {
   border-color: var(--primary);
-  background: var(--kq-surface);
-  box-shadow: 0 0 0 3px rgba(120, 1, 41, 0.15); /* bordeaux-tinted focus ring */
+  background: white;
+  box-shadow: 0 0 0 3px rgba(120,1,41,0.12);
 }
 textarea { resize: vertical; min-height: 80px; }
 
@@ -187,18 +165,17 @@ textarea { resize: vertical; min-height: 80px; }
 .toggle-btn {
   padding: 8px 16px;
   border: 1.5px solid var(--border);
-  border-radius: var(--kq-radius-pill);
-  background: var(--card);
+  border-radius: 20px;
+  background: white;
   font-size: 14px;
   cursor: pointer;
   font-family: inherit;
-  transition: all var(--kq-dur-fast) var(--kq-ease-out);
-  color: var(--text);
+  transition: all 0.15s;
 }
 .toggle-btn.active {
   border-color: var(--primary);
   background: var(--primary);
-  color: var(--kq-fg-inverse);
+  color: white;
 }
 
 /* ============================================================================
@@ -243,16 +220,14 @@ textarea { resize: vertical; min-height: 80px; }
 .badge {
   display: inline-block;
   padding: 2px 8px;
-  border-radius: var(--kq-radius-2);
+  border-radius: 10px;
   font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-weight: 500;
 }
-.badge-blue   { background: #e8e8ec; color: var(--kq-bordeaux); }  /* neutral grau statt bordeaux-100 rosa */
-.badge-green  { background: var(--kq-mint-100);     color: var(--kq-mint-700); }
-.badge-gray   { background: var(--kq-bg-alt);       color: var(--text-sec); }
-.badge-orange { background: var(--kq-warning-bg);   color: var(--kq-warning); }
+.badge-blue   { background: #f0f0f2; color: #780129; }   /* neutral, bordeaux-Text */
+.badge-green  { background: #e3f9e8; color: #248a3d; }
+.badge-gray   { background: #f0f0f0; color: var(--text-sec); }
+.badge-orange { background: #fff3e0; color: #c75000; }
 
 /* ============================================================================
    Sections within room
@@ -305,7 +280,7 @@ textarea { resize: vertical; min-height: 80px; }
   border-radius: var(--radius-sm);
   padding: 14px;
   margin-bottom: 10px;
-  background: var(--kq-bg-alt);
+  background: var(--input-bg);   /* hellgrau, nicht warm-cream */
 }
 .sub-item-header {
   display: flex;
@@ -319,11 +294,11 @@ textarea { resize: vertical; min-height: 80px; }
    Export
    ============================================================================ */
 .export-text {
-  background: var(--kq-fg);       /* warmes Fast-Schwarz */
-  color: var(--kq-bg-alt);
+  background: #1d1d1f;
+  color: #f5f5f7;
   padding: 16px;
   border-radius: var(--radius-sm);
-  font-family: var(--kq-font-mono);
+  font-family: 'SF Mono', 'Fira Code', monospace;
   font-size: 12px;
   line-height: 1.6;
   white-space: pre-wrap;
@@ -343,55 +318,39 @@ textarea { resize: vertical; min-height: 80px; }
    ============================================================================ */
 .modal-overlay {
   display: none; position: fixed; inset: 0;
-  background: rgba(26, 0, 9, 0.45); z-index: 200;
+  background: rgba(0,0,0,0.45); z-index: 200;
 }
 .modal-overlay.open { display: block; }
 .modal-sheet {
   display: none; position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--card); border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--card); border-radius: 20px 20px 0 0;
   padding: 20px 20px 32px; z-index: 201;
   max-height: 80vh; overflow-y: auto;
-  border-top: 2px solid var(--primary);
 }
 .modal-sheet.open { display: block; }
-.modal-title { font-weight: 700; font-size: 17px; margin-bottom: 16px; color: var(--text); }  /* kein uppercase, kein bordeaux — ruhiger */
+.modal-title { font-weight: 600; font-size: 17px; margin-bottom: 16px; }
 .modal-option {
   display: flex; align-items: center; gap: 12px;
   padding: 14px 16px; border-radius: var(--radius-sm);
   background: var(--input-bg); margin-bottom: 8px;
-  cursor: pointer; border: 1px solid var(--border); width: 100%;
+  cursor: pointer; border: none; width: 100%;
   font-family: inherit; font-size: 16px; font-weight: 500;
-  text-align: left; color: var(--text);
-  transition: border-color var(--kq-dur-fast) var(--kq-ease-out);
+  text-align: left;
 }
-.modal-option:hover { border-color: var(--primary); }
 .modal-option:active { opacity: 0.7; }
 .modal-option-icon { font-size: 22px; width: 32px; text-align: center; }
 .modal-cancel {
   width: 100%; margin-top: 8px; padding: 14px;
   border: 1px solid var(--border); border-radius: var(--radius-sm);
-  background: var(--card); font-size: 16px; cursor: pointer;
+  background: white; font-size: 16px; cursor: pointer;
   font-family: inherit; color: var(--text-sec);
 }
 
 /* ============================================================================
    DG-Sektion (Dachgeschoss-spezifische Felder)
    ============================================================================ */
-.dg-section {
-  background: var(--kq-warning-bg);
-  border: 1px solid #e6c97a;
-  border-radius: var(--radius-sm);
-  padding: 14px;
-  margin-bottom: 12px;
-}
-.dg-section-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--kq-warning);
-  text-transform: uppercase;
-  letter-spacing: var(--kq-tracking-caps);
-  margin-bottom: 12px;
-}
+.dg-section { background: #fff8f0; border: 1px solid #ffd6a0; border-radius: var(--radius-sm); padding: 14px; margin-bottom: 12px; }
+.dg-section-title { font-size: 13px; font-weight: 600; color: #c75000; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
 
 /* ============================================================================
    Empty state
@@ -410,19 +369,19 @@ textarea { resize: vertical; min-height: 80px; }
 .divider { height: 1px; background: var(--border); margin: 16px 0; }
 
 /* ============================================================================
-   Disto-Messfelder — hervorgehoben für schnelle Eingabe vor Ort
-   Amaranth als Akzent: signalisiert "aktives Messfeld", deutlich sichtbar
+   Disto-Messfelder — Amaranth-Rahmen signalisiert aktives Messfeld
    ============================================================================ */
 .disto-input {
-  border-color: var(--kq-amaranth) !important;
-  background: var(--kq-surface) !important;  /* weiß statt amaranth-100 rosa */
+  border-color: #e7024e !important;   /* Amaranth — auffällig, kein Pink-Hintergrund */
+  background: var(--input-bg) !important;
 }
 .disto-input:focus {
-  background: #fff8fa !important;  /* sehr dezenter Akzent nur im Fokus */
+  background: white !important;
+  box-shadow: 0 0 0 3px rgba(231,2,78,0.12) !important;
 }
 .disto-hint {
   font-size: 12px;
-  color: var(--kq-amaranth);
+  color: #e7024e;
   margin-top: 4px;
 }
 
@@ -459,30 +418,30 @@ textarea { resize: vertical; min-height: 80px; }
   height: 56px;
   border-radius: 50%;
   background: var(--primary);
-  color: var(--kq-fg-inverse);
+  color: white;
   font-size: 28px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(120, 1, 41, 0.35);
+  box-shadow: 0 4px 12px rgba(120,1,41,0.35);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 50;
-  transition: background var(--kq-dur-fast) var(--kq-ease-out);
+  transition: background 0.15s;
 }
 .fab:hover { background: var(--primary-dark); }
 
 /* ============================================================================
-   Info-Box (Hinweis, neutral)
+   Info-Box (Hinweis — neutrale Fläche, Bordeaux-Akzentlinie links)
    ============================================================================ */
 .info-box {
-  background: var(--kq-surface);           /* weiß statt bordeaux-050 rosa */
+  background: var(--input-bg);       /* hellgrau — kein rosa, kein blau */
   border: none;
-  border-left: 3px solid var(--primary);   /* Bordeaux nur als Linie links */
+  border-left: 3px solid var(--primary);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   padding: 10px 14px;
   font-size: 14px;
-  color: var(--text);                      /* normaler Text statt bordeaux */
+  color: var(--text);
   margin-bottom: 12px;
 }
 
@@ -498,14 +457,14 @@ textarea { resize: vertical; min-height: 80px; }
    ============================================================================ */
 .analyzing-overlay {
   display: none; position: fixed; inset: 0;
-  background: rgba(26, 0, 9, 0.55); z-index: 300;
+  background: rgba(0,0,0,0.55); z-index: 300;
   flex-direction: column; align-items: center; justify-content: center; gap: 16px;
-  color: var(--kq-fg-inverse); font-size: 16px; font-weight: 500;
+  color: white; font-size: 16px; font-weight: 500;
 }
 .analyzing-overlay.show { display: flex; }
 .spinner {
   width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.3);
-  border-top-color: var(--kq-mint); border-radius: 50%; animation: spin 0.8s linear infinite;
+  border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -514,44 +473,29 @@ textarea { resize: vertical; min-height: 80px; }
    ============================================================================ */
 .toast {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-  background: var(--kq-fg); color: var(--kq-fg-inverse);
-  padding: 12px 20px; border-radius: var(--radius-sm);
+  background: #1d1d1f; color: white; padding: 12px 20px; border-radius: 12px;
   font-size: 14px; z-index: 400; max-width: 90%; text-align: center;
-  opacity: 0; transition: opacity var(--kq-dur-base); pointer-events: none;
-  border-left: 3px solid var(--kq-amaranth);
+  opacity: 0; transition: opacity 0.2s; pointer-events: none;
 }
 .toast.show { opacity: 1; }
 
 /* ============================================================================
-   Refresh-Leiste (Home-Screen / iPhone-Nutzung)
+   Refresh-Leiste (Home-Screen-Nutzung iPhone)
    ============================================================================ */
 .refresh-bar {
   position: fixed; left: 0; right: 0; bottom: 0;
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   padding: 8px 16px calc(8px + env(safe-area-inset-bottom));
-  background: var(--kq-surface);
-  border-top: 2px solid var(--primary);
-  z-index: 90;
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(8px);
+  border-top: 1px solid var(--border); z-index: 90;
 }
 .refresh-bar .btn { flex: 1; }
-.refresh-bar .app-version {
-  font-size: 11px;
-  color: var(--text-sec);
-  white-space: nowrap;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
+.refresh-bar .app-version { font-size: 11px; color: var(--text-sec); white-space: nowrap; }
 
 /* ============================================================================
    Analysis result badge
    ============================================================================ */
 .analysis-badge {
-  background: var(--kq-mint-100);
-  border: 1px solid var(--kq-mint-700);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
-  font-size: 13px;
-  color: var(--kq-mint-700);
-  margin-top: 8px;
+  background: #e3f9e8; border: 1px solid #34c759; border-radius: var(--radius-sm);
+  padding: 8px 12px; font-size: 13px; color: #248a3d; margin-top: 8px;
 }
