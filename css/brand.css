@@ -1,0 +1,569 @@
+/* ============================================================================
+   KURZ QUADRAT — brand.css
+   Corporate-Design-Tokens & Grundklassen für Web-Apps (reines CSS).
+
+   Einbindung:
+     <link rel="stylesheet" href="css/brand.css">
+     <link rel="stylesheet" href="css/style.css">   <!-- Ihre App-Styles -->
+
+   Hinweise:
+   • Enthält NUR Design-Tokens + grundlegende CD-Klassen — keine App-Logik.
+   • Keine Framework-Abhängigkeit, kein Tailwind, kein React, kein JavaScript.
+   • Alle Werte als CSS-Variablen unter :root — style.css kann via
+     var(--kq-…) darauf zugreifen.
+   • Schriftdateien werden unter ../fonts/ erwartet (siehe @font-face).
+     Pfad ggf. an Ihre Ordnerstruktur anpassen.
+
+   INHALT
+     1. @font-face — Hausschrift Scandia
+     2. :root — Design-Tokens (Farben, Typo, Spacing, Radius, Schatten, Motion)
+     3. Reset / Box-Sizing
+     4. Farben — Utility-Klassen
+     5. Schriftfamilien & Typografie
+     6. Buttons
+     7. Karten
+     8. Formularfelder
+     9. Badges / Hinweise
+    10. Tabellen-Grundstil
+    11. Mobile-Optimierung
+   ============================================================================ */
+
+
+/* ============================================================================
+   1. @font-face — Hausschrift Scandia
+   ============================================================================ */
+@font-face {
+  font-family: "Scandia";
+  src: url("../fonts/Scandia-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Scandia";
+  src: url("../fonts/Scandia-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* ============================================================================
+   2. :root — Design-Tokens
+   ============================================================================ */
+:root {
+
+  /* ---------- 2.1 Marken-Farben (Brand Style Guide) ---------- */
+  --kq-bordeaux:  #780129;  /* Primärfarbe · große Flächen, Headlines auf Weiß */
+  --kq-amaranth:  #e7024e;  /* Sekundär/Akzent · Headlines, Störer, kleine Flächen */
+  --kq-mint:      #8effb9;  /* Sekundär/Akzent · Headlines, Störer, kleine Flächen */
+  --kq-black:     #000000;
+  --kq-white:     #ffffff;
+
+  /* ---------- 2.2 Marken-Abstufungen (für Hover/Active/Flächen) ---------- */
+  --kq-bordeaux-700: #5c0020;
+  --kq-bordeaux-500: #780129;
+  --kq-bordeaux-300: #b21e4f;
+  --kq-bordeaux-100: #f3dfe5;
+  --kq-bordeaux-050: #faf1f3;
+
+  --kq-amaranth-700: #b00139;
+  --kq-amaranth-500: #e7024e;
+  --kq-amaranth-300: #ff4f86;
+  --kq-amaranth-100: #fcd9e3;
+
+  --kq-mint-700:  #2bb775;
+  --kq-mint-500:  #8effb9;
+  --kq-mint-300:  #b8ffd1;
+  --kq-mint-100:  #e6ffee;
+
+  /* ---------- 2.3 Semantische Flächen & Text ---------- */
+  --kq-bg:           #ffffff;
+  --kq-bg-alt:       #faf7f4;   /* warmer Papierton für Sektionen */
+  --kq-bg-inverse:   var(--kq-bordeaux);
+  --kq-surface:      #ffffff;
+  --kq-surface-alt:  #f5eef0;
+
+  --kq-fg:           #1a0009;   /* warmes Fast-Schwarz, Fließtext */
+  --kq-fg-muted:     #5a3742;   /* Sekundärtext, Labels */
+  --kq-fg-subtle:    #8d6a74;   /* Captions, Hinweise */
+  --kq-fg-inverse:   #ffffff;
+
+  --kq-border:        #e6d8dc;  /* Haarlinien */
+  --kq-border-strong: #1a0009;
+  --kq-divider:       #efe5e8;
+
+  --kq-link:        var(--kq-bordeaux);
+  --kq-link-hover:  var(--kq-amaranth);
+
+  /* Status (abgeleitet aus der Marken-Palette) */
+  --kq-success:     #2bb775;
+  --kq-success-bg:  #e6ffee;
+  --kq-warning:     #b8860b;
+  --kq-warning-bg:  #fbf2da;
+  --kq-danger:      #e7024e;
+  --kq-danger-bg:   #fcd9e3;
+  --kq-info:        #780129;
+  --kq-info-bg:     #faf1f3;
+
+  /* ---------- 2.4 Schriftfamilien ---------- */
+  --kq-font:      "Scandia", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --kq-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* ---------- 2.5 Schriftgrößen ---------- */
+  --kq-fs-display: 72px;
+  --kq-fs-h1:      56px;
+  --kq-fs-h2:      40px;
+  --kq-fs-h3:      28px;
+  --kq-fs-h4:      20px;
+  --kq-fs-lg:      18px;
+  --kq-fs-md:      16px;
+  --kq-fs-sm:      14px;
+  --kq-fs-xs:      12px;
+
+  /* ---------- 2.6 Zeilenhöhen ---------- */
+  --kq-lh-tight:   1.05;
+  --kq-lh-snug:    1.2;
+  --kq-lh-normal:  1.5;
+  --kq-lh-loose:   1.7;
+
+  /* ---------- 2.7 Laufweite (Tracking) ---------- */
+  --kq-tracking-tight:  -0.01em;
+  --kq-tracking-normal: 0;
+  --kq-tracking-wide:   0.04em;
+  --kq-tracking-caps:   0.08em;   /* Versalien-Headlines */
+
+  /* ---------- 2.8 Abstände (4px-Basis) ---------- */
+  --kq-space-1:  4px;
+  --kq-space-2:  8px;
+  --kq-space-3:  12px;
+  --kq-space-4:  16px;
+  --kq-space-5:  24px;
+  --kq-space-6:  32px;
+  --kq-space-7:  48px;
+  --kq-space-8:  64px;
+  --kq-space-9:  96px;
+  --kq-space-10: 128px;
+
+  /* ---------- 2.9 Eckradien (geometrisch, knapp) ---------- */
+  --kq-radius-0:    0;
+  --kq-radius-1:    2px;
+  --kq-radius-2:    4px;
+  --kq-radius-3:    8px;
+  --kq-radius-pill: 999px;
+
+  /* ---------- 2.10 Schatten (sparsam, flach/poster-artig) ---------- */
+  --kq-shadow-1: 0 1px 2px rgba(26, 0, 9, 0.06);
+  --kq-shadow-2: 0 4px 12px rgba(26, 0, 9, 0.08);
+  --kq-shadow-3: 0 12px 32px rgba(26, 0, 9, 0.12);
+  --kq-shadow-focus: 0 0 0 3px rgba(231, 2, 78, 0.35);  /* Amaranth Fokus-Ring */
+
+  /* ---------- 2.11 Motion ---------- */
+  --kq-ease-out:    cubic-bezier(0.2, 0.7, 0.2, 1);
+  --kq-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --kq-dur-fast:    120ms;
+  --kq-dur-base:    200ms;
+  --kq-dur-slow:    360ms;
+
+  /* ---------- 2.12 Marken-Form: Pfeil-Winkel (~54°) ----------
+     Spitze = 0.32 × Elementhöhe. Wird für Buttons/Badges genutzt. */
+  --kq-chevron-ratio: 0.32;
+}
+
+
+/* ============================================================================
+   3. Reset / Box-Sizing  (minimal, nicht-invasiv)
+   ============================================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--kq-font);
+  font-size: var(--kq-fs-md);
+  line-height: var(--kq-lh-normal);
+  color: var(--kq-fg);
+  background: var(--kq-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* ============================================================================
+   4. Farben — Utility-Klassen
+   ============================================================================ */
+.kq-text-bordeaux { color: var(--kq-bordeaux); }
+.kq-text-amaranth { color: var(--kq-amaranth); }
+.kq-text-muted    { color: var(--kq-fg-muted); }
+.kq-text-subtle   { color: var(--kq-fg-subtle); }
+.kq-text-inverse  { color: var(--kq-fg-inverse); }
+
+.kq-bg-bordeaux { background-color: var(--kq-bordeaux); color: var(--kq-fg-inverse); }
+.kq-bg-amaranth { background-color: var(--kq-amaranth); color: var(--kq-fg-inverse); }
+.kq-bg-mint     { background-color: var(--kq-mint);     color: var(--kq-bordeaux); }
+.kq-bg-alt      { background-color: var(--kq-bg-alt); }
+
+.kq-link {
+  color: var(--kq-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color var(--kq-dur-fast) var(--kq-ease-out);
+}
+.kq-link:hover { color: var(--kq-link-hover); }
+
+
+/* ============================================================================
+   5. Schriftfamilien & Typografie
+   Regel: Headlines = Scandia Bold + VERSALIEN. Body = Scandia Regular.
+   ============================================================================ */
+.kq-display,
+.kq-h1, .kq-h2, .kq-h3, .kq-h4 {
+  font-family: var(--kq-font);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--kq-tracking-caps);
+  line-height: var(--kq-lh-tight);
+  color: var(--kq-bordeaux);
+  margin: 0;
+}
+.kq-display { font-size: var(--kq-fs-display); letter-spacing: var(--kq-tracking-tight); line-height: 0.95; }
+.kq-h1 { font-size: var(--kq-fs-h1); }
+.kq-h2 { font-size: var(--kq-fs-h2); }
+.kq-h3 { font-size: var(--kq-fs-h3); }
+.kq-h4 { font-size: var(--kq-fs-h4); }
+
+.kq-eyebrow {
+  font-family: var(--kq-font);
+  font-weight: 700;
+  font-size: var(--kq-fs-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--kq-amaranth);
+  margin: 0;
+}
+
+.kq-lead    { font-size: var(--kq-fs-lg); line-height: var(--kq-lh-normal); margin: 0; }
+.kq-body    { font-size: var(--kq-fs-md); line-height: var(--kq-lh-normal); margin: 0; }
+.kq-small   { font-size: var(--kq-fs-sm); line-height: var(--kq-lh-normal); color: var(--kq-fg-muted); margin: 0; }
+.kq-caption { font-size: var(--kq-fs-xs); line-height: var(--kq-lh-snug); letter-spacing: var(--kq-tracking-wide); text-transform: uppercase; color: var(--kq-fg-muted); margin: 0; }
+.kq-mono    { font-family: var(--kq-font-mono); }
+
+
+/* ============================================================================
+   6. Buttons
+   Marken-Form: Anfang & Ende im Pfeil-Winkel (clip-path). .kq-btn--square
+   schaltet auf rechteckige Form um, falls gewünscht.
+   ============================================================================ */
+.kq-btn {
+  --kq-btn-h: 48px;
+  --kq-btn-tip: calc(var(--kq-btn-h) * var(--kq-chevron-ratio));
+  --kq-btn-pad-x: 26px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kq-space-2);
+  height: var(--kq-btn-h);
+  padding: 0 calc(var(--kq-btn-pad-x) + var(--kq-btn-tip));
+  border: 0;
+  cursor: pointer;
+  font-family: var(--kq-font);
+  font-weight: 700;
+  font-size: var(--kq-fs-sm);
+  letter-spacing: var(--kq-tracking-wide);
+  text-decoration: none;
+  background: var(--kq-bordeaux);
+  color: var(--kq-fg-inverse);
+  transition: background var(--kq-dur-base) var(--kq-ease-out),
+              color var(--kq-dur-base) var(--kq-ease-out);
+  clip-path: polygon(
+    var(--kq-btn-tip) 0,
+    calc(100% - var(--kq-btn-tip)) 0,
+    100% 50%,
+    calc(100% - var(--kq-btn-tip)) 100%,
+    var(--kq-btn-tip) 100%,
+    0 50%
+  );
+}
+.kq-btn:hover   { background: var(--kq-bordeaux-700); }
+.kq-btn:active  { transform: translateY(1px); }
+.kq-btn:focus-visible { outline: none; box-shadow: var(--kq-shadow-focus); }
+.kq-btn:disabled,
+.kq-btn[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; }
+
+/* Varianten */
+.kq-btn--accent  { background: var(--kq-amaranth); }
+.kq-btn--accent:hover { background: var(--kq-amaranth-700); }
+.kq-btn--mint    { background: var(--kq-mint); color: var(--kq-bordeaux); }
+.kq-btn--mint:hover { background: var(--kq-mint-300); }
+
+/* Outline (gleiche Pfeilform, innen weiß) — robuste Variante ohne Pseudo-Element.
+   Der bordeauxfarbene „Rahmen" entsteht durch zwei gestapelte Flächen:
+   die Elementfläche (Bordeaux) + eine um die Rahmenstärke kleinere weiße
+   Fläche per background, beide vom selben clip-path beschnitten. */
+.kq-btn--outline {
+  --kq-btn-bw: 2px;
+  background:
+    linear-gradient(var(--kq-bg), var(--kq-bg)) padding-box,
+    var(--kq-bordeaux) border-box;
+  border: var(--kq-btn-bw) solid transparent;
+  color: var(--kq-bordeaux);
+  /* clip-path auf border-box, damit der Rahmen die Spitzen mitnimmt */
+  padding: 0 calc(var(--kq-btn-pad-x) + var(--kq-btn-tip));
+}
+.kq-btn--outline:hover {
+  background:
+    linear-gradient(var(--kq-amaranth), var(--kq-amaranth)) padding-box,
+    var(--kq-amaranth) border-box;
+  color: var(--kq-fg-inverse);
+}
+
+/* Ghost (reiner Textbutton) */
+.kq-btn--ghost {
+  background: none;
+  color: var(--kq-bordeaux);
+  clip-path: none;
+  padding: 0 var(--kq-space-2);
+  height: auto;
+}
+.kq-btn--ghost::before { content: none; }
+.kq-btn--ghost:hover { background: none; color: var(--kq-amaranth); }
+
+/* Rechteckige Form-Alternative (auch mit --outline kombinierbar) */
+.kq-btn--square { clip-path: none; border-radius: var(--kq-radius-2); padding: 0 var(--kq-btn-pad-x); }
+
+/* Größen */
+.kq-btn--lg { --kq-btn-h: 58px; --kq-btn-pad-x: 34px; font-size: var(--kq-fs-md); }
+.kq-btn--sm { --kq-btn-h: 36px; --kq-btn-pad-x: 18px; font-size: var(--kq-fs-xs); }
+
+
+/* ============================================================================
+   7. Karten
+   Flach, Haarlinien-Rand, knappe Eckradien (kein weiches Rounding).
+   ============================================================================ */
+.kq-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kq-space-3);
+  padding: var(--kq-space-6);
+  background: var(--kq-surface);
+  border: 1px solid var(--kq-border);
+  border-radius: var(--kq-radius-2);
+}
+.kq-card__title {
+  font-family: var(--kq-font);
+  font-weight: 700;
+  font-size: var(--kq-fs-h4);
+  text-transform: uppercase;
+  letter-spacing: var(--kq-tracking-caps);
+  line-height: var(--kq-lh-snug);
+  color: var(--kq-bordeaux);
+  margin: 0;
+}
+.kq-card__body { font-size: var(--kq-fs-sm); line-height: var(--kq-lh-normal); color: var(--kq-fg-muted); margin: 0; }
+
+/* Hervorgehobene Karte — Bordeaux-Fläche */
+.kq-card--feature {
+  background: var(--kq-bordeaux);
+  border-color: var(--kq-bordeaux);
+  color: var(--kq-fg-inverse);
+}
+.kq-card--feature .kq-card__title { color: var(--kq-fg-inverse); }
+.kq-card--feature .kq-card__body  { color: rgba(255, 255, 255, 0.85); }
+
+/* Optionaler Hover für klickbare Karten */
+.kq-card--interactive {
+  cursor: pointer;
+  transition: border-color var(--kq-dur-base) var(--kq-ease-out),
+              transform var(--kq-dur-base) var(--kq-ease-out);
+}
+.kq-card--interactive:hover { border-color: var(--kq-bordeaux); transform: translateY(-2px); }
+
+
+/* ============================================================================
+   8. Formularfelder
+   ============================================================================ */
+.kq-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kq-space-2);
+}
+.kq-label {
+  font-family: var(--kq-font);
+  font-weight: 700;
+  font-size: var(--kq-fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--kq-bordeaux);
+}
+.kq-input,
+.kq-textarea,
+.kq-select {
+  font-family: var(--kq-font);
+  font-size: var(--kq-fs-md);
+  color: var(--kq-fg);
+  padding: 12px 14px;
+  background: var(--kq-surface);
+  border: 1px solid var(--kq-border);
+  border-radius: var(--kq-radius-2);
+  outline: none;
+  transition: border-color var(--kq-dur-base) var(--kq-ease-out),
+              box-shadow var(--kq-dur-base) var(--kq-ease-out);
+}
+.kq-textarea { resize: vertical; min-height: 120px; line-height: var(--kq-lh-normal); }
+.kq-input::placeholder,
+.kq-textarea::placeholder { color: var(--kq-fg-subtle); }
+
+.kq-input:focus,
+.kq-textarea:focus,
+.kq-select:focus {
+  border-color: var(--kq-bordeaux);
+  box-shadow: 0 0 0 3px rgba(231, 2, 78, 0.2);
+}
+
+/* Fehlerzustand */
+.kq-input--error,
+.kq-textarea--error { border-color: var(--kq-amaranth); }
+.kq-input--error:focus,
+.kq-textarea--error:focus { box-shadow: 0 0 0 3px rgba(231, 2, 78, 0.25); }
+
+/* Hilfs- & Fehlertext */
+.kq-hint     { font-size: var(--kq-fs-xs); color: var(--kq-fg-muted); }
+.kq-error-msg { font-size: var(--kq-fs-xs); color: var(--kq-amaranth); }
+
+/* Deaktiviert */
+.kq-input:disabled,
+.kq-textarea:disabled,
+.kq-select:disabled { opacity: 0.5; cursor: not-allowed; background: var(--kq-bg-alt); }
+
+
+/* ============================================================================
+   9. Badges / Hinweise
+   Badges optional in Marken-Pfeilform (.kq-badge--chevron).
+   Hinweis-Boxen (.kq-note) für „Wichtig zu wissen", Status etc.
+   ============================================================================ */
+.kq-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--kq-space-1);
+  padding: 5px 10px;
+  border-radius: var(--kq-radius-2);
+  font-family: var(--kq-font);
+  font-weight: 700;
+  font-size: var(--kq-fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--kq-bordeaux);
+  color: var(--kq-fg-inverse);
+}
+.kq-badge--accent { background: var(--kq-amaranth); color: var(--kq-fg-inverse); }
+.kq-badge--mint   { background: var(--kq-mint); color: var(--kq-bordeaux); }
+.kq-badge--soft   { background: var(--kq-bordeaux-050); color: var(--kq-bordeaux); }
+.kq-badge--outline { background: transparent; color: var(--kq-bordeaux); box-shadow: inset 0 0 0 1px var(--kq-bordeaux); }
+
+/* Pfeilform-Variante (Marken-Winkel) */
+.kq-badge--chevron {
+  --kq-badge-h: 26px;
+  --kq-badge-tip: calc(var(--kq-badge-h) * var(--kq-chevron-ratio));
+  height: var(--kq-badge-h);
+  padding: 0 calc(12px + var(--kq-badge-tip));
+  border-radius: 0;
+  clip-path: polygon(
+    var(--kq-badge-tip) 0, calc(100% - var(--kq-badge-tip)) 0,
+    100% 50%, calc(100% - var(--kq-badge-tip)) 100%,
+    var(--kq-badge-tip) 100%, 0 50%
+  );
+}
+
+/* Hinweis-Boxen */
+.kq-note {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kq-space-1);
+  padding: var(--kq-space-4) var(--kq-space-5);
+  border-left: 3px solid var(--kq-bordeaux);
+  background: var(--kq-info-bg);
+  color: var(--kq-fg);
+  border-radius: 0 var(--kq-radius-2) var(--kq-radius-2) 0;
+  font-size: var(--kq-fs-sm);
+  line-height: var(--kq-lh-normal);
+}
+.kq-note__title {
+  font-weight: 700;
+  font-size: var(--kq-fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--kq-bordeaux);
+}
+.kq-note--success { border-left-color: var(--kq-success); background: var(--kq-success-bg); }
+.kq-note--success .kq-note__title { color: var(--kq-success); }
+.kq-note--warning { border-left-color: var(--kq-warning); background: var(--kq-warning-bg); }
+.kq-note--warning .kq-note__title { color: var(--kq-warning); }
+.kq-note--danger  { border-left-color: var(--kq-danger);  background: var(--kq-danger-bg); }
+.kq-note--danger .kq-note__title { color: var(--kq-danger); }
+
+
+/* ============================================================================
+   10. Tabellen-Grundstil
+   ============================================================================ */
+.kq-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--kq-fs-sm);
+  color: var(--kq-fg);
+}
+.kq-table th {
+  background: var(--kq-bordeaux);
+  color: var(--kq-fg-inverse);
+  text-align: left;
+  font-weight: 700;
+  font-size: var(--kq-fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: var(--kq-space-3) var(--kq-space-4);
+}
+.kq-table td {
+  padding: var(--kq-space-3) var(--kq-space-4);
+  border-bottom: 1px solid var(--kq-border);
+  vertical-align: top;
+  line-height: var(--kq-lh-normal);
+}
+.kq-table tbody tr:nth-child(even) td { background: var(--kq-bg-alt); }
+.kq-table tbody tr:hover td { background: var(--kq-bordeaux-050); }
+
+/* Spalten-Helfer */
+.kq-table .kq-table__num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.kq-table .kq-table__label { font-weight: 700; color: var(--kq-bordeaux); }
+
+
+/* ============================================================================
+   11. Mobile-Optimierung
+   Skaliert Headline-Größen herunter und entspannt Innenabstände.
+   ============================================================================ */
+@media (max-width: 640px) {
+  :root {
+    --kq-fs-display: 44px;
+    --kq-fs-h1:      36px;
+    --kq-fs-h2:      28px;
+    --kq-fs-h3:      22px;
+    --kq-fs-h4:      18px;
+  }
+
+  .kq-card { padding: var(--kq-space-5); }
+
+  /* Touch-Ziele ≥ 44px */
+  .kq-btn { --kq-btn-h: 48px; width: 100%; }
+  .kq-btn--sm { width: auto; }
+
+  /* Tabellen horizontal scrollbar machen: <div class="kq-table-scroll"><table>… */
+  .kq-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .kq-table-scroll .kq-table { min-width: 560px; }
+
+  /* Eingaben volle Breite */
+  .kq-input, .kq-textarea, .kq-select { width: 100%; }
+}
+
+/* Reduzierte Bewegung respektieren */
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

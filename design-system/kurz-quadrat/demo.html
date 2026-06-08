@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>brand.css — Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../../css/brand.css">
+<style>
+  /* nur Demo-Layout — NICHT Teil von brand.css */
+  body { padding: 40px; max-width: 980px; margin: 0 auto; }
+  section { margin-bottom: 48px; }
+  .demo-label { font-family: var(--kq-font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--kq-fg-subtle); margin-bottom: 16px; border-bottom: 1px solid var(--kq-divider); padding-bottom: 6px; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+</style>
+</head>
+<body>
+
+  <section>
+    <div class="demo-label">5 · Typografie</div>
+    <p class="kq-eyebrow">Energieberatung Frankfurt</p>
+    <h1 class="kq-h1">Ihr Sanierungsfahrplan</h1>
+    <p class="kq-lead">Unabhängige Energieberatung — vom Energieausweis bis zum geförderten iSFP.</p>
+    <p class="kq-body">Fließtext in Scandia Regular. Ich begleite Sie durch jede Phase Ihrer energetischen Sanierung.</p>
+    <p class="kq-small">Förderfähig nach BAFA und KfW.</p>
+  </section>
+
+  <section>
+    <div class="demo-label">6 · Buttons</div>
+    <div class="row">
+      <button class="kq-btn"><span>Kostenlose Erstberatung</span></button>
+      <button class="kq-btn kq-btn--accent"><span>Jetzt anfragen</span></button>
+      <button class="kq-btn kq-btn--mint"><span>Mehr erfahren</span></button>
+      <button class="kq-btn kq-btn--outline"><span>Outline</span></button>
+      <button class="kq-btn kq-btn--ghost">Zurück</button>
+    </div>
+    <div class="row">
+      <button class="kq-btn kq-btn--sm"><span>Klein</span></button>
+      <button class="kq-btn kq-btn--lg"><span>Großer CTA</span></button>
+      <button class="kq-btn" disabled><span>Deaktiviert</span></button>
+      <button class="kq-btn kq-btn--square"><span>Rechteckig</span></button>
+    </div>
+  </section>
+
+  <section>
+    <div class="demo-label">7 · Karten</div>
+    <div class="grid2">
+      <div class="kq-card">
+        <span class="kq-badge kq-badge--mint kq-badge--chevron">Förderung</span>
+        <h3 class="kq-card__title">Sanierungsfahrplan</h3>
+        <p class="kq-card__body">Persönlich erstellter iSFP — bis zu 50 % förderfähig nach BAFA.</p>
+      </div>
+      <div class="kq-card kq-card--feature">
+        <h3 class="kq-card__title">Erstgespräch kostenfrei</h3>
+        <p class="kq-card__body">30 Minuten, telefonisch oder vor Ort.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="demo-label">8 · Formularfelder</div>
+    <div class="grid2">
+      <div class="kq-field">
+        <label class="kq-label">Name</label>
+        <input class="kq-input" placeholder="Vor- und Nachname">
+        <span class="kq-hint">Pflichtfeld</span>
+      </div>
+      <div class="kq-field">
+        <label class="kq-label">Telefon</label>
+        <input class="kq-input kq-input--error" value="00 abc">
+        <span class="kq-error-msg">Bitte gültige Nummer eingeben.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="demo-label">9 · Badges / Hinweise</div>
+    <div class="row">
+      <span class="kq-badge">Förderfähig</span>
+      <span class="kq-badge kq-badge--accent">Neu</span>
+      <span class="kq-badge kq-badge--mint">BAFA + KfW</span>
+      <span class="kq-badge kq-badge--soft">Energieausweis</span>
+      <span class="kq-badge kq-badge--outline">Optional</span>
+    </div>
+    <div class="kq-note kq-note--warning" style="margin-top:12px">
+      <span class="kq-note__title">Wichtig zu wissen</span>
+      Der iSFP muss vor Beginn der ersten Maßnahme vorliegen, sonst entfällt der 5 %-Bonus.
+    </div>
+  </section>
+
+  <section>
+    <div class="demo-label">10 · Tabelle</div>
+    <div class="kq-table-scroll">
+      <table class="kq-table">
+        <thead>
+          <tr><th>Gebäudetyp</th><th>BAFA-Zuschuss</th><th class="kq-table__num">Kosten</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="kq-table__label">Ein-/Zweifamilienhaus</td><td>50 %, max. 650 €</td><td class="kq-table__num">1.850 €</td></tr>
+          <tr><td class="kq-table__label">Mehrfamilienhaus</td><td>50 %, max. 850 €</td><td class="kq-table__num">2.400 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</body>
+</html>

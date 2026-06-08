@@ -139,6 +139,19 @@ Hinweis Versionsanzeige: In der Projektübersicht wird eine sichtbare App-Versio
 - Hottgenroth-Texte
 - vollständige Heizlastberechnung
 
+## Corporate Design (Kurz Quadrat)
+
+Seit v0.2.2-dev ist das Kurz-Quadrat-Corporate-Design als reine CSS-Schicht eingebunden:
+
+- `css/brand.css` enthält alle Design-Tokens (`--kq-*`) und CD-Klassen (Quelle: Brand Style Guide Kurz Quadrat).
+- `css/style.css` bindet die Tokens via `var(--kq-*)` ein und enthält app-spezifisches Layout.
+- `brand.css` wird vor `style.css` geladen (siehe `index.html` `<head>`).
+- Primärfarbe: Bordeaux `#780129`. Akzent: Amaranth `#e7024e`. Signature: Bordeaux + Mint.
+- Schrift: Scandia (Fallback auf System-UI-Kette, falls Schriftdateien nicht lokal vorhanden).
+- Keine Änderung an Fachlogik, Heizlast, Raumaufnahme, Datenmodell, Export, Fotos oder LocalStorage.
+- Referenz-Demo und Dokumentation: `design-system/kurz-quadrat/demo.html` und `docs/design-system.md`.
+- Logo-Einbindung ist ein separater, späterer Schritt.
+
 ## Spätere Funktionen
 
 - KI-Fotoanalyse mit manueller Bestätigung
