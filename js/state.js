@@ -81,6 +81,32 @@ function load() {
         if (r.gaubeVorhanden === undefined) r.gaubeVorhanden = !!(r.gaube_breite || r.gaube_lichtehoehe);
       });
     });
+    // ----------------------------------------------------------------
+    // Migration: Einzelobjekte -> Arrays (v0.2.7-dev)
+    // Bestehende Einzelobjektdaten werden als erster Eintrag uebernommen,
+    // wenn das neue Array fehlt oder leer ist. Alte Felder bleiben erhalten.
+    // ----------------------------------------------------------------
+    if (!p.heizanlagen) {
+      p.heizanlagen = [];
+      const hz = p.heizanlage || {};
+      if (hz.hersteller || hz.typ || hz.baujahr || hz.modell || hz.leistung) {
+        p.heizanlagen.push({ id: uuid(), hersteller: hz.hersteller||'', typ: hz.typ||'', baujahr: hz.baujahr||'', modell: hz.modell||'', energietraeger: hz.energietraeger||'unbekannt', leistung: hz.leistung||'', notiz: hz.notiz||'', foto: p.heizanlage_foto||null });
+      }
+    }
+    if (!p.warmwasserEintraege) {
+      p.warmwasserEintraege = [];
+      const ww = p.warmwasser || {};
+      if ((ww.art && ww.art !== 'unbekannt') || ww.hersteller || ww.typ || ww.speichervolumen || ww.baujahr) {
+        p.warmwasserEintraege.push({ id: uuid(), art: ww.art||'unbekannt', speicherVorhanden: ww.speicherVorhanden||'unbekannt', speichervolumen: ww.speichervolumen||'', energietraeger: ww.energietraeger||'unbekannt', versorgung: ww.versorgung||'unbekannt', baujahr: ww.baujahr||'', hersteller: ww.hersteller||'', typ: ww.typ||'', notiz: ww.notiz||'' });
+      }
+    }
+    if (!p.schornsteine) {
+      p.schornsteine = [];
+      const sch = p.schornstein || {};
+      if (sch.lage || sch.form || sch.breite || sch.tiefe) {
+        p.schornsteine.push({ id: uuid(), lage: sch.lage||'', form: sch.form||'', breite: sch.breite||'', tiefe: sch.tiefe||'' });
+      }
+    }
   });
 }
 
@@ -106,6 +132,13 @@ function saveHeizanlageField(field, value) {
   save();
 }
 
+function saveHeizanlageEintragField(id, field, value) {
+  const p = getProjekt();
+  if (!p) return;
+  const hz = (p.heizanlagen || []).find(function(h) { return h.id === id; });
+  if (hz) { hz[field] = value; save(); }
+}
+
 function saveSchornsteinField(field, value) {
   const p = getProjekt();
   if (!p) return;
@@ -113,11 +146,25 @@ function saveSchornsteinField(field, value) {
   save();
 }
 
+function saveSchornsteinEintragField(id, field, value) {
+  const p = getProjekt();
+  if (!p) return;
+  const sch = (p.schornsteine || []).find(function(s) { return s.id === id; });
+  if (sch) { sch[field] = value; save(); }
+}
+
 function saveWarmwasserField(field, value) {
   const p = getProjekt();
   if (!p) return;
   p.warmwasser[field] = value;
   save();
+}
+
+function saveWarmwasserEintragField(id, field, value) {
+  const p = getProjekt();
+  if (!p) return;
+  const ww = (p.warmwasserEintraege || []).find(function(w) { return w.id === id; });
+  if (ww) { ww[field] = value; save(); }
 }
 
 // Heizlast-Standardwerte (projektweit): überschlägige Erfassungshilfe, kein

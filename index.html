@@ -133,7 +133,7 @@
     <div class="card">
       <div class="section-header">
         <div class="section-title">Sanierungshistorie</div>
-        <button class="btn btn-sm btn-secondary" onclick="addSanierung()">+ Hinzufügen</button>
+        <button class="btn btn-sm btn-primary" onclick="addSanierung()">+ Hinzufügen</button>
       </div>
       <div id="sanierungen-list"></div>
       <div id="sanierungen-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch keine Sanierungen erfasst</div>
@@ -151,179 +151,33 @@
 
     <!-- Heizanlage -->
     <div class="card">
-      <div class="card-title">Heizanlage</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Hersteller</label>
-          <input type="text" id="p-hz-hersteller" placeholder="z.B. Viessmann" oninput="saveHeizanlageField('hersteller', this.value)">
-        </div>
-        <div class="form-group">
-          <label>Typ</label>
-          <select id="p-hz-typ" onchange="saveHeizanlageField('typ', this.value)">
-            <option value="">Wählen...</option>
-            <option value="Gas-Therme">Gas-Therme</option>
-            <option value="Gas-Brennwert">Gas-Brennwert</option>
-            <option value="Öl-Therme">Öl-Therme</option>
-            <option value="Öl-Brennwert">Öl-Brennwert</option>
-            <option value="Wärmepumpe">Wärmepumpe</option>
-            <option value="Pellet">Pellet</option>
-            <option value="Fernwärme">Fernwärme</option>
-            <option value="Elektro">Elektro</option>
-          </select>
-        </div>
+      <div class="section-header">
+        <div class="section-title">Heizanlage</div>
+        <button class="btn btn-sm btn-primary" onclick="addHeizanlage()">+ Heizanlage</button>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Baujahr</label>
-          <input type="number" id="p-hz-baujahr" placeholder="z.B. 2005" min="1800" max="2030" onfocus="if(!this.value)this.value=2000" oninput="saveHeizanlageField('baujahr', this.value)">
-        </div>
-        <div class="form-group">
-          <label>Modell</label>
-          <input type="text" id="p-hz-modell" placeholder="Modellbezeichnung" oninput="saveHeizanlageField('modell', this.value)">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Energieträger</label>
-          <select id="p-hz-energietraeger" onchange="saveHeizanlageField('energietraeger', this.value)">
-            <option value="unbekannt">unbekannt</option>
-            <option value="Erdgas">Erdgas</option>
-            <option value="Heizöl">Heizöl</option>
-            <option value="Flüssiggas">Flüssiggas</option>
-            <option value="Strom">Strom</option>
-            <option value="Wärmepumpe Strom">Wärmepumpe Strom</option>
-            <option value="Holz / Pellets">Holz / Pellets</option>
-            <option value="Fernwärme">Fernwärme</option>
-            <option value="Solarthermie unterstützend">Solarthermie unterstützend</option>
-            <option value="Sonstiges">Sonstiges</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Leistung in kW, falls bekannt</label>
-          <input type="text" id="p-hz-leistung" placeholder="z.B. 18" oninput="saveHeizanlageField('leistung', this.value)">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Foto Heizanlage</label>
-        <label class="photo-btn" id="foto-heizanlage-label">
-          <span>📷</span> Foto aufnehmen
-          <input type="file" accept="image/*" capture="environment" style="display:none" onchange="handleFoto(this, 'heizanlage')">
-        </label>
-        <img id="foto-heizanlage-preview" class="photo-preview" style="display:none">
-      </div>
-      <div class="form-group">
-        <label>Notizen Heizanlage</label>
-        <textarea id="p-hz-notiz" placeholder="Besonderheiten, Zustand..." oninput="saveHeizanlageField('notiz', this.value)"></textarea>
-      </div>
+      <div id="heizanlagen-list"></div>
+      <div id="heizanlagen-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch keine Heizanlage erfasst</div>
     </div>
 
     <!-- Warmwasser -->
     <div class="card">
-      <div class="card-title">Warmwasser</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Art der Warmwasserbereitung</label>
-          <select id="p-ww-art" onchange="saveWarmwasserField('art', this.value)">
-            <option value="unbekannt">unbekannt</option>
-            <option value="zentral">zentral</option>
-            <option value="dezentral">dezentral</option>
-            <option value="kombiniert mit Heizung">kombiniert mit Heizung</option>
-            <option value="separat">separat</option>
-            <option value="Sonstiges">Sonstiges</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Speicher vorhanden</label>
-          <select id="p-ww-speicher-vorhanden" onchange="saveWarmwasserField('speicherVorhanden', this.value)">
-            <option value="unbekannt">unbekannt</option>
-            <option value="ja">ja</option>
-            <option value="nein">nein</option>
-          </select>
-        </div>
+      <div class="section-header">
+        <div class="section-title">Warmwasser</div>
+        <button class="btn btn-sm btn-primary" onclick="addWarmwasser()">+ Warmwasser</button>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Speichervolumen in Liter, falls bekannt</label>
-          <input type="text" id="p-ww-speichervolumen" placeholder="z.B. 300" oninput="saveWarmwasserField('speichervolumen', this.value)">
-        </div>
-        <div class="form-group">
-          <label>Energieträger</label>
-          <select id="p-ww-energietraeger" onchange="saveWarmwasserField('energietraeger', this.value)">
-            <option value="unbekannt">unbekannt</option>
-            <option value="Erdgas">Erdgas</option>
-            <option value="Heizöl">Heizöl</option>
-            <option value="Strom">Strom</option>
-            <option value="Wärmepumpe Strom">Wärmepumpe Strom</option>
-            <option value="Fernwärme">Fernwärme</option>
-            <option value="Solarthermie unterstützend">Solarthermie unterstützend</option>
-            <option value="Holz / Pellets">Holz / Pellets</option>
-            <option value="Sonstiges">Sonstiges</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Versorgung</label>
-          <select id="p-ww-versorgung" onchange="saveWarmwasserField('versorgung', this.value)">
-            <option value="unbekannt">unbekannt</option>
-            <option value="gesamte Wohneinheit">gesamte Wohneinheit</option>
-            <option value="mehrere Wohneinheiten">mehrere Wohneinheiten</option>
-            <option value="einzelne Entnahmestellen">einzelne Entnahmestellen</option>
-            <option value="raumweise">raumweise</option>
-            <option value="Sonstiges">Sonstiges</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Baujahr</label>
-          <input type="number" id="p-ww-baujahr" placeholder="z.B. 2005" min="1800" max="2030" onfocus="if(!this.value)this.value=2000" oninput="saveWarmwasserField('baujahr', this.value)">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Hersteller</label>
-          <input type="text" id="p-ww-hersteller" placeholder="z.B. Vaillant" oninput="saveWarmwasserField('hersteller', this.value)">
-        </div>
-        <div class="form-group">
-          <label>Typ</label>
-          <input type="text" id="p-ww-typ" placeholder="Typenbezeichnung" oninput="saveWarmwasserField('typ', this.value)">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Notizen Warmwasser</label>
-        <textarea id="p-ww-notiz" placeholder="Besonderheiten, Zustand..." oninput="saveWarmwasserField('notiz', this.value)"></textarea>
-      </div>
+      <div id="warmwasser-list"></div>
+      <div id="warmwasser-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch kein Warmwasserbereiter erfasst</div>
     </div>
 
     <!-- Schornstein -->
     <div class="card">
-      <div class="card-title">Schornstein</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Lage</label>
-          <input type="text" id="p-schorn-lage" placeholder="z.B. Nordwand Küche" oninput="saveSchornsteinField('lage', this.value)">
-        </div>
-        <div class="form-group">
-          <label>Form</label>
-          <select id="p-schorn-form" onchange="saveSchornsteinField('form', this.value)">
-            <option value="">Wählen...</option>
-            <option value="quadratisch">Quadratisch</option>
-            <option value="rechteckig">Rechteckig</option>
-            <option value="rund">Rund</option>
-          </select>
-        </div>
+      <div class="section-header">
+        <div class="section-title">Schornstein</div>
+        <button class="btn btn-sm btn-primary" onclick="addSchornstein()">+ Schornstein</button>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Breite (cm)</label>
-          <input type="number" class="disto-input" id="p-schorn-b" placeholder="cm" oninput="saveSchornsteinField('breite', this.value)">
-        </div>
-        <div class="form-group">
-          <label>Tiefe (cm)</label>
-          <input type="number" class="disto-input" id="p-schorn-t" placeholder="cm" oninput="saveSchornsteinField('tiefe', this.value)">
-        </div>
-      </div>
+      <div id="schornsteine-list"></div>
+      <div id="schornsteine-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch kein Schornstein erfasst</div>
     </div>
-
     <!-- Heizlast-Standardwerte (projektweit) -->
     <div class="card">
       <div class="card-title">Heizlast-Standardwerte (projektweit)</div>
@@ -373,7 +227,7 @@
     <div class="card">
       <div class="section-header">
         <div class="section-title">Offene Punkte</div>
-        <button class="btn btn-sm btn-secondary" onclick="addOffenerPunkt()">+ Offenen Punkt hinzufügen</button>
+        <button class="btn btn-sm btn-primary" onclick="addOffenerPunkt()">+ Offenen Punkt hinzufügen</button>
       </div>
       <div id="offene-punkte-list"></div>
       <div id="offene-punkte-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch keine offenen Punkte erfasst</div>
@@ -867,6 +721,9 @@ function neuesProjekt() {
       // mehr nötig (vermeidet Doppelpflege). Überschreibt nie manuelle Werte.
       baualtersklasseGebaeude: '',
     },
+    heizanlagen: [],
+    warmwasserEintraege: [],
+    schornsteine: [],
     offenePunkte: [],
     geschosse: [eg]
   };
@@ -1621,8 +1478,6 @@ function renderProjektView() {
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
   set('p-baujahr',p.baujahr);set('p-typ',p.typ);set('p-adresse',p.adresse);set('p-datum',p.datum);set('p-plz',p.plz);
   set('p-wohneinheiten',p.wohneinheiten);set('p-auftragsart',p.auftragsart);
-  set('p-hz-hersteller',p.heizanlage.hersteller);set('p-hz-typ',p.heizanlage.typ);set('p-hz-baujahr',p.heizanlage.baujahr);set('p-hz-modell',p.heizanlage.modell);set('p-hz-notiz',p.heizanlage.notiz);
-  set('p-hz-energietraeger',p.heizanlage.energietraeger);set('p-hz-leistung',p.heizanlage.leistung);
   if(!p.heizlastDefaults) p.heizlastDefaults = { awUwert:'', iwUwert:'', dachUwert:'', bodenplatteUwert:'', bodenUwert:'', fensterUwert:'', tuerUwert:'', tempAussenNorm:-12, tempUnbeheiztDefault:7, quelle:'', baujahrAbleitungAktiv:false };
   const hd=p.heizlastDefaults;
   // Defensive Ergänzung: ältere Projekte können noch die früheren getrennten
@@ -1638,12 +1493,7 @@ function renderProjektView() {
   set('p-hl-quelle',hd.quelle);
   const hlBaujahrEl=document.getElementById('p-hl-baujahr-aktiv'); if(hlBaujahrEl) hlBaujahrEl.checked=!!hd.baujahrAbleitungAktiv;
   aktualisiereBaualtersklasseAnzeige(p);
-  set('p-ww-art',p.warmwasser.art);set('p-ww-speicher-vorhanden',p.warmwasser.speicherVorhanden);set('p-ww-speichervolumen',p.warmwasser.speichervolumen);
-  set('p-ww-energietraeger',p.warmwasser.energietraeger);set('p-ww-versorgung',p.warmwasser.versorgung);set('p-ww-baujahr',p.warmwasser.baujahr);
-  set('p-ww-hersteller',p.warmwasser.hersteller);set('p-ww-typ',p.warmwasser.typ);set('p-ww-notiz',p.warmwasser.notiz);
-  set('p-schorn-lage',p.schornstein.lage);set('p-schorn-form',p.schornstein.form);set('p-schorn-b',p.schornstein.breite);set('p-schorn-t',p.schornstein.tiefe);
-  if(p.heizanlage_foto){const prev=document.getElementById('foto-heizanlage-preview');const lbl=document.getElementById('foto-heizanlage-label');if(prev){prev.src=p.heizanlage_foto;prev.style.display='block';}if(lbl)lbl.classList.add('has-photo');}
-  renderSanierungen(); renderGeschossliste(); renderOffenePunkte();
+  renderSanierungen(); renderGeschossliste(); renderHeizanlagenListe(); renderWarmwasserListe(); renderSchornsteineListe(); renderOffenePunkte();
 }
 
 // ============================================================
@@ -1811,6 +1661,114 @@ function renderGeschossliste() {
   l.style.display='none';
   const icons={KG:'⬇',EG:'🏠','1.OG':'⬆','2.OG':'⬆','3.OG':'⬆',DG:'🔺',Spitzboden:'△'};
   c.innerHTML=p.geschosse.map(g=>'<div class="list-item" onclick="openGeschoss(\''+g.id+'\')"><div class="list-item-icon" style="background:#f0f7ff;color:#0071e3;font-size:22px;">'+(icons[g.name]||'◻')+'</div><div class="list-item-body"><div class="list-item-title">'+g.name+'</div><div class="list-item-sub"><span class="badge '+(g.beheizung==='beheizt'?'badge-green':'badge-gray')+'">'+g.beheizung+'</span> · '+g.raeume.length+' Raum/Räume</div></div><button class="list-item-action" onclick="deleteGeschoss(\''+g.id+'\',event)">🗑</button><div class="list-item-arrow">›</div></div>').join('');
+}
+
+// ---- Heizanlage (Array) ----
+function addHeizanlage() {
+  const p=getProjekt(); if(!p) return;
+  if(!p.heizanlagen) p.heizanlagen=[];
+  p.heizanlagen.push({id:uuid(),hersteller:'',typ:'',baujahr:'',modell:'',energietraeger:'unbekannt',leistung:'',notiz:'',foto:null});
+  save(); renderHeizanlagenListe();
+}
+function deleteHeizanlage(id) {
+  const p=getProjekt(); if(!p) return;
+  p.heizanlagen=(p.heizanlagen||[]).filter(function(h){return h.id!==id;});
+  save(); renderHeizanlagenListe();
+}
+function renderHeizanlagenListe() {
+  const p=getProjekt();
+  const c=document.getElementById('heizanlagen-list');
+  const l=document.getElementById('heizanlagen-leer');
+  if(!c) return;
+  const list=p.heizanlagen||[];
+  if(!list.length){c.innerHTML='';if(l)l.style.display='block';return;}
+  if(l)l.style.display='none';
+  const typen=['Gas-Brennwert','Gas-Therme','Oel-Brennwert','Oel-Therme','Waermepumpe','Pellet','Fernwaerme','Elektro','unbekannt'];
+  const energien=['unbekannt','Gas','Oel','Holz','Pellet','Strom','Fernwaerme'];
+  c.innerHTML=list.map(function(hz,i){
+    return '<div class="sub-item"><div class="sub-item-header"><div class="sub-item-title">Heizanlage '+(list.length>1?i+1:'')+'</div><button onclick="deleteHeizanlage(\''+hz.id+'\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">&#x2715;</button></div>'
+      +'<div class="form-row"><div class="form-group"><label>Typ</label><select onchange="saveHeizanlageEintragField(\''+hz.id+'\',\'typ\',this.value)">'+typen.map(function(t){return '<option value="'+t+'" '+(hz.typ===t?'selected':'')+'>'+t+'</option>';}).join('')+'</select></div>'
+      +'<div class="form-group"><label>Energietr&#228;ger</label><select onchange="saveHeizanlageEintragField(\''+hz.id+'\',\'energietraeger\',this.value)">'+energien.map(function(e){return '<option value="'+e+'" '+(hz.energietraeger===e?'selected':'')+'>'+e+'</option>';}).join('')+'</select></div></div>'
+      +'<div class="form-row"><div class="form-group"><label>Hersteller</label><input type="text" value="'+(hz.hersteller||'')+'" placeholder="z.B. Viessmann" oninput="saveHeizanlageEintragField(\''+hz.id+'\',\'hersteller\',this.value)"></div>'
+      +'<div class="form-group"><label>Modell</label><input type="text" value="'+(hz.modell||'')+'" placeholder="Modellbezeichnung" oninput="saveHeizanlageEintragField(\''+hz.id+'\',\'modell\',this.value)"></div></div>'
+      +'<div class="form-row"><div class="form-group"><label>Baujahr</label><input type="number" value="'+(hz.baujahr||'')+'" placeholder="2005" min="1900" max="2100" oninput="saveHeizanlageEintragField(\''+hz.id+'\',\'baujahr\',this.value)"></div>'
+      +'<div class="form-group"><label>Leistung (kW)</label><input type="number" value="'+(hz.leistung||'')+'" placeholder="15" oninput="saveHeizanlageEintragField(\''+hz.id+'\',\'leistung\',this.value)"></div></div>'
+      +'<div class="form-group"><label>Notiz</label><input type="text" value="'+(hz.notiz||'')+'" placeholder="Bemerkungen" oninput="saveHeizanlageEintragField(\''+hz.id+'\',\'notiz\',this.value)"></div>'
+      +'<div class="form-group"><label>Foto</label><label id="foto-hz-label-'+hz.id+'" class="foto-label'+(hz.foto?' has-photo':'')+'" onclick="document.getElementById(\'foto-hz-input-'+hz.id+'\').click()"><span>'+(hz.foto?'&#x2713;':'&#128247;')+'</span></label>'
+      +'<input type="file" id="foto-hz-input-'+hz.id+'" accept="image/*" capture="environment" style="display:none" onchange="handleFotoHzEintrag(this,\''+hz.id+'\')">'
+      +(hz.foto?'<img id="foto-hz-preview-'+hz.id+'" src="'+hz.foto+'" style="max-width:100%;max-height:200px;border-radius:8px;margin-top:6px;display:block" alt="Heizanlagenfoto">':'<img id="foto-hz-preview-'+hz.id+'" src="" style="display:none;max-width:100%;max-height:200px;border-radius:8px;margin-top:6px" alt="Heizanlagenfoto">')
+      +'</div></div>';
+  }).join('');
+}
+
+// ---- Warmwasser (Array) ----
+function addWarmwasser() {
+  const p=getProjekt(); if(!p) return;
+  if(!p.warmwasserEintraege) p.warmwasserEintraege=[];
+  p.warmwasserEintraege.push({id:uuid(),art:'unbekannt',speicherVorhanden:'unbekannt',speichervolumen:'',energietraeger:'unbekannt',versorgung:'unbekannt',baujahr:'',hersteller:'',typ:'',notiz:''});
+  save(); renderWarmwasserListe();
+}
+function deleteWarmwasser(id) {
+  const p=getProjekt(); if(!p) return;
+  p.warmwasserEintraege=(p.warmwasserEintraege||[]).filter(function(w){return w.id!==id;});
+  save(); renderWarmwasserListe();
+}
+function renderWarmwasserListe() {
+  const p=getProjekt();
+  const c=document.getElementById('warmwasser-list');
+  const l=document.getElementById('warmwasser-leer');
+  if(!c) return;
+  const list=p.warmwasserEintraege||[];
+  if(!list.length){c.innerHTML='';if(l)l.style.display='block';return;}
+  if(l)l.style.display='none';
+  const arten=['unbekannt','Durchlauferhitzer','Speicher','Kombianlage','Fernwaerme','Solar'];
+  const speicherOpts=['unbekannt','ja','nein'];
+  const energien=['unbekannt','Gas','Strom','Oel','Solar','Pellet','Fernwaerme'];
+  const versorgungen=['unbekannt','zentral','dezentral'];
+  c.innerHTML=list.map(function(ww,i){
+    return '<div class="sub-item"><div class="sub-item-header"><div class="sub-item-title">Warmwasser '+(list.length>1?i+1:'')+'</div><button onclick="deleteWarmwasser(\''+ww.id+'\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">&#x2715;</button></div>'
+      +'<div class="form-row"><div class="form-group"><label>Art</label><select onchange="saveWarmwasserEintragField(\''+ww.id+'\',\'art\',this.value)">'+arten.map(function(a){return '<option value="'+a+'" '+(ww.art===a?'selected':'')+'>'+a+'</option>';}).join('')+'</select></div>'
+      +'<div class="form-group"><label>Energietr&#228;ger</label><select onchange="saveWarmwasserEintragField(\''+ww.id+'\',\'energietraeger\',this.value)">'+energien.map(function(e){return '<option value="'+e+'" '+(ww.energietraeger===e?'selected':'')+'>'+e+'</option>';}).join('')+'</select></div></div>'
+      +'<div class="form-row"><div class="form-group"><label>Versorgung</label><select onchange="saveWarmwasserEintragField(\''+ww.id+'\',\'versorgung\',this.value)">'+versorgungen.map(function(v){return '<option value="'+v+'" '+(ww.versorgung===v?'selected':'')+'>'+v+'</option>';}).join('')+'</select></div>'
+      +'<div class="form-group"><label>Speicher</label><select onchange="saveWarmwasserEintragField(\''+ww.id+'\',\'speicherVorhanden\',this.value)">'+speicherOpts.map(function(s){return '<option value="'+s+'" '+(ww.speicherVorhanden===s?'selected':'')+'>'+s+'</option>';}).join('')+'</select></div></div>'
+      +'<div class="form-row"><div class="form-group"><label>Speichervolumen (L)</label><input type="number" value="'+(ww.speichervolumen||'')+'" placeholder="80" oninput="saveWarmwasserEintragField(\''+ww.id+'\',\'speichervolumen\',this.value)"></div>'
+      +'<div class="form-group"><label>Baujahr</label><input type="number" value="'+(ww.baujahr||'')+'" placeholder="2010" min="1900" max="2100" oninput="saveWarmwasserEintragField(\''+ww.id+'\',\'baujahr\',this.value)"></div></div>'
+      +'<div class="form-row"><div class="form-group"><label>Hersteller</label><input type="text" value="'+(ww.hersteller||'')+'" placeholder="Hersteller" oninput="saveWarmwasserEintragField(\''+ww.id+'\',\'hersteller\',this.value)"></div>'
+      +'<div class="form-group"><label>Typ</label><input type="text" value="'+(ww.typ||'')+'" placeholder="Modell" oninput="saveWarmwasserEintragField(\''+ww.id+'\',\'typ\',this.value)"></div></div>'
+      +'<div class="form-group"><label>Notiz</label><input type="text" value="'+(ww.notiz||'')+'" placeholder="Bemerkungen" oninput="saveWarmwasserEintragField(\''+ww.id+'\',\'notiz\',this.value)"></div>'
+      +'</div>';
+  }).join('');
+}
+
+// ---- Schornstein (Array) ----
+function addSchornstein() {
+  const p=getProjekt(); if(!p) return;
+  if(!p.schornsteine) p.schornsteine=[];
+  p.schornsteine.push({id:uuid(),lage:'',form:'',breite:'',tiefe:''});
+  save(); renderSchornsteineListe();
+}
+function deleteSchornstein(id) {
+  const p=getProjekt(); if(!p) return;
+  p.schornsteine=(p.schornsteine||[]).filter(function(s){return s.id!==id;});
+  save(); renderSchornsteineListe();
+}
+function renderSchornsteineListe() {
+  const p=getProjekt();
+  const c=document.getElementById('schornsteine-list');
+  const l=document.getElementById('schornsteine-leer');
+  if(!c) return;
+  const list=p.schornsteine||[];
+  if(!list.length){c.innerHTML='';if(l)l.style.display='block';return;}
+  if(l)l.style.display='none';
+  const formen=['','rund','rechteckig','oval'];
+  c.innerHTML=list.map(function(sch,i){
+    return '<div class="sub-item"><div class="sub-item-header"><div class="sub-item-title">Schornstein '+(list.length>1?i+1:'')+'</div><button onclick="deleteSchornstein(\''+sch.id+'\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">&#x2715;</button></div>'
+      +'<div class="form-row"><div class="form-group"><label>Lage</label><input type="text" value="'+(sch.lage||'')+'" placeholder="z.B. Keller" oninput="saveSchornsteinEintragField(\''+sch.id+'\',\'lage\',this.value)"></div>'
+      +'<div class="form-group"><label>Form</label><select onchange="saveSchornsteinEintragField(\''+sch.id+'\',\'form\',this.value)">'+formen.map(function(f){return '<option value="'+f+'" '+(sch.form===f?'selected':'')+'>'+(f||'w&#228;hlen...')+'</option>';}).join('')+'</select></div></div>'
+      +'<div class="form-row"><div class="form-group"><label>Breite (cm)</label><input type="number" value="'+(sch.breite||'')+'" placeholder="20" oninput="saveSchornsteinEintragField(\''+sch.id+'\',\'breite\',this.value)"></div>'
+      +'<div class="form-group"><label>Tiefe (cm)</label><input type="number" value="'+(sch.tiefe||'')+'" placeholder="20" oninput="saveSchornsteinEintragField(\''+sch.id+'\',\'tiefe\',this.value)"></div></div>'
+      +'</div>';
+  }).join('');
 }
 
 function renderGeschossView() {

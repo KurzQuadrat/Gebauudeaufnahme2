@@ -99,6 +99,24 @@ function handleFoto(input, key) {
   })();
 }
 
+function handleFotoHzEintrag(input, id) {
+  const file = input.files[0];
+  if (!file) return;
+  (async () => {
+    let b64;
+    try { b64 = await getStorablePhoto(file); } catch (e) { showToast('Foto konnte nicht verarbeitet werden: ' + e.message); return; }
+    const p = getProjekt();
+    const hz = (p.heizanlagen || []).find(function(h) { return h.id === id; });
+    if (!hz) return;
+    hz.foto = b64;
+    save();
+    const lbl = document.getElementById('foto-hz-label-' + id);
+    if (lbl) { lbl.classList.add('has-photo'); const sp = lbl.querySelector('span'); if (sp) sp.textContent = '✓'; }
+    const prev = document.getElementById('foto-hz-preview-' + id);
+    if (prev) { prev.src = b64; prev.style.display = 'block'; }
+  })();
+}
+
 function showAnalyzing(on) {
   document.getElementById('analyzing-overlay').classList.toggle('show', on);
 }
