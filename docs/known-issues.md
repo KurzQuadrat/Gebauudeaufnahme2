@@ -262,3 +262,12 @@ Fehler werden in folgender Reihenfolge priorisiert:
   3. Explizite Pruefung auf fehlendes Baujahr: Toast "Bitte zuerst ein Baujahr eintragen."
   4. Klare Meldung wenn alle Felder bereits gefuellt sind.
   5. Fachlogik (Ableitungsregeln, Schutz manueller Werte, Bundesanzeiger-Werte) unveraendert.
+
+## KI-013: EG nicht in GESCHOSS_OPTIONEN – nach Loeschen nicht wieder anlegbar
+
+* Status: behoben (v0.2.11-dev)
+* Prioritaet: Bedienbarkeit
+* Bereich: Geschosslogik (`js/config.js`)
+* Blockiert Nutzung: ja (EG konnte nach Loeschen nicht neu angelegt werden)
+* Ursache: `GESCHOSS_OPTIONEN` enthielt kein Eintrag fuer EG. Neue Projekte starteten mit hardcoded EG-Objekt (`name: 'EG'`), aber `addGeschoss()` filterte nur aus `GESCHOSS_OPTIONEN` – EG tauchte also nie in der Auswahlmodaliste auf.
+* Behobene Punkte: EG (`Erdgeschoss`, Icon 🏠) wurde zu `GESCHOSS_OPTIONEN` in `js/config.js` hinzugefuegt (zwischen KG und 1.OG). Neue Projekte starten weiterhin mit EG. EG kann nach Loeschen ueber den normalen Hinzufuegen-Dialog erneut angelegt werden. Kein Doppel-Anlegen moeglich (bestehende Filter-Logik greift korrekt).
