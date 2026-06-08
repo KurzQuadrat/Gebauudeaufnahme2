@@ -123,6 +123,7 @@ body {
 .btn-ghost { background: none; color: var(--primary); padding: 8px 12px; }
 .btn-full { width: 100%; }
 .btn-sm { padding: 8px 14px; font-size: 14px; }
+.card-add-btn { min-width: 90px; padding: 7px 14px; font-size: 14px; font-weight: 600; line-height: 1; }
 
 /* ============================================================================
    Forms
