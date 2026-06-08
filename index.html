@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
@@ -140,231 +140,231 @@
     </div>
 
     <!-- Geschosse -->
-    <div class=”card”>
-      <div class=”section-header”>
-        <div class=”section-title”>Geschosse</div>
-        <button class=”btn btn-sm btn-primary” onclick=”addGeschoss()”>+ Geschoss</button>
+    <div class="card">
+      <div class="section-header">
+        <div class="section-title">Geschosse</div>
+        <button class="btn btn-sm btn-primary" onclick="addGeschoss()">+ Geschoss</button>
       </div>
-      <div id=”geschoss-list”></div>
-      <div id=”geschoss-leer” style=”color: var(--text-sec); font-size:14px; padding:8px 0;”>Noch kein Geschoss angelegt</div>
+      <div id="geschoss-list"></div>
+      <div id="geschoss-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch kein Geschoss angelegt</div>
     </div>
 
     <!-- Heizanlage -->
-    <div class=”card”>
-      <div class=”card-title”>Heizanlage</div>
-      <div class=”form-row”>
-        <div class=”form-group”>
+    <div class="card">
+      <div class="card-title">Heizanlage</div>
+      <div class="form-row">
+        <div class="form-group">
           <label>Hersteller</label>
-          <input type=”text” id=”p-hz-hersteller” placeholder=”z.B. Viessmann” oninput=”saveHeizanlageField('hersteller', this.value)”>
+          <input type="text" id="p-hz-hersteller" placeholder="z.B. Viessmann" oninput="saveHeizanlageField('hersteller', this.value)">
         </div>
-        <div class=”form-group”>
+        <div class="form-group">
           <label>Typ</label>
-          <select id=”p-hz-typ” onchange=”saveHeizanlageField('typ', this.value)”>
-            <option value=””>Wählen...</option>
-            <option value=”Gas-Therme”>Gas-Therme</option>
-            <option value=”Gas-Brennwert”>Gas-Brennwert</option>
-            <option value=”Öl-Therme”>Öl-Therme</option>
-            <option value=”Öl-Brennwert”>Öl-Brennwert</option>
-            <option value=”Wärmepumpe”>Wärmepumpe</option>
-            <option value=”Pellet”>Pellet</option>
-            <option value=”Fernwärme”>Fernwärme</option>
-            <option value=”Elektro”>Elektro</option>
+          <select id="p-hz-typ" onchange="saveHeizanlageField('typ', this.value)">
+            <option value="">Wählen...</option>
+            <option value="Gas-Therme">Gas-Therme</option>
+            <option value="Gas-Brennwert">Gas-Brennwert</option>
+            <option value="Öl-Therme">Öl-Therme</option>
+            <option value="Öl-Brennwert">Öl-Brennwert</option>
+            <option value="Wärmepumpe">Wärmepumpe</option>
+            <option value="Pellet">Pellet</option>
+            <option value="Fernwärme">Fernwärme</option>
+            <option value="Elektro">Elektro</option>
           </select>
         </div>
       </div>
-      <div class=”form-row”>
-        <div class=”form-group”>
+      <div class="form-row">
+        <div class="form-group">
           <label>Baujahr</label>
-          <input type=”number” id=”p-hz-baujahr” placeholder=”z.B. 2005” min=”1800” max=”2030” onfocus=”if(!this.value)this.value=2000” oninput=”saveHeizanlageField('baujahr', this.value)”>
+          <input type="number" id="p-hz-baujahr" placeholder="z.B. 2005" min="1800" max="2030" onfocus="if(!this.value)this.value=2000" oninput="saveHeizanlageField('baujahr', this.value)">
         </div>
-        <div class=”form-group”>
+        <div class="form-group">
           <label>Modell</label>
-          <input type=”text” id=”p-hz-modell” placeholder=”Modellbezeichnung” oninput=”saveHeizanlageField('modell', this.value)”>
+          <input type="text" id="p-hz-modell" placeholder="Modellbezeichnung" oninput="saveHeizanlageField('modell', this.value)">
         </div>
       </div>
-      <div class=”form-row”>
-        <div class=”form-group”>
+      <div class="form-row">
+        <div class="form-group">
           <label>Energieträger</label>
-          <select id=”p-hz-energietraeger” onchange=”saveHeizanlageField('energietraeger', this.value)”>
-            <option value=”unbekannt”>unbekannt</option>
-            <option value=”Erdgas”>Erdgas</option>
-            <option value=”Heizöl”>Heizöl</option>
-            <option value=”Flüssiggas”>Flüssiggas</option>
-            <option value=”Strom”>Strom</option>
-            <option value=”Wärmepumpe Strom”>Wärmepumpe Strom</option>
-            <option value=”Holz / Pellets”>Holz / Pellets</option>
-            <option value=”Fernwärme”>Fernwärme</option>
-            <option value=”Solarthermie unterstützend”>Solarthermie unterstützend</option>
-            <option value=”Sonstiges”>Sonstiges</option>
+          <select id="p-hz-energietraeger" onchange="saveHeizanlageField('energietraeger', this.value)">
+            <option value="unbekannt">unbekannt</option>
+            <option value="Erdgas">Erdgas</option>
+            <option value="Heizöl">Heizöl</option>
+            <option value="Flüssiggas">Flüssiggas</option>
+            <option value="Strom">Strom</option>
+            <option value="Wärmepumpe Strom">Wärmepumpe Strom</option>
+            <option value="Holz / Pellets">Holz / Pellets</option>
+            <option value="Fernwärme">Fernwärme</option>
+            <option value="Solarthermie unterstützend">Solarthermie unterstützend</option>
+            <option value="Sonstiges">Sonstiges</option>
           </select>
         </div>
-        <div class=”form-group”>
+        <div class="form-group">
           <label>Leistung in kW, falls bekannt</label>
-          <input type=”text” id=”p-hz-leistung” placeholder=”z.B. 18” oninput=”saveHeizanlageField('leistung', this.value)”>
+          <input type="text" id="p-hz-leistung" placeholder="z.B. 18" oninput="saveHeizanlageField('leistung', this.value)">
         </div>
       </div>
-      <div class=”form-group”>
+      <div class="form-group">
         <label>Foto Heizanlage</label>
-        <label class=”photo-btn” id=”foto-heizanlage-label”>
+        <label class="photo-btn" id="foto-heizanlage-label">
           <span>📷</span> Foto aufnehmen
-          <input type=”file” accept=”image/*” capture=”environment” style=”display:none” onchange=”handleFoto(this, 'heizanlage')”>
+          <input type="file" accept="image/*" capture="environment" style="display:none" onchange="handleFoto(this, 'heizanlage')">
         </label>
-        <img id=”foto-heizanlage-preview” class=”photo-preview” style=”display:none”>
+        <img id="foto-heizanlage-preview" class="photo-preview" style="display:none">
       </div>
-      <div class=”form-group”>
+      <div class="form-group">
         <label>Notizen Heizanlage</label>
-        <textarea id=”p-hz-notiz” placeholder=”Besonderheiten, Zustand...” oninput=”saveHeizanlageField('notiz', this.value)”></textarea>
+        <textarea id="p-hz-notiz" placeholder="Besonderheiten, Zustand..." oninput="saveHeizanlageField('notiz', this.value)"></textarea>
       </div>
     </div>
 
     <!-- Warmwasser -->
-    <div class=”card”>
-      <div class=”card-title”>Warmwasser</div>
-      <div class=”form-row”>
-        <div class=”form-group”>
+    <div class="card">
+      <div class="card-title">Warmwasser</div>
+      <div class="form-row">
+        <div class="form-group">
           <label>Art der Warmwasserbereitung</label>
-          <select id=”p-ww-art” onchange=”saveWarmwasserField('art', this.value)”>
-            <option value=”unbekannt”>unbekannt</option>
-            <option value=”zentral”>zentral</option>
-            <option value=”dezentral”>dezentral</option>
-            <option value=”kombiniert mit Heizung”>kombiniert mit Heizung</option>
-            <option value=”separat”>separat</option>
-            <option value=”Sonstiges”>Sonstiges</option>
+          <select id="p-ww-art" onchange="saveWarmwasserField('art', this.value)">
+            <option value="unbekannt">unbekannt</option>
+            <option value="zentral">zentral</option>
+            <option value="dezentral">dezentral</option>
+            <option value="kombiniert mit Heizung">kombiniert mit Heizung</option>
+            <option value="separat">separat</option>
+            <option value="Sonstiges">Sonstiges</option>
           </select>
         </div>
-        <div class=”form-group”>
+        <div class="form-group">
           <label>Speicher vorhanden</label>
-          <select id=”p-ww-speicher-vorhanden” onchange=”saveWarmwasserField('speicherVorhanden', this.value)”>
-            <option value=”unbekannt”>unbekannt</option>
-            <option value=”ja”>ja</option>
-            <option value=”nein”>nein</option>
+          <select id="p-ww-speicher-vorhanden" onchange="saveWarmwasserField('speicherVorhanden', this.value)">
+            <option value="unbekannt">unbekannt</option>
+            <option value="ja">ja</option>
+            <option value="nein">nein</option>
           </select>
         </div>
       </div>
-      <div class=”form-row”>
-        <div class=”form-group”>
+      <div class="form-row">
+        <div class="form-group">
           <label>Speichervolumen in Liter, falls bekannt</label>
-          <input type=”text” id=”p-ww-speichervolumen” placeholder=”z.B. 300” oninput=”saveWarmwasserField('speichervolumen', this.value)”>
+          <input type="text" id="p-ww-speichervolumen" placeholder="z.B. 300" oninput="saveWarmwasserField('speichervolumen', this.value)">
         </div>
-        <div class=”form-group”>
+        <div class="form-group">
           <label>Energieträger</label>
-          <select id=”p-ww-energietraeger” onchange=”saveWarmwasserField('energietraeger', this.value)”>
-            <option value=”unbekannt”>unbekannt</option>
-            <option value=”Erdgas”>Erdgas</option>
-            <option value=”Heizöl”>Heizöl</option>
-            <option value=”Strom”>Strom</option>
-            <option value=”Wärmepumpe Strom”>Wärmepumpe Strom</option>
-            <option value=”Fernwärme”>Fernwärme</option>
-            <option value=”Solarthermie unterstützend”>Solarthermie unterstützend</option>
-            <option value=”Holz / Pellets”>Holz / Pellets</option>
-            <option value=”Sonstiges”>Sonstiges</option>
+          <select id="p-ww-energietraeger" onchange="saveWarmwasserField('energietraeger', this.value)">
+            <option value="unbekannt">unbekannt</option>
+            <option value="Erdgas">Erdgas</option>
+            <option value="Heizöl">Heizöl</option>
+            <option value="Strom">Strom</option>
+            <option value="Wärmepumpe Strom">Wärmepumpe Strom</option>
+            <option value="Fernwärme">Fernwärme</option>
+            <option value="Solarthermie unterstützend">Solarthermie unterstützend</option>
+            <option value="Holz / Pellets">Holz / Pellets</option>
+            <option value="Sonstiges">Sonstiges</option>
           </select>
         </div>
       </div>
-      <div class=”form-row”>
-        <div class=”form-group”>
+      <div class="form-row">
+        <div class="form-group">
           <label>Versorgung</label>
-          <select id=”p-ww-versorgung” onchange=”saveWarmwasserField('versorgung', this.value)”>
-            <option value=”unbekannt”>unbekannt</option>
-            <option value=”gesamte Wohneinheit”>gesamte Wohneinheit</option>
-            <option value=”mehrere Wohneinheiten”>mehrere Wohneinheiten</option>
-            <option value=”einzelne Entnahmestellen”>einzelne Entnahmestellen</option>
-            <option value=”raumweise”>raumweise</option>
-            <option value=”Sonstiges”>Sonstiges</option>
+          <select id="p-ww-versorgung" onchange="saveWarmwasserField('versorgung', this.value)">
+            <option value="unbekannt">unbekannt</option>
+            <option value="gesamte Wohneinheit">gesamte Wohneinheit</option>
+            <option value="mehrere Wohneinheiten">mehrere Wohneinheiten</option>
+            <option value="einzelne Entnahmestellen">einzelne Entnahmestellen</option>
+            <option value="raumweise">raumweise</option>
+            <option value="Sonstiges">Sonstiges</option>
           </select>
         </div>
-        <div class=”form-group”>
+        <div class="form-group">
           <label>Baujahr</label>
-          <input type=”number” id=”p-ww-baujahr” placeholder=”z.B. 2005” min=”1800” max=”2030” onfocus=”if(!this.value)this.value=2000” oninput=”saveWarmwasserField('baujahr', this.value)”>
+          <input type="number" id="p-ww-baujahr" placeholder="z.B. 2005" min="1800" max="2030" onfocus="if(!this.value)this.value=2000" oninput="saveWarmwasserField('baujahr', this.value)">
         </div>
       </div>
-      <div class=”form-row”>
-        <div class=”form-group”>
+      <div class="form-row">
+        <div class="form-group">
           <label>Hersteller</label>
-          <input type=”text” id=”p-ww-hersteller” placeholder=”z.B. Vaillant” oninput=”saveWarmwasserField('hersteller', this.value)”>
+          <input type="text" id="p-ww-hersteller" placeholder="z.B. Vaillant" oninput="saveWarmwasserField('hersteller', this.value)">
         </div>
-        <div class=”form-group”>
+        <div class="form-group">
           <label>Typ</label>
-          <input type=”text” id=”p-ww-typ” placeholder=”Typenbezeichnung” oninput=”saveWarmwasserField('typ', this.value)”>
+          <input type="text" id="p-ww-typ" placeholder="Typenbezeichnung" oninput="saveWarmwasserField('typ', this.value)">
         </div>
       </div>
-      <div class=”form-group”>
+      <div class="form-group">
         <label>Notizen Warmwasser</label>
-        <textarea id=”p-ww-notiz” placeholder=”Besonderheiten, Zustand...” oninput=”saveWarmwasserField('notiz', this.value)”></textarea>
+        <textarea id="p-ww-notiz" placeholder="Besonderheiten, Zustand..." oninput="saveWarmwasserField('notiz', this.value)"></textarea>
       </div>
     </div>
 
     <!-- Schornstein -->
-    <div class=”card”>
-      <div class=”card-title”>Schornstein</div>
-      <div class=”form-row”>
-        <div class=”form-group”>
+    <div class="card">
+      <div class="card-title">Schornstein</div>
+      <div class="form-row">
+        <div class="form-group">
           <label>Lage</label>
-          <input type=”text” id=”p-schorn-lage” placeholder=”z.B. Nordwand Küche” oninput=”saveSchornsteinField('lage', this.value)”>
+          <input type="text" id="p-schorn-lage" placeholder="z.B. Nordwand Küche" oninput="saveSchornsteinField('lage', this.value)">
         </div>
-        <div class=”form-group”>
+        <div class="form-group">
           <label>Form</label>
-          <select id=”p-schorn-form” onchange=”saveSchornsteinField('form', this.value)”>
-            <option value=””>Wählen...</option>
-            <option value=”quadratisch”>Quadratisch</option>
-            <option value=”rechteckig”>Rechteckig</option>
-            <option value=”rund”>Rund</option>
+          <select id="p-schorn-form" onchange="saveSchornsteinField('form', this.value)">
+            <option value="">Wählen...</option>
+            <option value="quadratisch">Quadratisch</option>
+            <option value="rechteckig">Rechteckig</option>
+            <option value="rund">Rund</option>
           </select>
         </div>
       </div>
-      <div class=”form-row”>
-        <div class=”form-group”>
+      <div class="form-row">
+        <div class="form-group">
           <label>Breite (cm)</label>
-          <input type=”number” class=”disto-input” id=”p-schorn-b” placeholder=”cm” oninput=”saveSchornsteinField('breite', this.value)”>
+          <input type="number" class="disto-input" id="p-schorn-b" placeholder="cm" oninput="saveSchornsteinField('breite', this.value)">
         </div>
-        <div class=”form-group”>
+        <div class="form-group">
           <label>Tiefe (cm)</label>
-          <input type=”number” class=”disto-input” id=”p-schorn-t” placeholder=”cm” oninput=”saveSchornsteinField('tiefe', this.value)”>
+          <input type="number" class="disto-input" id="p-schorn-t" placeholder="cm" oninput="saveSchornsteinField('tiefe', this.value)">
         </div>
       </div>
     </div>
 
     <!-- Heizlast-Standardwerte (projektweit) -->
-    <div class=”card”>
-      <div class=”card-title”>Heizlast-Standardwerte (projektweit)</div>
-      <div style=”color:var(--text-sec);font-size:14px;padding:4px 0 8px;”>Überschlägige Annahmen für die Heizlast-Vorabschätzung – kein normativer Heizlastnachweis. Die Werte gelten als Standard für alle Räume und können je Raum überschrieben werden.</div>
-      <div class=”form-group”>
+    <div class="card">
+      <div class="card-title">Heizlast-Standardwerte (projektweit)</div>
+      <div style="color:var(--text-sec);font-size:14px;padding:4px 0 8px;">Überschlägige Annahmen für die Heizlast-Vorabschätzung – kein normativer Heizlastnachweis. Die Werte gelten als Standard für alle Räume und können je Raum überschrieben werden.</div>
+      <div class="form-group">
         <label>Quelle der Annahmen</label>
-        <input type=”text” id=”p-hl-quelle” placeholder=”z.B. Erfahrungswert, Bestandsunterlagen, Baujahresklasse” oninput=”saveHeizlastDefaultField('quelle', this.value)”>
+        <input type="text" id="p-hl-quelle" placeholder="z.B. Erfahrungswert, Bestandsunterlagen, Baujahresklasse" oninput="saveHeizlastDefaultField('quelle', this.value)">
       </div>
-      <div class=”form-group”>
-        <label><input type=”checkbox” id=”p-hl-baujahr-aktiv” onchange=”saveHeizlastDefaultField('baujahrAbleitungAktiv', this.checked); pruefeAutoUWerteAusBaujahr()”> Baujahresabhängige U-Wert-Vorschläge nutzen (Quelle: Bundesanzeiger BAnz AT 04.12.2020 B1)</label>
+      <div class="form-group">
+        <label><input type="checkbox" id="p-hl-baujahr-aktiv" onchange="saveHeizlastDefaultField('baujahrAbleitungAktiv', this.checked); pruefeAutoUWerteAusBaujahr()"> Baujahresabhängige U-Wert-Vorschläge nutzen (Quelle: Bundesanzeiger BAnz AT 04.12.2020 B1)</label>
       </div>
-      <div class=”form-row”>
-        <div class=”form-group”><label>Baualtersklasse Gebäude (automatisch aus Baujahr)</label>
-          <input type=”text” id=”p-hl-baualtersklasse-anzeige” disabled style=”background:#f5f5f7;color:var(--text-sec);”>
+      <div class="form-row">
+        <div class="form-group"><label>Baualtersklasse Gebäude (automatisch aus Baujahr)</label>
+          <input type="text" id="p-hl-baualtersklasse-anzeige" disabled style="background:#f5f5f7;color:var(--text-sec);">
         </div>
-        <div class=”form-group” style=”display:flex;align-items:flex-end;”>
-          <button type=”button” class=”btn btn-secondary” onclick=”leiteUWerteAusBaujahrUndSanierungAb()”>U-Werte aus Baujahr/Sanierung ableiten</button>
+        <div class="form-group" style="display:flex;align-items:flex-end;">
+          <button type="button" class="btn btn-secondary" onclick="leiteUWerteAusBaujahrUndSanierungAb()">U-Werte aus Baujahr/Sanierung ableiten</button>
         </div>
       </div>
-      <div style=”color:var(--text-sec);font-size:12px;margin:-2px 0 10px;”>
-        Pauschal-/Erfahrungswerte aus der „Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung im Wohngebäudebestand” (BAnz AT 04.12.2020 B1, Tabelle 2/3 – siehe <code>docs/quellen/README.md</code>). Kein normativer Heizlastnachweis. Der Button füllt ausschließlich aktuell LEERE U-Wert-Felder; vorhandene manuelle Werte bleiben unverändert. Ist in der Sanierungshistorie unten für ein Bauteil ein Detailtyp mit Jahr hinterlegt, wird dessen Jahr (bei mehreren Einträgen: das jüngste) für die Ableitung GENAU DIESES Bauteils verwendet – andere Bauteile bleiben davon unberührt. Ohne passenden Sanierungseintrag gilt die Baualtersklasse aus dem Baujahr des Gebäudes.
+      <div style="color:var(--text-sec);font-size:12px;margin:-2px 0 10px;">
+        Pauschal-/Erfahrungswerte aus der „Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung im Wohngebäudebestand" (BAnz AT 04.12.2020 B1, Tabelle 2/3 – siehe <code>docs/quellen/README.md</code>). Kein normativer Heizlastnachweis. Der Button füllt ausschließlich aktuell LEERE U-Wert-Felder; vorhandene manuelle Werte bleiben unverändert. Ist in der Sanierungshistorie unten für ein Bauteil ein Detailtyp mit Jahr hinterlegt, wird dessen Jahr (bei mehreren Einträgen: das jüngste) für die Ableitung GENAU DIESES Bauteils verwendet – andere Bauteile bleiben davon unberührt. Ohne passenden Sanierungseintrag gilt die Baualtersklasse aus dem Baujahr des Gebäudes.
       </div>
       <details>
-        <summary style=”cursor:pointer;font-weight:500;font-size:13px;color:var(--text-sec);padding:4px 0;”>U-Wert-Details anzeigen / manuell bearbeiten</summary>
-        <div style=”padding-top:8px;”>
-          <div class=”form-row”>
-            <div class=”form-group”><label>U-Wert Außenwand AW (W/m²K)</label><input type=”number” step=”0.01” id=”p-hl-aw-uwert” placeholder=”z.B. 0.28” oninput=”saveHeizlastDefaultField('awUwert', this.value)”></div>
-            <div class=”form-group”><label>U-Wert Innenwand IW (W/m²K)</label><input type=”number” step=”0.01” id=”p-hl-iw-uwert” placeholder=”z.B. 1.40” oninput=”saveHeizlastDefaultField('iwUwert', this.value)”></div>
-            <div class=”form-group”><label>U-Wert Dach (W/m²K)</label><input type=”number” step=”0.01” id=”p-hl-dach-uwert” placeholder=”z.B. 0.24” oninput=”saveHeizlastDefaultField('dachUwert', this.value)”></div>
+        <summary style="cursor:pointer;font-weight:500;font-size:13px;color:var(--text-sec);padding:4px 0;">U-Wert-Details anzeigen / manuell bearbeiten</summary>
+        <div style="padding-top:8px;">
+          <div class="form-row">
+            <div class="form-group"><label>U-Wert Außenwand AW (W/m²K)</label><input type="number" step="0.01" id="p-hl-aw-uwert" placeholder="z.B. 0.28" oninput="saveHeizlastDefaultField('awUwert', this.value)"></div>
+            <div class="form-group"><label>U-Wert Innenwand IW (W/m²K)</label><input type="number" step="0.01" id="p-hl-iw-uwert" placeholder="z.B. 1.40" oninput="saveHeizlastDefaultField('iwUwert', this.value)"></div>
+            <div class="form-group"><label>U-Wert Dach (W/m²K)</label><input type="number" step="0.01" id="p-hl-dach-uwert" placeholder="z.B. 0.24" oninput="saveHeizlastDefaultField('dachUwert', this.value)"></div>
           </div>
-          <div class=”form-row”>
-            <div class=”form-group”><label>U-Wert Bodenplatte (W/m²K)</label><input type=”number” step=”0.01” id=”p-hl-bodenplatte-uwert” placeholder=”z.B. 0.35” oninput=”saveHeizlastDefaultField('bodenplatteUwert', this.value)”></div>
-            <div class=”form-group”><label>U-Wert Boden/Decke (W/m²K)</label><input type=”number” step=”0.01” id=”p-hl-boden-uwert” placeholder=”z.B. 0.50” oninput=”saveHeizlastDefaultField('bodenUwert', this.value)”></div>
-            <div class=”form-group”><label>U-Wert Fenster (W/m²K)</label><input type=”number” step=”0.01” id=”p-hl-fenster-uwert” placeholder=”z.B. 1.30” oninput=”saveHeizlastDefaultField('fensterUwert', this.value)”></div>
+          <div class="form-row">
+            <div class="form-group"><label>U-Wert Bodenplatte (W/m²K)</label><input type="number" step="0.01" id="p-hl-bodenplatte-uwert" placeholder="z.B. 0.35" oninput="saveHeizlastDefaultField('bodenplatteUwert', this.value)"></div>
+            <div class="form-group"><label>U-Wert Boden/Decke (W/m²K)</label><input type="number" step="0.01" id="p-hl-boden-uwert" placeholder="z.B. 0.50" oninput="saveHeizlastDefaultField('bodenUwert', this.value)"></div>
+            <div class="form-group"><label>U-Wert Fenster (W/m²K)</label><input type="number" step="0.01" id="p-hl-fenster-uwert" placeholder="z.B. 1.30" oninput="saveHeizlastDefaultField('fensterUwert', this.value)"></div>
           </div>
-          <div class=”form-row”>
-            <div class=”form-group”><label>U-Wert Türen (W/m²K)</label><input type=”number” step=”0.01” id=”p-hl-tuer-uwert” placeholder=”z.B. 1.80” oninput=”saveHeizlastDefaultField('tuerUwert', this.value)”></div>
-            <div class=”form-group”><label>Norm-Außentemperatur (°C)</label><input type=”number” step=”0.5” id=”p-hl-temp-aussen” placeholder=”-12” oninput=”saveHeizlastDefaultField('tempAussenNorm', this.value)”></div>
-            <div class=”form-group”><label>Temperatur unbeheizter Bereich – Standard (°C)</label><input type=”number” step=”0.5” id=”p-hl-temp-unbeheizt” placeholder=”7” oninput=”saveHeizlastDefaultField('tempUnbeheiztDefault', this.value)”></div>
+          <div class="form-row">
+            <div class="form-group"><label>U-Wert Türen (W/m²K)</label><input type="number" step="0.01" id="p-hl-tuer-uwert" placeholder="z.B. 1.80" oninput="saveHeizlastDefaultField('tuerUwert', this.value)"></div>
+            <div class="form-group"><label>Norm-Außentemperatur (°C)</label><input type="number" step="0.5" id="p-hl-temp-aussen" placeholder="-12" oninput="saveHeizlastDefaultField('tempAussenNorm', this.value)"></div>
+            <div class="form-group"><label>Temperatur unbeheizter Bereich – Standard (°C)</label><input type="number" step="0.5" id="p-hl-temp-unbeheizt" placeholder="7" oninput="saveHeizlastDefaultField('tempUnbeheiztDefault', this.value)"></div>
           </div>
-          <div style=”color:var(--text-sec);font-size:12px;”>Hinweis: Die hinterlegten Tabellenwerte stammen aus der „Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung im Wohngebäudebestand” vom 8. Oktober 2020 (BAnz AT 04.12.2020 B1) und sind Pauschal-/Erfahrungswerte – kein normativer Heizlastnachweis. Es werden ausschließlich Werte verwendet, die eindeutig aus dieser Quelle entnommen wurden (siehe <code>docs/quellen/README.md</code> und <code>js/uwerte-bundesanzeiger.js</code>); nichts wurde geschätzt oder ergänzt. Manuell erfasste oder abweichende Werte haben weiterhin Vorrang (siehe Prioritätslogik in <code>docs/version-1-scope.md</code>).</div>
+          <div style="color:var(--text-sec);font-size:12px;">Hinweis: Die hinterlegten Tabellenwerte stammen aus der „Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung im Wohngebäudebestand" vom 8. Oktober 2020 (BAnz AT 04.12.2020 B1) und sind Pauschal-/Erfahrungswerte – kein normativer Heizlastnachweis. Es werden ausschließlich Werte verwendet, die eindeutig aus dieser Quelle entnommen wurden (siehe <code>docs/quellen/README.md</code> und <code>js/uwerte-bundesanzeiger.js</code>); nichts wurde geschätzt oder ergänzt. Manuell erfasste oder abweichende Werte haben weiterhin Vorrang (siehe Prioritätslogik in <code>docs/version-1-scope.md</code>).</div>
         </div>
       </details>
     </div>
@@ -1802,7 +1802,7 @@ function renderSanierungen() {
   // "Maßnahme"-Feld, dessen Optionen keine stabile Bauteilstruktur abbilden.
   const detailtypOpts=Object.keys(UWERTE_OPAK).concat(Object.keys(UWERTE_TRANSPARENT));
   const detailtypSelect=(s)=>'<select onchange="saveSanierungField(\''+s.id+'\',\'detailtyp\',this.value)"><option value="">– kein U-Wert-Bezug / unbekannt –</option>'+detailtypOpts.map(k=>{const kat=UWERTE_OPAK[k]||UWERTE_TRANSPARENT[k];return '<option value="'+k+'" '+(s.detailtyp===k?'selected':'')+'>'+kat.label+'</option>';}).join('')+'</select>';
-  c.innerHTML=p.sanierungen.map(s=>'<div class="sub-item"><div class="sub-item-header"><div class="sub-item-title">Sanierung</div><button onclick="deleteSanierung(\''+s.id+'\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">✕</button></div><div class="form-row"><div class="form-group"><label>Maßnahme</label><select onchange="saveSanierungField(\''+s.id+'\',\'massnahme\',this.value)">'+opts.map(m=>'<option value="'+m+'" '+(s.massnahme===m?'selected':'')+'>'+(m||'Wählen...')+'</option>').join('')+'</select></div><div class="form-group"><label>Jahr</label><input type="number" value="'+(s.jahr||'')+'" placeholder="1979" min="1800" max="2030" onfocus="if(!this.value)this.value=2000" oninput="saveSanierungField(\''+s.id+'\',\'jahr\',this.value)"></div></div><div class="form-group"><label>Detailtyp / Aufbau (für U-Wert-Ableitung Heizlast, optional)</label>'+detailtypSelect(s)+'<div style="color:var(--text-sec);font-size:11px;margin-top:3px;">Quelle: Bundesanzeiger BAnz AT 04.12.2020 B1 (siehe docs/quellen/README.md). Wird genutzt, um aus dieser Sanierung + Jahr einen U-Wert-Vorschlag für GENAU das betroffene Bauteil abzuleiten (siehe „U-Werte aus Baujahr/Sanierung ableiten“ bei den Heizlast-Standardwerten).</div></div><div class="form-group"><label>Details</label><input type="text" value="'+(s.details||'')+'" placeholder="z.B. 2-fach Verglasung" oninput="saveSanierungField(\''+s.id+'\',\'details\',this.value)"></div></div>').join('');
+  c.innerHTML=p.sanierungen.map(s=>'<div class="sub-item"><div class="sub-item-header"><div class="sub-item-title">Sanierung</div><button onclick="deleteSanierung(\''+s.id+'\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">✕</button></div><div class="form-row"><div class="form-group"><label>Maßnahme</label><select onchange="saveSanierungField(\''+s.id+'\',\'massnahme\',this.value)">'+opts.map(m=>'<option value="'+m+'" '+(s.massnahme===m?'selected':'')+'>'+(m||'Wählen...')+'</option>').join('')+'</select></div><div class="form-group"><label>Jahr</label><input type="number" value="'+(s.jahr||'')+'" placeholder="1979" min="1800" max="2030" onfocus="if(!this.value)this.value=2000" oninput="saveSanierungField(\''+s.id+'\',\'jahr\',this.value)"></div></div><div class="form-group"><label>Detailtyp / Aufbau (für U-Wert-Ableitung Heizlast, optional)</label>'+detailtypSelect(s)+'<div style="color:var(--text-sec);font-size:11px;margin-top:3px;">Quelle: Bundesanzeiger BAnz AT 04.12.2020 B1 (siehe docs/quellen/README.md). Wird genutzt, um aus dieser Sanierung + Jahr einen U-Wert-Vorschlag für GENAU das betroffene Bauteil abzuleiten (siehe „U-Werte aus Baujahr/Sanierung ableiten" bei den Heizlast-Standardwerten).</div></div><div class="form-group"><label>Details</label><input type="text" value="'+(s.details||'')+'" placeholder="z.B. 2-fach Verglasung" oninput="saveSanierungField(\''+s.id+'\',\'details\',this.value)"></div></div>').join('');
 }
 
 function renderGeschossliste() {
