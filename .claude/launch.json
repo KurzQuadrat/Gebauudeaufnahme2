@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "gebaudeaufnahme",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-ExecutionPolicy", "Bypass", "-Command", "cd 'C:/Claude/projects/active/Gebäudeerfassung/Gebauudeaufnahme2'; python -m http.server 8765 2>&1"],
+      "port": 8765
+    }
+  ]
+}
