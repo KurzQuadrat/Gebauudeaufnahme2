@@ -247,3 +247,18 @@ Fehler werden in folgender Reihenfolge priorisiert:
 * Fotoanalyse ist im Code vorhanden, wurde aber noch nicht aktiv genutzt oder fachlich getestet.
 * PDF-Erfassungsbericht mit Bildern ist Ziel für Version 1, aber noch nicht als bestehende Funktion validiert.
 * Disto-X6-Workflow ist Zielbild, aber noch nicht umgesetzt.
+
+## KI-012: U-Wert-Ableitungsbutton – kein sichtbares Feedback nach Heizlastmodul-Toggle-Umbau (v0.2.9-dev)
+
+* Status: behoben (v0.2.10-dev)
+* Priorität: Bedienbarkeit
+* Bereich: Projektansicht Heizlast-Standardwerte (`index.html`)
+* Blockiert Nutzung: nein (Ableitung lief intern korrekt)
+* Ursache:
+  Nach dem Umbau des Heizlastmoduls in v0.2.9-dev (Details per Toggle ausblendbar) startete `hl-details-panel` mit `display:none`. Die Funktion `leiteUWerteAusBaujahrUndSanierungAb()` lief korrekt und schrieb Werte in den Speicher, aber die Werte blieben unsichtbar weil der Detailbereich geschlossen war. Der Toast-Text war lang und technisch – auf Mobilgeraeten schwer lesbar in 3 Sekunden.
+* Behobene Punkte:
+  1. Nach erfolgreicher Ableitung oeffnet sich `hl-details-panel` automatisch, Togglebutton wechselt auf "U-Wert-Details ausblenden".
+  2. Toast-Meldung ist kurz und klar: z.B. "5 U-Werte aus Baujahr 1974/Sanierung abgeleitet."
+  3. Explizite Pruefung auf fehlendes Baujahr: Toast "Bitte zuerst ein Baujahr eintragen."
+  4. Klare Meldung wenn alle Felder bereits gefuellt sind.
+  5. Fachlogik (Ableitungsregeln, Schutz manueller Werte, Bundesanzeiger-Werte) unveraendert.

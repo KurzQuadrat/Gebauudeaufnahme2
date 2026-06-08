@@ -1597,6 +1597,8 @@ function pruefeAutoUWerteAusBaujahr() {
 // Schreibt NIE in bereits gefüllte Felder (Stufe 2 hat Vorrang).
 function leiteUWerteAusBaujahrUndSanierungAb() {
   const p = getProjekt(); if (!p) return;
+  // Kein Baujahr: klares Feedback, kein stiller Abbruch
+  if (!p.baujahr) { showToast('Bitte zuerst ein Baujahr eintragen.', 4000); return; }
   if (!p.heizlastDefaults) p.heizlastDefaults = {};
   const hd = p.heizlastDefaults;
   const istLeer = (v) => v===undefined || v===null || String(v).trim()==='';
@@ -1633,12 +1635,26 @@ function leiteUWerteAusBaujahrUndSanierungAb() {
     if (!hd.quelle) hd.quelle = 'Bundesanzeiger BAnz AT 04.12.2020 B1 (Baualtersklasse/Sanierungshistorie)';
     save();
     renderProjektView();
+    // Details automatisch oeffnen, damit neu eingetragene Werte sofort sichtbar sind
+    var panel = document.getElementById('hl-details-panel');
+    var btn = document.getElementById('hl-details-toggle');
+    if (panel && panel.style.display === 'none') {
+      panel.style.display = 'block';
+      if (btn) btn.textContent = 'U-Wert-Details ausblenden';
+    }
+    // Kurze, klare Erfolgsmeldung; Detail-Liste nur in Konsole
+    var n = uebernommen.length;
+    showToast('✓ ' + n + ' U-Wert' + (n !== 1 ? 'e' : '') + ' aus Baujahr' + (p.baujahr ? ' ' + p.baujahr : '') + '/Sanierung abgeleitet.', 4000);
+  } else if (uebersprungen.length && !unbekannt.length) {
+    // Alle Felder bereits gefuellt
+    showToast('Keine U-Werte geändert – bestehende Werte bleiben erhalten.', 4000);
+  } else if (unbekannt.length && !uebernommen.length) {
+    // Nichts ableitbar (z.B. kein passender Detailtyp)
+    showToast('Keine passenden U-Wert-Vorschläge gefunden (Baujahr prüfen).', 4000);
+  } else {
+    // Gemischter Fall: teilweise abgeleitet, teilweise nicht
+    showToast('✓ ' + uebernommen.length + ' U-Wert(e) abgeleitet, ' + (uebersprungen.length + unbekannt.length) + ' unverändert.', 4000);
   }
-  let meldung = '';
-  if (uebernommen.length) meldung += 'Übernommen: ' + uebernommen.join('; ') + '. ';
-  if (uebersprungen.length) meldung += 'Nicht verändert (bereits ausgefüllt): ' + uebersprungen.join(', ') + '. ';
-  if (unbekannt.length) meldung += 'Keine Ableitung möglich: ' + unbekannt.join('; ') + '.';
-  showToast(meldung || 'Keine Änderungen.');
 }
 
 function renderSanierungen() {
