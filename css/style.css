@@ -28,8 +28,8 @@
      --radius:     Standardradius    (8px, knapp wie KQ CD)
      --radius-sm:  Kleiner Radius    (4px)
   */
-  --bg:          var(--kq-bg-alt);
-  --card:        var(--kq-surface);
+  --bg:          #f0f0f0;              /* neutrales Hellgrau — kein Warmton, kein Rosa */
+  --card:        var(--kq-surface);   /* Karten weiß */
   --primary:     var(--kq-bordeaux);
   --primary-dark: var(--kq-bordeaux-700);
   --danger:      var(--kq-danger);
@@ -38,9 +38,9 @@
   --text:        var(--kq-fg);
   --text-sec:    var(--kq-fg-muted);
   --border:      var(--kq-border);
-  --input-bg:    var(--kq-surface);
-  --radius:      var(--kq-radius-3);   /* 8px */
-  --radius-sm:   var(--kq-radius-2);   /* 4px */
+  --input-bg:    var(--kq-surface);   /* Felder weiß */
+  --radius:      var(--kq-radius-3);  /* 8px */
+  --radius-sm:   var(--kq-radius-2);  /* 4px */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -249,7 +249,7 @@ textarea { resize: vertical; min-height: 80px; }
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
-.badge-blue   { background: var(--kq-bordeaux-100); color: var(--kq-bordeaux); }
+.badge-blue   { background: #e8e8ec; color: var(--kq-bordeaux); }  /* neutral grau statt bordeaux-100 rosa */
 .badge-green  { background: var(--kq-mint-100);     color: var(--kq-mint-700); }
 .badge-gray   { background: var(--kq-bg-alt);       color: var(--text-sec); }
 .badge-orange { background: var(--kq-warning-bg);   color: var(--kq-warning); }
@@ -354,7 +354,7 @@ textarea { resize: vertical; min-height: 80px; }
   border-top: 2px solid var(--primary);
 }
 .modal-sheet.open { display: block; }
-.modal-title { font-weight: 700; font-size: 17px; margin-bottom: 16px; color: var(--primary); text-transform: uppercase; letter-spacing: var(--kq-tracking-caps); }
+.modal-title { font-weight: 700; font-size: 17px; margin-bottom: 16px; color: var(--text); }  /* kein uppercase, kein bordeaux — ruhiger */
 .modal-option {
   display: flex; align-items: center; gap: 12px;
   padding: 14px 16px; border-radius: var(--radius-sm);
@@ -415,7 +415,10 @@ textarea { resize: vertical; min-height: 80px; }
    ============================================================================ */
 .disto-input {
   border-color: var(--kq-amaranth) !important;
-  background: var(--kq-amaranth-100) !important;
+  background: var(--kq-surface) !important;  /* weiß statt amaranth-100 rosa */
+}
+.disto-input:focus {
+  background: #fff8fa !important;  /* sehr dezenter Akzent nur im Fokus */
 }
 .disto-hint {
   font-size: 12px;
@@ -473,12 +476,13 @@ textarea { resize: vertical; min-height: 80px; }
    Info-Box (Hinweis, neutral)
    ============================================================================ */
 .info-box {
-  background: var(--kq-bordeaux-050);
-  border: 1px solid var(--kq-bordeaux-100);
-  border-radius: var(--radius-sm);
-  padding: 12px 14px;
+  background: var(--kq-surface);           /* weiß statt bordeaux-050 rosa */
+  border: none;
+  border-left: 3px solid var(--primary);   /* Bordeaux nur als Linie links */
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 10px 14px;
   font-size: 14px;
-  color: var(--kq-bordeaux);
+  color: var(--text);                      /* normaler Text statt bordeaux */
   margin-bottom: 12px;
 }
 

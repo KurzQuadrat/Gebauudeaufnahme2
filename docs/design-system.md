@@ -30,7 +30,7 @@ vollständig unberührt.
 
 | App-Variable | KQ-Token | Wert | Bedeutung |
 |---|---|---|---|
-| `--bg` | `--kq-bg-alt` | `#faf7f4` | Seitenhintergrund (warmer Ton) |
+| `--bg` | — | `#f0f0f0` | Seitenhintergrund (neutrales Hellgrau) |
 | `--card` | `--kq-surface` | `#ffffff` | Kartenoberflächen |
 | `--primary` | `--kq-bordeaux` | `#780129` | Primäraktionen, Headlines |
 | `--primary-dark` | `--kq-bordeaux-700` | `#5c0020` | Hover/Active auf Primary |
@@ -46,8 +46,8 @@ vollständig unberührt.
 
 ## Kurz-Quadrat-CD-Regeln (Kurzfassung)
 
-- **Primärfarbe:** Bordeaux `#780129` — große Flächen, Headlines, Buttons
-- **Akzent:** Amaranth `#e7024e` — Störer, Fokus-Ringe, aktive Messfelder
+- **Primärfarbe:** Bordeaux `#780129` — Buttons, Headlines, Linien, aktive Zustände (keine großen Hintergrundflächen)
+- **Akzent:** Amaranth `#e7024e` — Störer, Fokus-Ringe, Disto-/Messfeld-Rahmen (kein Flächenfüll)
 - **Akzent:** Mint `#8effb9` — Erfolgs-/Förderstatus, Spinner-Akzent
 - **Schrift:** Scandia (Bold + Regular); Fallback: `-apple-system, BlinkMacSystemFont, …`
 - **Headlines:** uppercase, tracking ~0.08em, Bordeaux
@@ -90,7 +90,7 @@ Teil der Navigation, kein Start-Ersatz für `index.html`.
 | `.kq-btn` mit Pfeilform | _nicht übernommen_ — App nutzt `.btn` (rechteckig, mobile-freundlich) |
 | `.kq-card` | Card-Basis-Token (shadow, border, radius) |
 | `.kq-badge--soft/.--mint` | Badge-Farben remapped |
-| `.kq-note` | Basis für `.info-box` und Toast (bordeaux-Akzentlinie) |
+| `.kq-note` | Basis für `.info-box`: weiß, bordeaux-Linie links (kein Hintergrundton) |
 | `.kq-table` | Basis für Tabellenstile (falls vorhanden) |
 | Fokusring Amaranth | `box-shadow: 0 0 0 3px rgba(120, 1, 41, 0.15)` auf Inputs |
 | Disto-Messfelder | Amaranth als Akzent (war Apple-Blau) |
