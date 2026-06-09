@@ -1724,7 +1724,7 @@ function hlQuelleKurzFuer(feldKey, hd) {
 // Wird von renderProjektView() und vom Button "Heizlast neu berechnen" aufgerufen.
 // Nur Anzeige, keine Speicherung.
 function aktualisiereHeizlastSummeBox() {
-  var p = currentProject();
+  var p = getProjekt();
   var hlSumEl = document.getElementById('hl-summe-box');
   if (!hlSumEl) return;
   if (!p) { hlSumEl.style.display = 'none'; return; }
