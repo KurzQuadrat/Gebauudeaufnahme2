@@ -491,8 +491,8 @@ textarea { resize: vertical; min-height: 80px; }
   border-top: 1px solid var(--border); z-index: 90;
 }
 .refresh-bar .btn { flex: 1; }
-.datei-aktionen { display: flex; gap: 8px; }
-.datei-aktionen .btn { flex: 1; }
+.datei-aktionen { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.datei-aktionen .btn { width: 100%; min-height: 44px; display: flex; align-items: center; justify-content: center; text-align: center; box-sizing: border-box; }
 .refresh-bar .app-version { font-size: 11px; color: var(--text-sec); white-space: nowrap; }
 .projekt-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
 
