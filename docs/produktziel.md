@@ -133,6 +133,17 @@ Folgende Funktionen sind wichtig, aber nicht Bestandteil von Version 1:
 * Plausibilitätsprüfung von Messketten
 * direkte Integration eines Disto X6
 * direkte Hottgenroth-Befüllung
+* interaktive Grundrissfläche (Raumpositionierung und -ausrichtung relativ zueinander)
+* automatische Raum-Nachbarschaftslogik (strukturierte Wandgrenzen als Raum-Referenzen)
+* LiDAR-gestützte Raumerfassung (grobe Geometrie via iPhone-LiDAR-Scanner)
+
+Hinweis LiDAR/Grundriss: Diese Funktionen sind perspektivisch sinnvoll, aber technisch
+aufwendig und setzen stabile Vorarbeiten im Datenmodell voraus. LiDAR ist im reinen
+Mobile-Browser aktuell nicht verfügbar; eine spätere native iOS-App oder Bridge-Lösung
+wäre notwendig. Die interaktive Grundrissfläche erfordert ein Canvas- oder SVG-Modul,
+das bislang nicht existiert. Beide Funktionen werden frühestens in V3+ angegangen.
+Das heutige Datenmodell (stabile Raum-IDs, Wandrichtungen als Felder) verbaut diese
+Erweiterungen nicht.
 
 ## 11. Nicht-Ziele Version 1
 
@@ -147,6 +158,9 @@ Version 1 soll nicht:
 * eine vollständige Fotodokumentationssoftware sein
 * KI-Fotoanalyse produktiv voraussetzen
 * iSFP-Maßnahmen final automatisch festlegen
+* einen interaktiven Grundriss erzeugen
+* LiDAR-Daten verarbeiten
+* Raum-Nachbarschaften automatisch aus Raumposition ableiten
 
 ## 12. Entscheidungsregel für neue Funktionen
 

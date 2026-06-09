@@ -11,7 +11,7 @@ Werkzeug für Kurz Quadrat. Perspektivisch soll die App als kostenpflichtiges Pr
 anderen Energieberatern zur Verfügung stehen.
 
 ```
-V1 intern  →  V1.5 Pilot  →  V2 Produktfähigkeit  →  V3 SaaS / kommerziell
+V1 intern  →  V1.5 Pilot  →  V2 Produktfähigkeit  →  V3 SaaS / kommerziell  →  V3+ LiDAR / Grundriss
 ```
 
 ---
@@ -44,6 +44,9 @@ V1 intern  →  V1.5 Pilot  →  V2 Produktfähigkeit  →  V3 SaaS / kommerziel
 - vollständige Hottgenroth-Integration
 - automatisierte Rechts- oder Förderprüfung
 - KI-Fotoanalyse als produktive Pflichtfunktion
+- LiDAR-gestützte Raumerfassung
+- interaktive Grundrissfläche
+- automatische Raum-Nachbarschaftslogik
 
 **Primärnutzer:** Kurz Quadrat (Referenzpilotkunde)
 
@@ -97,6 +100,8 @@ sind eingefroren und dokumentiert.
 - Vorbereitung Lizenz- oder Abo-Modell (Konzept, kein Code)
 - Dokumentierte Fachgrenzen (was berechnet die App, was nicht)
 - Optional: Disto-X6-Integration oder vergleichbare Messgeräteanbindung
+- Konzept interaktive Raumpositionierung (Vorstufe Grundriss): Raum-Koordinaten und
+  Nachbarschaftsreferenzen im Datenmodell vorbereiten, noch ohne UI
 
 **Nicht in V2:**
 
@@ -104,6 +109,8 @@ sind eingefroren und dokumentiert.
 - Login und Authentifizierung
 - Bezahlfunktion
 - Mehrmandantenbetrieb (noch Konzept, kein produktiver Betrieb)
+- LiDAR-gestützte Raumerfassung
+- interaktive Grundriss-Canvas-Ansicht (Konzept ja, UI-Umsetzung nein)
 
 ---
 
@@ -140,6 +147,58 @@ sind eingefroren und dokumentiert.
 
 ---
 
+## V3+ — LiDAR-Raumerfassung und interaktiver Grundriss
+
+**Status:** Langfristige Perspektive / Forschungsphase
+
+**Ziel:** Schnellere Vor-Ort-Erfassung durch gerategestutzte Geometrieerfassung und
+interaktive Grundrisserstellung mit automatischer Raum-Nachbarschaftslogik.
+
+### LiDAR-gestutzte Raumerfassung
+
+- Nutzung des iPhone-LiDAR-Scanners (iPhone 12 Pro+) fur grobe Raumgeometrie
+- Keine millimetergenaue Vermessung erwartet; Lasermessung bleibt erganzend moglich
+- Laser-/Disto-Messwerte haben Vorrang vor LiDAR-Schatzwerten (manuelle Override-Logik)
+- Technische Voraussetzung: WebXR Depth Sensing API oder native iOS-App/Bridge;
+  aktuell nicht uber reinen Mobile-Browser erreichbar (Stand 2026)
+
+### Interaktive Grundrissflache
+
+- Raume sollen auf einer 2D-Flache platzierbar und relativ zueinander ausrichtbar sein
+- Beispiel: Kuche rechts neben Flur, Wohnzimmer sudlich der Kuche
+- Raume sollen verschiebbar und drehbar sein
+- Daraus soll ein einfacher Grundriss-Export entstehen (SVG, PNG oder PDF)
+- Technische Umsetzung: Canvas- oder SVG-basiertes Modul (noch nicht begonnen)
+
+### Automatische Raum-Nachbarschaften
+
+- Raume sollen wissen, woran ihre Wande grenzen (nicht nur Freitext, sondern strukturierte
+  Referenzen)
+- Mogliche Werte je Wandseite: Aussenluft, Erdreich, unbeheizter Bereich,
+  Nachbarraum (Referenz auf Raum-ID), unbekannt
+- Diese Information ergibt sich teils aus der Grundrisspositionierung und teils aus
+  manueller Eingabe
+- Nutzung der Nachbarschaftsdaten fur: Heizlastberechnung, Hottgenroth-Vorbereitung,
+  Plausibilitatsprufung
+
+### Zielnutzen
+
+- schnellere Vor-Ort-Erfassung
+- weniger manuelle Wandzuordnung
+- bessere Plausibilitat der Raumdaten
+- Grundlage fur automatischen Grundriss-Export
+- bessere Vorbereitung fur Hottgenroth und andere Energieberatungstools
+
+### Voraussetzungen / offene Fragen
+
+- WebXR/LiDAR-Verfugbarkeit im Browser vs. native iOS-App-Entscheidung
+- Genauigkeit des iPhone-LiDAR fur Energieberatungs-Zwecke prufen
+- Canvas/SVG-Modul-Konzept und Datenspeicherung entwerfen
+- Datenmodell-Erweiterung fur Raumkoordinaten und Wandreferenzen definieren
+- Abwartskompatibilitat mit V1-Projekten sicherstellen
+
+---
+
 ## Fotospeicher-Migrationspfad (technisch)
 
 Unabhängig von der Versionsstufe ist folgende technische Migrationsreihenfolge geplant:
@@ -161,6 +220,8 @@ gleich. Nur das Backend (localStorage → IndexedDB → Cloud) wechselt.
 Diese Prinzipien gelten bereits in V1 und sollen sicherstellen, dass spätere Stufen
 keine Grundsanierung erfordern:
 
+**Allgemein:**
+
 - Projekt-IDs und Foto-IDs als UUIDs, ohne Kundendaten im Schlüssel.
 - Exportformat mit Versionsfeld (damit Importer rückwärtskompatibel sein können).
 - Datenmodellerweiterungen defensiv laden (kein Hard-Fail bei unbekannten Feldern).
@@ -168,3 +229,23 @@ keine Grundsanierung erfordern:
 - Brand-CSS als austauschbare Schicht (css/brand.css).
 - Keine kurzfristigen Lösungen, die Mehrbenutzerfähigkeit massiv erschweren.
 - Keine Kundendaten in Dateinamen oder globalen IDs.
+
+**Speziell für spätere Grundriss- und LiDAR-Erweiterbarkeit:**
+
+- Räume haben stabile UUIDs (bereits in V1 umgesetzt via `r.id`). Diese IDs dürfen
+  nicht bei Umbaumaßnahmen oder Exporten verloren gehen.
+- Wände sollten langfristig eindeutig pro Raum und Richtung referenzierbar sein.
+  Heute: `wand_n`, `wand_o`, `wand_s`, `wand_w` als Felder je Raum. Das reicht
+  für V1; für spätere Grundrisslogik sollte jede Wand eine eigene ID erhalten
+  können (kein Breaking Change nötig, erweiterbar).
+- Wandgrenzen sind heute Freitext oder einfache Enum-Werte. Langfristig sollen sie
+  strukturierte Referenzen werden: Außenluft, Erdreich, unbeheizter Bereich, oder
+  eine Raum-ID als Nachbarraum-Referenz. Das heutige Modell verbaut das nicht.
+- Räume sollten später optionale Koordinaten/Positionsfelder bekommen können
+  (`r.position: { x, y, rotation }`). Diese Felder existieren noch nicht und
+  sind nicht nötig für V1; sie sollten aber beim nächsten größeren Datenmodell-
+  Update ergänzbar sein, ohne bestehende Projekte zu brechen.
+- Laser-/Disto-Messwerte sind heute die einzige Quelle. Wenn LiDAR-Schätzwerte
+  hinzukommen, müssen sie als separate, überschreibbare Felder gespeichert werden:
+  Messwert (manuell/Disto) hat Vorrang vor LiDAR-Schätzwert. Kein stilles
+  Überschreiben manueller Eingaben.

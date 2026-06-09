@@ -156,6 +156,9 @@ Hinweis Versionsanzeige: In der Projektübersicht wird eine sichtbare App-Versio
 - Hottgenroth-Texte
 - vollständige Heizlastberechnung
 - automatisierte Rechts- oder Förderprüfung
+- LiDAR-gestützte Raumerfassung
+- interaktive Grundrissfläche / Canvas-Modul
+- automatische Raum-Nachbarschaftslogik aus Raumposition
 
 Diese Punkte sind explizit kein Entwicklungsziel für Version 1. Sie können in späteren
 Versionen folgen, erfordern aber jeweils eigene Konzepte (insbesondere zu Datenschutz,
@@ -164,7 +167,8 @@ Rechtssicherheit, Hosting und Abrechnung).
 ## Architekturhinweis: Erweiterbarkeit
 
 Version 1 ist intern und lokal. Trotzdem sollen technische Entscheidungen so getroffen
-werden, dass spätere externe Nutzung nicht massiv erschwert wird:
+werden, dass spätere externe Nutzung und spätere Funktionserweiterungen nicht massiv
+erschwert werden:
 
 - Projekt-IDs und Foto-IDs als UUIDs, ohne Kundendaten im Schlüssel.
 - Exportformat mit Versionsfeld, damit spätere Importer rückwärtskompatibel sein können.
@@ -174,6 +178,24 @@ werden, dass spätere externe Nutzung nicht massiv erschwert wird:
 - Brand-CSS als eigene Schicht (css/brand.css), die austauschbar bleibt.
 - Keine fest einkodierte Kurz-Quadrat-Logik in Fachfunktionen; Kurz Quadrat ist
   Referenznutzer, nicht einziger denkbarer Nutzer.
+
+Speziell für spätere Grundriss- und LiDAR-Erweiterbarkeit:
+
+- Raum-IDs (`r.id`) sind stabile UUIDs und dürfen bei Exporten, Importen oder
+  Datenmodell-Umbauten nicht verloren gehen. Sie sind die spätere Grundlage für
+  Raum-Nachbarschafts-Referenzen.
+- Wandrichtungen sind heute als Felder je Raum geführt (`wand_n`, `wand_o`, usw.).
+  Dieses Modell ist für V1 ausreichend; für spätere Grundrisslogik sollten Wände
+  eigene IDs erhalten können. Das ist keine V1-Aufgabe, darf aber durch heutige
+  Entscheidungen nicht dauerhaft verbaut werden.
+- Wandgrenzen sind heute einfache Enum-Werte oder Freitext. Sie sollen langfristig
+  auf strukturierte Referenzen erweiterbar sein: Außenluft, Erdreich, unbeheizter
+  Bereich, oder Raum-ID des Nachbarraums. Heutiges Modell verbaut das nicht.
+- Räume sollen später optionale Positionsfelder (`r.position`) aufnehmen können,
+  ohne bestehende Projekte zu brechen (defensive Initialisierung auf null/undefined).
+- Wenn LiDAR-Messwerte hinzukommen, müssen sie als separate, überschreibbare Felder
+  gespeichert werden. Manuelle Laser-/Disto-Messwerte haben immer Vorrang.
+  Kein stilles Überschreiben manueller Eingaben durch automatische Schätzwerte.
 
 ## Corporate Design (Kurz Quadrat)
 
