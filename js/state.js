@@ -290,6 +290,15 @@ function saveSanierungField(id, field, value) {
   save();
 }
 
+function saveSanierungZusatz(id, key, value) {
+  const p = getProjekt();
+  const s = p.sanierungen.find(s => s.id === id);
+  if (!s) return;
+  if (!s.zusatz) s.zusatz = {};
+  s.zusatz[key] = value;
+  save();
+}
+
 function saveOffenerPunktField(id, field, value) {
   const p = getProjekt();
   if (!p) return;
