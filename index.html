@@ -879,6 +879,8 @@ function addSanierung() {
   p.sanierungen.push(s);
   save();
   renderSanierungen();
+  _projCardOpen['sanierung'] = true;
+  applyProjCardState('sanierung', p);
 }
 
 function deleteSanierung(id) {
@@ -886,6 +888,7 @@ function deleteSanierung(id) {
   p.sanierungen = p.sanierungen.filter(s => s.id !== id);
   save();
   renderSanierungen();
+  if (!p.sanierungen.length) { _projCardOpen['sanierung'] = false; applyProjCardState('sanierung', p); }
 }
 
 // ============================================================
@@ -902,6 +905,8 @@ function addOffenerPunkt() {
   p.offenePunkte.push({ id: uuid(), text: '', bisWann: today, status: 'offen', prioritaet: 'mittel', bereich: 'Allgemein', notiz: '' });
   save();
   renderOffenePunkte();
+  _projCardOpen['offenepunkte'] = true;
+  applyProjCardState('offenepunkte', p);
 }
 
 function deleteOffenerPunkt(id) {
@@ -916,6 +921,7 @@ function deleteOffenerPunkt(id) {
   p.offenePunkte = (p.offenePunkte || []).filter(o => o.id !== id);
   save();
   renderOffenePunkte();
+  if (!p.offenePunkte.length) { _projCardOpen['offenepunkte'] = false; applyProjCardState('offenepunkte', p); }
 }
 
 function renderOffenePunkte() {
@@ -1226,6 +1232,7 @@ function selectGeschoss(name) {
   p.geschosse.push(g);
   state.aktivesGeschossId = g.id;
   save();
+  _projCardOpen['geschosse'] = true;
   showView('geschoss');
 }
 
@@ -1319,6 +1326,7 @@ function deleteGeschoss(id, e) {
   p.geschosse = p.geschosse.filter(g => g.id !== id);
   save();
   renderGeschossliste();
+  if (!p.geschosse.length) { _projCardOpen['geschosse'] = false; applyProjCardState('geschosse', p); }
 }
 
 // ============================================================
@@ -2286,11 +2294,13 @@ function addHeizanlage() {
   if(!p.heizanlagen) p.heizanlagen=[];
   p.heizanlagen.push({id:uuid(),hersteller:'',typ:'',baujahr:'',modell:'',energietraeger:'unbekannt',leistung:'',notiz:'',foto:null});
   save(); renderHeizanlagenListe();
+  _projCardOpen['heizung']=true; applyProjCardState('heizung',p);
 }
 function deleteHeizanlage(id) {
   const p=getProjekt(); if(!p) return;
   p.heizanlagen=(p.heizanlagen||[]).filter(function(h){return h.id!==id;});
   save(); renderHeizanlagenListe();
+  if(!(p.heizanlagen&&p.heizanlagen.length)){_projCardOpen['heizung']=false;applyProjCardState('heizung',p);}
 }
 function renderHeizanlagenListe() {
   const p=getProjekt();
@@ -2324,11 +2334,13 @@ function addWarmwasser() {
   if(!p.warmwasserEintraege) p.warmwasserEintraege=[];
   p.warmwasserEintraege.push({id:uuid(),art:'unbekannt',speicherVorhanden:'unbekannt',speichervolumen:'',energietraeger:'unbekannt',versorgung:'unbekannt',baujahr:'',hersteller:'',typ:'',notiz:''});
   save(); renderWarmwasserListe();
+  _projCardOpen['warmwasser']=true; applyProjCardState('warmwasser',p);
 }
 function deleteWarmwasser(id) {
   const p=getProjekt(); if(!p) return;
   p.warmwasserEintraege=(p.warmwasserEintraege||[]).filter(function(w){return w.id!==id;});
   save(); renderWarmwasserListe();
+  if(!(p.warmwasserEintraege&&p.warmwasserEintraege.length)){_projCardOpen['warmwasser']=false;applyProjCardState('warmwasser',p);}
 }
 function renderWarmwasserListe() {
   const p=getProjekt();
@@ -2363,11 +2375,13 @@ function addSchornstein() {
   if(!p.schornsteine) p.schornsteine=[];
   p.schornsteine.push({id:uuid(),lage:'',form:'',breite:'',tiefe:''});
   save(); renderSchornsteineListe();
+  _projCardOpen['schornstein']=true; applyProjCardState('schornstein',p);
 }
 function deleteSchornstein(id) {
   const p=getProjekt(); if(!p) return;
   p.schornsteine=(p.schornsteine||[]).filter(function(s){return s.id!==id;});
   save(); renderSchornsteineListe();
+  if(!(p.schornsteine&&p.schornsteine.length)){_projCardOpen['schornstein']=false;applyProjCardState('schornstein',p);}
 }
 function renderSchornsteineListe() {
   const p=getProjekt();
