@@ -53,6 +53,7 @@ function load() {
   // Rückwärtskompatibilität: fehlende Felder ergänzen
   state.projekte.forEach(p => {
     if (p.auftragsart === undefined) p.auftragsart = '';
+    if (p.gebaeudeArt === undefined) p.gebaeudeArt = '';
     if (p.wohneinheiten === undefined) p.wohneinheiten = 1;
     if (p.gebaeude_foto === undefined) p.gebaeude_foto = '';
     if (p.kundenwunsch_text === undefined) p.kundenwunsch_text = '';

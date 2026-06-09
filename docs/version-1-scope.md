@@ -16,13 +16,19 @@ Hinweis Raum-/Bauteilliste: Als Zwischenschritt vor dem PDF-Bericht ist die Raum
 
 - Projekt-ID oder anonymer Projektname
 - PLZ
-- Gebäudetyp: EFH, ZFH, MFH
-- Anzahl Wohneinheiten, falls relevant
+- Gebäudetyp: EFH oder MFH (seit v0.2.27-dev vereinfacht; alte Werte ZFH/RH/DHH bleiben
+  im Datenmodell erhalten und brechen bestehende Projekte nicht)
+- Gebäudeart: freistehend / Reihenendhaus / Reihenmittelhaus (seit v0.2.27-dev, Feld
+  `gebaeudeArt`, unabhängig vom Gebäudetyp; alte Projekte erhalten leeren Defaultwert)
+- Anzahl Wohneinheiten, nur bei MFH sichtbar
 - Baujahr
-- Auftragsart
 - offene Punkte
 
-Hinweis: Projektstammdaten in der App sind anonymisiert. Das Feld heißt in der UI seit v0.2.14 "Projektnummer" (intern weiterhin `adresse`). Auftragsart und Anzahl Wohneinheiten sind als Stammdatenfelder umgesetzt. Anzahl Wohneinheiten wird nur angezeigt, wenn Gebäudetyp MFH ausgewählt ist. Ein Hausfoto (Gebäudefoto) kann in der Gebäude-Karte erfasst werden (komprimiert als `gebaeude_foto` gespeichert) und wird in der Projektübersicht als kleines Thumbnail angezeigt.
+Hinweis: Projektstammdaten in der App sind anonymisiert. Das Feld heißt in der UI seit v0.2.14 "Projektnummer" (intern weiterhin `adresse`). Anzahl Wohneinheiten wird nur angezeigt, wenn Gebäudetyp MFH ausgewählt ist. Ein Hausfoto (Gebäudefoto) kann in der Gebäude-Karte erfasst werden (komprimiert als `gebaeude_foto` gespeichert) und wird in der Projektübersicht als kleines Thumbnail angezeigt.
+
+Hinweis Auftragsart (seit v0.2.27-dev): Das Feld `auftragsart` wird in der Gebäude-Karte nicht mehr angezeigt. Bestehende Daten im Feld bleiben im Datenmodell erhalten und gehen nicht verloren; das Feld wird nur nicht mehr in der UI bedient.
+
+Hinweis Initialzustand Projektkarten (seit v0.2.27-dev): Beim Oeffnen eines Projekts ist nur die Karte "Geschosse" initial aufgeklappt. Die Karte "Gebaude" startet jetzt ebenfalls geschlossen (korrigierter HTML-Initialzustand `style="display:none;"` auf `pcb-gebaude`).
 
 Hinweis offene Punkte (aktualisiert v0.2.21-dev): “Offene Punkte” sind einfache interne Notizen des Beraters – keine Aufgabenverwaltung. Jeder Punkt enthalt ein Freitextfeld (“Beschreibung / Offener Punkt”), ein optionales Falligkeitsdatum (“Bis wann”, `bisWann`, Typ date, YYYY-MM-DD), eine optionale browser-native Diktierfunktion (Web Speech API, de-DE, kein Kundenzustimmungs-Checkbox noetig da interne Notiz) sowie nach Diktat-Stopp automatische Absatztrennung. Neue Punkte erhalten das heutige Datum als Voreinstellung. Im Textexport erscheinen offene Punkte unter “8. OFFENE PUNKTE / NOTIZEN” mit Text und Datum. Das Datenmodell enthaelt weiterhin die Felder `status`, `prioritaet`, `bereich` und `notiz` (Rueckwaertskompatibilitaet; werden in Version 1 nicht angezeigt). Diese Felder koennen spaeter fuer ein eigenstaendiges “Baubesprechung”-Feature genutzt werden. Bestehende Projekte ohne `offenePunkte` erhalten defensiv eine leere Liste; `bisWann` wird bei Altdaten auf leer gesetzt.
 

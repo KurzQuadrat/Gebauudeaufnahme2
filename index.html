@@ -80,10 +80,10 @@
           <span class="pcc-summary" id="pcs-gebaude"></span>
         </div>
         <div class="pcc-right">
-          <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-gebaude" onclick="toggleProjCard('gebaude')" aria-label="ein-/ausklappen">&#9650;</button>
+          <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-gebaude" onclick="toggleProjCard('gebaude')" aria-label="ein-/ausklappen">&#9660;</button>
         </div>
       </div>
-      <div class="pcc-body" id="pcb-gebaude">
+      <div class="pcc-body" id="pcb-gebaude" style="display:none;">
       <div class="form-group">
         <label>Projektnummer</label>
         <input type="text" id="p-adresse" placeholder="z.B. Projekt Nord 01" oninput="saveProjektField('adresse', this.value)">
@@ -98,12 +98,18 @@
           <select id="p-typ" onchange="saveProjektField('typ', this.value); toggleWohneinheitenVisibility()">
             <option value="">Wählen...</option>
             <option value="EFH">EFH</option>
-            <option value="ZFH">ZFH</option>
             <option value="MFH">MFH</option>
-            <option value="RH">Reihenhaus</option>
-            <option value="DHH">Doppelhaushälfte</option>
           </select>
         </div>
+      </div>
+      <div class="form-group">
+        <label>Geb&#228;udeart</label>
+        <select id="p-gebaeudeArt" onchange="saveProjektField('gebaeudeArt', this.value)">
+          <option value="">W&#228;hlen...</option>
+          <option value="freistehend">freistehend</option>
+          <option value="Reihenendhaus">Reihenendhaus</option>
+          <option value="Reihenmittelhaus">Reihenmittelhaus</option>
+        </select>
       </div>
       <div class="form-row">
         <div class="form-group">
@@ -120,19 +126,7 @@
         <input type="number" id="p-wohneinheiten" placeholder="1" min="1" max="99" oninput="saveProjektField('wohneinheiten', this.value)">
       </div>
       <div class="form-group">
-        <label>Auftragsart</label>
-        <select id="p-auftragsart" onchange="saveProjektField('auftragsart', this.value)">
-          <option value="">Wählen...</option>
-          <option value="allgemeine Gebäudeaufnahme">Allgemeine Gebäudeaufnahme</option>
-          <option value="iSFP">iSFP</option>
-          <option value="Einzelmaßnahme">Einzelmaßnahme</option>
-          <option value="hydraulischer Abgleich">Hydraulischer Abgleich</option>
-          <option value="Heizlast später">Heizlast später</option>
-          <option value="Sonstiges">Sonstiges</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Foto Gebäude</label>
+        <label>Foto Geb&#228;ude</label>
         <label class="btn btn-sm btn-secondary" id="foto-gebaeude-label" style="display:inline-block;cursor:pointer;">
           <span>📷 Foto aufnehmen / auswählen</span>
           <input type="file" accept="image/*" capture="environment" style="display:none" onchange="handleFotoGebaeude(this)">
@@ -823,6 +817,7 @@ function neuesProjekt() {
     adresse: '',
     baujahr: '',
     typ: '',
+    gebaeudeArt: '',
     auftragsart: '',
     wohneinheiten: 1,
     datum: new Date().toISOString().split('T')[0],
@@ -1804,11 +1799,10 @@ function pcGetSummary(id, p) {
 
 function pcSumGebaude(p) {
   var parts = [];
-  if (p.baujahr) parts.push('BJ ' + p.baujahr);
   if (p.typ) parts.push(p.typ);
-  if (p.plz) parts.push('PLZ ' + p.plz);
-  if (p.auftragsart) parts.push(p.auftragsart);
-  return parts.length ? parts.join(' \xb7 ') : 'Keine Stammdaten';
+  if (p.gebaeudeArt) parts.push(p.gebaeudeArt);
+  if (p.baujahr) parts.push('Baujahr ' + p.baujahr);
+  return parts.length ? parts.join(' \xb7 ') : 'Geb\xe4udedaten fehlen';
 }
 
 function pcSumKundenwunsch(p) {
@@ -1876,8 +1870,8 @@ function renderProjektView() {
   document.getElementById('projekt-titel').textContent=p.name;
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
   populateYearSelect('p-baujahr',p.baujahr,1850,new Date().getFullYear());
-  set('p-typ',p.typ);set('p-adresse',p.adresse);set('p-datum',p.datum);set('p-plz',p.plz);
-  set('p-wohneinheiten',p.wohneinheiten);set('p-auftragsart',p.auftragsart);
+  set('p-typ',p.typ);set('p-gebaeudeArt',p.gebaeudeArt||'');set('p-adresse',p.adresse);set('p-datum',p.datum);set('p-plz',p.plz);
+  set('p-wohneinheiten',p.wohneinheiten);
   toggleWohneinheitenVisibility();
   var gbPrev=document.getElementById('foto-gebaeude-preview');
   var gbLbl=document.getElementById('foto-gebaeude-label');
