@@ -292,7 +292,7 @@
       </div>
       <button type="button" class="btn btn-sm btn-primary" style="width:100%;margin-top:8px;" onclick="leiteUWerteAusBaujahrUndSanierungAb()">U-Werte aus Baujahr/Sanierung ableiten</button>
       <div class="pcc-body" id="pcb-heizlast" style="display:none;margin-top:10px;">
-      <div style="color:var(--text-sec);font-size:14px;padding:4px 0 10px;">&#220;berschl&#228;gige U-Wert-Annahmen f&#252;r die Heizlast-Vorabsch&#228;tzung &#8211; kein normativer Heizlastnachweis.</div>
+      <span style="cursor:help;color:var(--text-sec);font-size:12px;display:block;margin-bottom:8px;" title="U-Wert-Standardwerte f&#252;r die &#252;berschl&#228;gige Heizlast-Vorabsch&#228;tzung. Kein normativer Heizlastnachweis nach DIN EN 12831.">&#x24D8; U-Wert-Standardwerte</span>
       <button type="button" id="hl-details-toggle" class="btn btn-sm btn-secondary" style="width:100%;" onclick="toggleHlDetails()">U-Wert-Details anzeigen</button>
       <div id="hl-details-panel" style="display:none;padding-top:14px;">
         <div class="form-group">
@@ -300,31 +300,35 @@
           <input type="text" id="p-hl-quelle" placeholder="z.B. Erfahrungswert, Bestandsunterlagen, Baujahresklasse" oninput="saveHeizlastDefaultField('quelle', this.value)">
         </div>
         <div class="form-group">
-          <label><input type="checkbox" id="p-hl-baujahr-aktiv" onchange="saveHeizlastDefaultField('baujahrAbleitungAktiv', this.checked); pruefeAutoUWerteAusBaujahr()"> Baujahresabhängige U-Wert-Vorschläge nutzen (Quelle: Bundesanzeiger BAnz AT 04.12.2020 B1)</label>
+          <label><input type="checkbox" id="p-hl-baujahr-aktiv" onchange="saveHeizlastDefaultField('baujahrAbleitungAktiv', this.checked); pruefeAutoUWerteAusBaujahr()"> Baujahresabh&#228;ngige U-Wert-Vorschl&#228;ge nutzen (Quelle: Bundesanzeiger BAnz AT 04.12.2020 B1)</label>
         </div>
         <div class="form-group">
-          <label>Baualtersklasse Gebäude (automatisch aus Baujahr)</label>
+          <label>Baualtersklasse Geb&#228;ude (automatisch aus Baujahr)</label>
           <input type="text" id="p-hl-baualtersklasse-anzeige" disabled style="background:#f5f5f7;color:var(--text-sec);">
         </div>
-        <div style="color:var(--text-sec);font-size:12px;margin:-4px 0 12px;">
-          Pauschal-/Erfahrungswerte aus der "Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung im Wohngebäudebestand" (BAnz AT 04.12.2020 B1, Tabelle 2/3 – siehe <code>docs/quellen/README.md</code>). Der Button füllt ausschließlich aktuell LEERE U-Wert-Felder; vorhandene manuelle Werte bleiben unverändert. Ist in der Sanierungshistorie für ein Bauteil ein Detailtyp mit Jahr hinterlegt, wird dessen Jahr für die Ableitung GENAU DIESES Bauteils verwendet. Ohne passenden Sanierungseintrag gilt die Baualtersklasse aus dem Baujahr.
+        <!-- U-Wert-Tabelle: 2-spaltig, Einheit W/(m2K) einmalig in Spaltenoeberschrift -->
+        <table style="width:100%;border-collapse:collapse;margin:10px 0 4px;">
+          <thead>
+            <tr style="border-bottom:1px solid var(--border);">
+              <th style="text-align:left;padding:4px 8px 4px 0;font-size:12px;color:var(--text-sec);font-weight:500;">Bauteil</th>
+              <th style="text-align:right;padding:4px 4px;font-size:12px;color:var(--text-sec);font-weight:500;">W/(m&#178;K)</th>
+              <th style="text-align:left;padding:4px 0 4px 8px;font-size:12px;color:var(--text-sec);font-weight:500;">Quelle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Au&#223;enwand AW</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-aw-uwert" placeholder="0.28" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('awUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-aw">-</small></td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Innenwand IW</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-iw-uwert" placeholder="1.40" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('iwUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-iw">-</small></td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Dach</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-dach-uwert" placeholder="0.24" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('dachUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-dach">-</small></td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Bodenplatte</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-bodenplatte-uwert" placeholder="0.35" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('bodenplatteUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-bodenplatte">-</small></td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Boden/Decke</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-boden-uwert" placeholder="0.50" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('bodenUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-boden">-</small></td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Fenster</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-fenster-uwert" placeholder="1.30" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('fensterUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-fenster">-</small></td></tr>
+            <tr><td style="padding:6px 8px 6px 0;font-size:13px;">T&#252;ren</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-tuer-uwert" placeholder="1.80" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('tuerUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-tuer">-</small></td></tr>
+          </tbody>
+        </table>
+        <div class="form-row" style="margin-top:8px;">
+          <div class="form-group"><label>Norm-Au&#223;entemperatur (&#176;C)</label><input type="number" step="0.5" id="p-hl-temp-aussen" placeholder="-12" oninput="saveHeizlastDefaultField('tempAussenNorm', this.value)"></div>
+          <div class="form-group"><label>Temp. unbeheizter Bereich &#8211; Standard (&#176;C)</label><input type="number" step="0.5" id="p-hl-temp-unbeheizt" placeholder="7" oninput="saveHeizlastDefaultField('tempUnbeheiztDefault', this.value)"></div>
         </div>
-        <div class="form-row">
-          <div class="form-group"><label>U-Wert Außenwand AW (W/m²K)</label><input type="number" step="0.01" id="p-hl-aw-uwert" placeholder="z.B. 0.28" oninput="saveHeizlastDefaultField('awUwert', this.value)"></div>
-          <div class="form-group"><label>U-Wert Innenwand IW (W/m²K)</label><input type="number" step="0.01" id="p-hl-iw-uwert" placeholder="z.B. 1.40" oninput="saveHeizlastDefaultField('iwUwert', this.value)"></div>
-          <div class="form-group"><label>U-Wert Dach (W/m²K)</label><input type="number" step="0.01" id="p-hl-dach-uwert" placeholder="z.B. 0.24" oninput="saveHeizlastDefaultField('dachUwert', this.value)"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>U-Wert Bodenplatte (W/m²K)</label><input type="number" step="0.01" id="p-hl-bodenplatte-uwert" placeholder="z.B. 0.35" oninput="saveHeizlastDefaultField('bodenplatteUwert', this.value)"></div>
-          <div class="form-group"><label>U-Wert Boden/Decke (W/m²K)</label><input type="number" step="0.01" id="p-hl-boden-uwert" placeholder="z.B. 0.50" oninput="saveHeizlastDefaultField('bodenUwert', this.value)"></div>
-          <div class="form-group"><label>U-Wert Fenster (W/m²K)</label><input type="number" step="0.01" id="p-hl-fenster-uwert" placeholder="z.B. 1.30" oninput="saveHeizlastDefaultField('fensterUwert', this.value)"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>U-Wert Türen (W/m²K)</label><input type="number" step="0.01" id="p-hl-tuer-uwert" placeholder="z.B. 1.80" oninput="saveHeizlastDefaultField('tuerUwert', this.value)"></div>
-          <div class="form-group"><label>Norm-Außentemperatur (°C)</label><input type="number" step="0.5" id="p-hl-temp-aussen" placeholder="-12" oninput="saveHeizlastDefaultField('tempAussenNorm', this.value)"></div>
-          <div class="form-group"><label>Temperatur unbeheizter Bereich – Standard (°C)</label><input type="number" step="0.5" id="p-hl-temp-unbeheizt" placeholder="7" oninput="saveHeizlastDefaultField('tempUnbeheiztDefault', this.value)"></div>
-        </div>
-        <div style="color:var(--text-sec);font-size:12px;margin-top:4px;">Hinweis: Die hinterlegten Tabellenwerte stammen aus der "Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung im Wohngebäudebestand" vom 8. Oktober 2020 (BAnz AT 04.12.2020 B1) und sind Pauschal-/Erfahrungswerte &#8211; kein normativer Heizlastnachweis. Es werden ausschlie&#223;lich Werte verwendet, die eindeutig aus dieser Quelle entnommen wurden (siehe <code>docs/quellen/README.md</code> und <code>js/uwerte-bundesanzeiger.js</code>); nichts wurde gesch&#228;tzt oder erg&#228;nzt. Manuell erfasste oder abweichende Werte haben weiterhin Vorrang (siehe Priorit&#228;tslogik in <code>docs/version-1-scope.md</code>).</div>
       </div>
       </div><!-- /pcc-body heizlast -->
     </div>
@@ -1727,7 +1731,21 @@ function renderHeizlastErgebnis(r,geo) {
   document.getElementById('heizlast-ergebnis').innerHTML=rows?phiBoxHtml+detailsHtml+hinweiseHtml+'<div style="font-size:11px;color:var(--text-sec);margin-top:8px;">Überschlägige Vorabschätzung, kein normativer Heizlastnachweis nach DIN EN 12831.</div>'
     :'<div style="color:var(--text-sec);font-size:14px;padding:8px 0;">U-Werte eingeben (oder Heizlast-Standardwerte im Projekt hinterlegen) und Berechnen tippen.</div>'+hinweiseHtml;
 }
-function tUnbeheiztQuelleKurz(q){ return q==='Raum-Override'?'Raum-Override':(q==='Projekt-Standard'?'Projekt-Standard':'Standard 7°C'); }
+function tUnbeheiztQuelleKurz(q){ return q==='Raum-Override'?'Raum-Override':(q==='Projekt-Standard'?'Projekt-Standard':'Standard 7\xb0C'); }
+// Kurze Quellenanzeige je U-Wert-Feld in der Heizlast-Standardwerte-Karte.
+// Keine neue Datenspeicherung - nur Anzeige auf Basis vorhandener Felder.
+// Gibt 'Baujahr/Sanierung' wenn das quelle-Feld auf Bundesanzeiger-Ableitung
+// hindeutet, 'manuell' wenn ein Wert vorhanden aber ohne solchen Hinweis,
+// '-' wenn das Feld leer ist. Aktualisiert sich beim Oeffnen der Projektansicht
+// und nach "U-Werte aus Baujahr/Sanierung ableiten" (beides ruft renderProjektView auf).
+function hlQuelleKurzFuer(feldKey, hd) {
+  if (!hd) return '-';
+  var v = hd[feldKey];
+  if (v === undefined || v === null || String(v).trim() === '') return '-';
+  var q = hd.quelle || '';
+  if (q.indexOf('Bundesanzeiger') >= 0 || q.indexOf('BAnz') >= 0 || q.indexOf('Sanierung') >= 0 || q.indexOf('Baujahr') >= 0) return 'Baujahr/Sanierung';
+  return 'manuell';
+}
 
 // ============================================================
 //  RENDER
@@ -1894,6 +1912,9 @@ function renderProjektView() {
   set('p-hl-quelle',hd.quelle);
   const hlBaujahrEl=document.getElementById('p-hl-baujahr-aktiv'); if(hlBaujahrEl) hlBaujahrEl.checked=!!hd.baujahrAbleitungAktiv;
   aktualisiereBaualtersklasseAnzeige(p);
+  // Quellenhinweise je U-Wert-Feld aktualisieren (nur Anzeige, keine Datenspeicherung)
+  var _hlSrc=[['hl-src-aw','awUwert'],['hl-src-iw','iwUwert'],['hl-src-dach','dachUwert'],['hl-src-bodenplatte','bodenplatteUwert'],['hl-src-boden','bodenUwert'],['hl-src-fenster','fensterUwert'],['hl-src-tuer','tuerUwert']];
+  _hlSrc.forEach(function(pr){var el=document.getElementById(pr[0]);if(el)el.textContent=hlQuelleKurzFuer(pr[1],hd);});
   renderSanierungen(); renderGeschossliste(); renderHeizanlagenListe(); renderWarmwasserListe(); renderSchornsteineListe(); renderOffenePunkte(); renderKundenwunsch();
   initProjCardState(p);
   applyProjCardStates(p);
