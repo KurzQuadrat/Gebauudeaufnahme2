@@ -18,7 +18,7 @@ function generateExportText(p) {
   H('4. GEBAEUDE IN HottCAD');
   p.geschosse.forEach((g,gi)=>{
     S('GESCHOSS '+(gi+1)+': '+g.name+' ['+g.beheizung+']'); L('  Bodendicke: '+(g.bodendicke?g.bodendicke+' cm':'-'));
-    if(g.isDG||g.name==='DG'){L('  Kniestock: '+(g.dach_kniestock||'-')+' cm / Neigung: '+(g.dach_winkel||'-')+'°');(g.gauben||[]).forEach((ga,i)=>L('  Gaube '+(i+1)+': B='+ga.lichte_breite+' UK='+ga.boden_uk+' KS='+ga.kniestock+' H='+ga.lichte_hoehe+' cm'));}
+    if(g.isDG||g.name==='DG'||g.name==='DG 1'||g.name==='DG 2'||g.name==='Spitzboden'){L('  Kniestock: '+(g.dach_kniestock||'-')+' cm / Neigung: '+(g.dach_winkel||'-')+'°');(g.gauben||[]).forEach((ga,i)=>L('  Gaube '+(i+1)+': B='+ga.lichte_breite+' UK='+ga.boden_uk+' KS='+ga.kniestock+' H='+ga.lichte_hoehe+' cm'));}
     g.raeume.forEach((r,ri)=>{
       L(''); L('  RAUM '+(ri+1)+': '+r.name+(r.nutzung?' ['+r.nutzung+']':'')+(r.beheizt?'':' [UNBEHEIZT]'));
       L('    h='+(r.deckenhoehe||'-')+'m / '+(r.bodenbelag||'-')+(r.normtemp?' / '+r.normtemp+'°C':''));

@@ -174,3 +174,5 @@ Seit v0.2.2-dev ist das Kurz-Quadrat-Corporate-Design als reine CSS-Schicht eing
 - projektübergreifende Analysen
 - Datenbank
 - SaaS-/Abo-Modell
+
+Hinweis Geschossdetails (seit v0.2.12-dev): Jedes Geschoss hat ein Feld "Lichte Höhe Standard (m)" (`g.lichteHoeheStandard`), das als Startwert für neu angelegte Räume dieses Geschosses übernommen wird. Die Raumhöhe bleibt danach unabhängig und manuell überschreibbar; bestehende Raumwerte werden nicht automatisch geändert. Als Dachgeschosse gelten: DG (Bestand), DG 1, DG 2, Spitzboden – diese erhalten im Geschossdetail ein Dachwinkel-Feld und die Dachschrägen-/Gauben-Sektion. Nicht-Dachgeschosse (KG, EG, 1.OG, 2.OG, 3.OG) zeigen dieses Feld nicht. Das Anlegen mehrerer Dachgeschosse (DG 1, DG 2) ist über GESCHOSS_OPTIONEN möglich.

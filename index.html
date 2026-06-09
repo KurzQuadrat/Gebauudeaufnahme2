@@ -266,9 +266,16 @@
           <input type="number" class="disto-input" id="g-bodendicke" placeholder="cm" oninput="saveGeschossField('bodendicke', this.value)">
           <div class="disto-hint">Sichtbar im Treppenhaus</div>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="g-dachwinkel-wrap">
           <label>Dachwinkel (°)</label>
           <input type="number" id="g-dachwinkel" placeholder="z.B. 35" oninput="saveGeschossField('dachwinkel', this.value)">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Lichte Höhe Standard (m) <span style="color:var(--primary); font-size:12px;">Disto</span></label>
+          <input type="number" step="0.01" class="disto-input" id="g-lichte-hoehe-std" placeholder="z.B. 2.50" oninput="saveGeschossField('lichteHoeheStandard', this.value)">
+          <div class="disto-hint">Startwert für neu angelegte Räume</div>
         </div>
       </div>
     </div>
@@ -657,6 +664,12 @@
 // ============================================================
 //  NAVIGATION
 // ============================================================
+// Hilfsfunktion: prueft ob ein Geschoss ein Dachgeschoss-Typ ist.
+// Gilt fuer: DG (Bestand), DG 1, DG 2, Spitzboden.
+function istDachgeschoss(g) {
+  return !!(g.isDG || g.name === 'DG' || g.name === 'DG 1' || g.name === 'DG 2' || g.name === 'Spitzboden');
+}
+
 function showView(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + name).classList.add('active');
@@ -683,7 +696,7 @@ function neuesProjekt() {
   if (!name) return;
   const eg = {
     id: uuid(), name: 'EG', beheizung: 'beheizt',
-    bodendicke: '', dachwinkel: '',
+    bodendicke: '', dachwinkel: '', lichteHoeheStandard: '',
     isDG: false, dach_kniestock: '', dach_winkel: '',
     gauben: [], dachfenster: [], raeume: []
   };
@@ -946,11 +959,11 @@ function addGeschoss() {
 function selectGeschoss(name) {
   closeAllModals();
   const p = getProjekt();
-  const isDG = name === 'DG';
+  const isDG = (name === 'DG' || name === 'DG 1' || name === 'DG 2' || name === 'Spitzboden');
   const g = {
     id: uuid(), name,
     beheizung: 'beheizt',
-    bodendicke: '', dachwinkel: '',
+    bodendicke: '', dachwinkel: '', lichteHoeheStandard: '',
     isDG, dach_kniestock: '', dach_winkel: '',
     gauben: [], dachfenster: [], raeume: []
   };
@@ -1064,7 +1077,7 @@ function addRaum() {
   const r = {
     id: uuid(), name: 'Raum ' + n,
     nutzung: '', beheizt: true,
-    deckenhoehe: '', bodenbelag: '',
+    deckenhoehe: g.lichteHoeheStandard || '', bodenbelag: '',
     normSolltemperatur: '', kundenwunschTemperatur: '',
     aw_dicke: '', aw_typ: '', aw_daemmung: false, aw_notiz: '',
     iw_dicke: last.dicke || '', iw_typ: last.typ || '',
@@ -1076,8 +1089,8 @@ function addRaum() {
     raumFoto: null,
     vsp_n_b:'', vsp_n_t:'', vsp_o_b:'', vsp_o_t:'',
     vsp_s_b:'', vsp_s_t:'', vsp_w_b:'', vsp_w_t:'',
-    sch_kniestock: (g.isDG||g.name==='DG') ? (g.dach_kniestock||'') : '',
-    sch_winkel:    (g.isDG||g.name==='DG') ? (g.dach_winkel||'') : '',
+    sch_kniestock: istDachgeschoss(g) ? (g.dach_kniestock||'') : '',
+    sch_winkel:    istDachgeschoss(g) ? (g.dach_winkel||'') : '',
     sch_richtung: 'N',
     gaube_breite: '', gaube_lichtehoehe: '',
     normtemp: '', u_werte: {}, grenzt_an: {},
@@ -1679,7 +1692,7 @@ function renderGeschossliste() {
   const p=getProjekt(),c=document.getElementById('geschoss-list'),l=document.getElementById('geschoss-leer');
   if(!p.geschosse.length){c.innerHTML='';l.style.display='block';return;}
   l.style.display='none';
-  const icons={KG:'⬇',EG:'🏠','1.OG':'⬆','2.OG':'⬆','3.OG':'⬆',DG:'🔺',Spitzboden:'△'};
+  const icons={KG:'⬇',EG:'🏠','1.OG':'⬆','2.OG':'⬆','3.OG':'⬆',DG:'🔺','DG 1':'🔺','DG 2':'🔺',Spitzboden:'△'};
   c.innerHTML=p.geschosse.map(g=>'<div class="list-item" onclick="openGeschoss(\''+g.id+'\')"><div class="list-item-icon" style="background:#f0f7ff;color:#0071e3;font-size:22px;">'+(icons[g.name]||'◻')+'</div><div class="list-item-body"><div class="list-item-title">'+g.name+'</div><div class="list-item-sub"><span class="badge '+(g.beheizung==='beheizt'?'badge-green':'badge-gray')+'">'+g.beheizung+'</span> · '+g.raeume.length+' Raum/Räume</div></div><button class="list-item-action" onclick="deleteGeschoss(\''+g.id+'\',event)">🗑</button><div class="list-item-arrow">›</div></div>').join('');
 }
 
@@ -1795,9 +1808,11 @@ function renderGeschossView() {
   const g=getGeschoss(); if(!g) return;
   document.getElementById('geschoss-titel').textContent=g.name;
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
-  set('g-name',g.name);document.getElementById('g-beheizung').value=g.beheizung||'beheizt';set('g-bodendicke',g.bodendicke);set('g-dachwinkel',g.dachwinkel);
+  set('g-name',g.name);document.getElementById('g-beheizung').value=g.beheizung||'beheizt';set('g-bodendicke',g.bodendicke);set('g-dachwinkel',g.dachwinkel);set('g-lichte-hoehe-std',g.lichteHoeheStandard);
+  const isDach=istDachgeschoss(g);
+  const dgW=document.getElementById('g-dachwinkel-wrap');if(dgW)dgW.style.display=isDach?'':'none';
   const dgS=document.getElementById('dg-sektion');
-  if(g.isDG||g.name==='DG'){dgS.style.display='block';set('g-kniestock',g.dach_kniestock);set('g-winkel',g.dach_winkel);renderGaubenListe();renderDachfensterListe();}else{dgS.style.display='none';}
+  if(isDach){dgS.style.display='block';set('g-kniestock',g.dach_kniestock);set('g-winkel',g.dach_winkel);renderGaubenListe();renderDachfensterListe();}else{dgS.style.display='none';}
   renderRaumliste();
 }
 

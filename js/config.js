@@ -2,7 +2,7 @@
 // Testen über den iPhone-Home-Bildschirm erkennbar ist, ob die aktuellste Version
 // geladen wurde (siehe refresh-bar in index.html). Bei jedem relevanten Update
 // hier anpassen.
-const APP_VERSION = "v0.2.11-dev";
+const APP_VERSION = "v0.2.12-dev";
 const APP_BUILD_DATE = "2026-06-09";
 
 const GESCHOSS_OPTIONEN = [
@@ -12,6 +12,8 @@ const GESCHOSS_OPTIONEN = [
   { name: '2.OG',       label: '2. Obergeschoss',     icon: '⬆' },
   { name: '3.OG',       label: '3. Obergeschoss',     icon: '⬆' },
   { name: 'DG',         label: 'Dachgeschoss',        icon: '🔺' },
+  { name: 'DG 1',       label: 'Dachgeschoss 1',      icon: '🔺' },
+  { name: 'DG 2',       label: 'Dachgeschoss 2',      icon: '🔺' },
   { name: 'Spitzboden', label: 'Spitzboden',          icon: '△' },
 ];
 

@@ -37,9 +37,10 @@ function load() {
     p.geschosse.forEach(g => {
       if (!g.gauben) g.gauben = [];
       if (!g.dachfenster) g.dachfenster = [];
-      if (g.isDG === undefined) g.isDG = (g.name === 'DG');
+      if (g.isDG === undefined) g.isDG = (g.name === 'DG' || g.name === 'DG 1' || g.name === 'DG 2' || g.name === 'Spitzboden');
       if (!g.dach_kniestock) g.dach_kniestock = '';
       if (!g.dach_winkel) g.dach_winkel = '';
+      if (g.lichteHoeheStandard === undefined) g.lichteHoeheStandard = '';
       g.raeume.forEach(r => {
         if (!r.iw_dicke) r.iw_dicke = '';
         if (!r.iw_typ) r.iw_typ = '';
