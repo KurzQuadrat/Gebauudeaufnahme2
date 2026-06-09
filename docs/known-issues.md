@@ -271,3 +271,18 @@ Fehler werden in folgender Reihenfolge priorisiert:
 * Blockiert Nutzung: ja (EG konnte nach Loeschen nicht neu angelegt werden)
 * Ursache: `GESCHOSS_OPTIONEN` enthielt kein Eintrag fuer EG. Neue Projekte starteten mit hardcoded EG-Objekt (`name: 'EG'`), aber `addGeschoss()` filterte nur aus `GESCHOSS_OPTIONEN` – EG tauchte also nie in der Auswahlmodaliste auf.
 * Behobene Punkte: EG (`Erdgeschoss`, Icon 🏠) wurde zu `GESCHOSS_OPTIONEN` in `js/config.js` hinzugefuegt (zwischen KG und 1.OG). Neue Projekte starten weiterhin mit EG. EG kann nach Loeschen ueber den normalen Hinzufuegen-Dialog erneut angelegt werden. Kein Doppel-Anlegen moeglich (bestehende Filter-Logik greift korrekt).
+
+## KI-014: localStorage QuotaExceededError – stiller Datenverlust bei vielen Fotos
+
+* Status: behoben (v0.2.16-dev)
+* Priorität: hoch (Datenverlust)
+* Bereich: Datenpersistenz (`js/state.js`, Funktion `save()`)
+* Blockiert Nutzung: nein, aber führte zu stillem Datenverlust ohne Rückmeldung
+* Ursache: `save()` rief `localStorage.setItem()` ohne try/catch auf. iPhone Safari hat ein localStorage-Limit von ca. 5–7 MB. Ein Projekt mit vielen komprimierten Fotos (je ~150–300 KB) kann dieses Limit überschreiten. Der QuotaExceededError wurde nicht abgefangen – der Nutzer bekam keine Warnung, die Änderung wurde nicht gespeichert, aber kein Fehler angezeigt.
+* Behobene Punkte:
+  1. `save()` serialisiert den State einmalig in eine Variable, umschließt `localStorage.setItem()` mit try/catch.
+  2. Bei QuotaExceededError (Name `QuotaExceededError`, `NS_ERROR_DOM_QUOTA_REACHED` oder Code 22): Toast „Speicher voll. Änderungen konnten nicht gespeichert werden. Bitte Projekt exportieren oder Fotos reduzieren." (8 Sekunden sichtbar).
+  3. Bei sonstigem Speicherfehler: Toast mit Fehlermeldung.
+  4. Bei großem State (> ~2 Mio. Zeichen ≈ 4 MB Speicher): Vorwarnhinweis „Projekt enthält viele Fotos. Bitte regelmäßig exportieren, um Datenverlust zu vermeiden." (6 Sekunden, gedrosselt auf einmal pro 60 Sekunden).
+  5. Neue Hilfsfunktion `getStorageSizeMB()` gibt die ungefähre Größe des gespeicherten Zustands in MB zurück (intern nutzbar, keine UI-Änderung).
+* Wichtig: Es werden keine Fotos automatisch gelöscht oder verkleinert. Der Nutzer wird nur informiert. Regelmäßiger JSON-Export bei Projekten mit vielen Fotos wird dringend empfohlen.

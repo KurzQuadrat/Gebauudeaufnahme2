@@ -6,8 +6,42 @@ let state = {
   aktivesView: 'projekte'
 };
 
+// Schwellwert fuer Speicherwarnung: ca. 4 MB entspricht ~2 Mio. Zeichen in
+// UTF-16-codiertem localStorage (iPhone Safari-Limit ca. 5-7 MB).
+// Throttle: Warnung hoechstens einmal pro 60 Sekunden anzeigen.
+var _storageSizeWarnChars = 2000000;
+var _lastStorageWarnTime = 0;
+
 function save() {
-  localStorage.setItem('gebaeudeaufnahme_v1', JSON.stringify(state));
+  var data = JSON.stringify(state);
+  try {
+    localStorage.setItem('gebaeudeaufnahme_v1', data);
+    // Speicherwarnung bei grossem State (viele Fotos)
+    if (data.length > _storageSizeWarnChars) {
+      var now = Date.now();
+      if (now - _lastStorageWarnTime > 60000) {
+        _lastStorageWarnTime = now;
+        showToast('Projekt enthält viele Fotos. Bitte regelmäßig exportieren, um Datenverlust zu vermeiden.', 6000);
+      }
+    }
+  } catch (e) {
+    // QuotaExceededError: verschiedene Browser/Versionen verwenden unterschiedliche Namen
+    if (e && (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED' || e.code === 22)) {
+      showToast('Speicher voll. Änderungen konnten nicht gespeichert werden. Bitte Projekt exportieren oder Fotos reduzieren.', 8000);
+    } else {
+      showToast('Speicherfehler: ' + (e && e.message ? e.message : String(e)), 6000);
+    }
+  }
+}
+
+// Ungefaehre Groesse des gespeicherten Zustands in MB (JS-Zeichenanzahl / 1024^2).
+// Dient als Orientierungswert; localStorage speichert UTF-16 (2 Bytes/Zeichen).
+function getStorageSizeMB() {
+  try {
+    return (JSON.stringify(state).length / (1024 * 1024)).toFixed(2);
+  } catch (e) {
+    return '?';
+  }
 }
 
 function load() {
