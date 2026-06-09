@@ -293,6 +293,7 @@
       <button type="button" class="btn btn-sm btn-primary" style="width:100%;margin-top:8px;" onclick="leiteUWerteAusBaujahrUndSanierungAb()">U-Werte aus Baujahr/Sanierung ableiten</button>
       <div class="pcc-body" id="pcb-heizlast" style="display:none;margin-top:10px;">
       <span style="cursor:help;color:var(--text-sec);font-size:12px;display:block;margin-bottom:8px;" title="U-Wert-Standardwerte f&#252;r die &#252;berschl&#228;gige Heizlast-Vorabsch&#228;tzung. Kein normativer Heizlastnachweis nach DIN EN 12831.">&#x24D8; U-Wert-Standardwerte</span>
+      <div id="hl-summe-box" style="display:none;background:#f0f7ff;border:1px solid #b3d4f7;border-radius:8px;padding:10px 14px;margin-bottom:8px;overflow:hidden;"></div>
       <button type="button" id="hl-details-toggle" class="btn btn-sm btn-secondary" style="width:100%;" onclick="toggleHlDetails()">U-Wert-Details anzeigen</button>
       <div id="hl-details-panel" style="display:none;padding-top:14px;">
         <div class="form-group">
@@ -1594,18 +1595,8 @@ function deleteDachfenster(id) { const g=getGeschoss(); g.dachfenster=g.dachfens
 // ============================================================
 //  HEIZLAST RENDER
 // ============================================================
-// Zuordnung Bauteilfläche -> Feld in heizlastDefaults/heizlastOverrides
-// (für die U-Wert-Prioritätskette: Raum-Override > Projekt-Standard > Bestandswert).
-// Wand "Art unbekannt" wird konservativ wie Außenwand behandelt (U-Wert-Default
-// und Bestandsfallback wie AW) - transparent gekennzeichnet, NICHT stillschweigend.
-// Das erhält außerdem die Berechnung für Bestandsräume, die noch keine AW/IW-
-// Zuordnung je Wandrichtung haben (sonst würde deren gesamte Wandfläche und
-// damit die Raum-Heizlast unsichtbar/0 werden - siehe known-issues KI-007).
-const HL_FELD_MAP={aw:'awUwert',iw:'iwUwert',wand_unbekannt:'awUwert',fenster:'fensterUwert',tuer_a:'tuerUwert',tuer_i:'tuerUwert',boden:'bodenplatteUwert',decke:'bodenUwert',schraege:'dachUwert'};
-// Bestandswert-Fallback je Bauteilfläche (Stufe 3 der Prioritätskette): für
-// "Wand Art unbekannt" wird der bisherige, gemeinsame Wand-U-Wert (u_werte.aw)
-// verwendet, da diese Fläche vor der AW/IW-Trennung dort gepflegt wurde.
-function hlFallbackKey(surfaceKey){ return surfaceKey==='wand_unbekannt' ? 'aw' : surfaceKey; }
+// HL_FELD_MAP, hlFallbackKey, berechneRaumFlaechen, berechneHeizlastProjekt
+// liegen in js/heizlast.js (reine Datenfunktionen, kein DOM-Zugriff).
 // Platzhaltertext fürs U-Wert-Eingabefeld: zeigt den aktuell wirksamen
 // Projekt-/Override-Standard an, damit transparent bleibt, welcher Wert
 // ohne eigene Eingabe verwendet würde ("keine stillschweigend erfundenen Werte").
@@ -1630,31 +1621,9 @@ function renderUWertInputs(r,geo) {
     +'<option value="beheizt" '+(((ga[key]||def)==='beheizt')?'selected':'')+'>angrenzend beheizt – ≈ keine Heizlast</option>'
     +'<option value="unbeheizt" '+(((ga[key]||def)==='unbeheizt')?'selected':'')+'>angrenzend unbeheizt – Temp. unbeheizter Bereich</option>'
     +'</select>';
-  const A_aw_netto=Math.max(0,geo.A_wand_aw-geo.A_fenster-geo.A_tuer_aussen);
-  // Vorbelegung "grenzt an" je Bauteilgruppe: nutzt - soweit vorhanden - den
-  // direkt je Wandrichtung erfassten "angrenzenden Bereich" als Vorschlag,
-  // fällt sonst auf die bisherigen Standardannahmen zurück (aussen/beheizt).
-  // Die Auswahl bleibt für den Raum jederzeit änderbar - keine neue Methodik,
-  // nur ein nachvollziehbarerer Vorschlagswert auf Basis bereits erfasster Daten.
-  // Nur übernehmen, wenn der erfasste Bereich auch eine gültige Option der
-  // jeweiligen Auswahl ist (FX-Liste für AW/unbekannt, reduzierte Liste für IW) -
-  // sonst greift der bisherige Standard. Vermeidet eine Auswahl, die keiner
-  // sichtbaren Option entspricht.
-  const awGrenzt=wandGrenztDefault(r,'AW');
-  const awGaVorschlag=(awGrenzt && FX[awGrenzt])?awGrenzt:'aussen';
-  const iwGrenzt=wandGrenztDefault(r,'IW');
-  const iwGaVorschlag=(iwGrenzt==='beheizt'||iwGrenzt==='unbeheizt')?iwGrenzt:'beheizt';
-  const surfaces=[
-    {key:'aw',label:'Außenwand (AW)',A:A_aw_netto,ga_def:awGaVorschlag,vis:true,typ:'aw'},
-    {key:'iw',label:'Innenwand (IW)',A:geo.A_wand_iw,ga_def:iwGaVorschlag,vis:geo.A_wand_iw>0.001,typ:'iw'},
-    {key:'wand_unbekannt',label:'Wand – Art unbekannt',A:geo.A_wand_unbekannt,ga_def:'aussen',vis:geo.A_wand_unbekannt>0.001,typ:'unbekannt'},
-    {key:'fenster',label:'Fenster',A:geo.A_fenster,ga_def:'aussen',vis:geo.A_fenster>0.001,typ:'aussen'},
-    {key:'tuer_a',label:'Außentür',A:geo.A_tuer_aussen,ga_def:'aussen',vis:geo.A_tuer_aussen>0.001,typ:'aussen'},
-    {key:'tuer_i',label:'Innentür',A:geo.A_tuer_innen,ga_def:'beheizt',vis:geo.A_tuer_innen>0.001,typ:'aussen'},
-    {key:'boden',label:'Boden',A:geo.A_boden,ga_def:'erdreich',vis:true,typ:'aussen'},
-    {key:'decke',label:'Decke',A:geo.A_boden,ga_def:'dach_kalt',vis:true,typ:'aussen'},
-    {key:'schraege',label:'Dachschräge',A:geo.A_schraege_real,ga_def:'aussen',vis:geo.A_schraege_real>0.001,typ:'aussen'},
-  ].filter(s=>s.vis&&s.A>0.001);
+  // Bauteilflaechen: reine Datenfunktion aus js/heizlast.js (kein DOM-Zugriff).
+  // Gauss-Vorschlaege fuer "grenzt an" sind in berechneRaumFlaechen enthalten.
+  const surfaces=berechneRaumFlaechen(r,geo);
   window._lastSurfaces=surfaces;
   document.getElementById('u-wert-inputs').innerHTML=surfaces.map(s=>{
     // Hinweis bei unbekannter Wandart: Fläche bleibt sichtbar/editierbar und wird
@@ -1919,6 +1888,23 @@ function renderProjektView() {
   // Quellenhinweise je U-Wert-Feld aktualisieren (nur Anzeige, keine Datenspeicherung)
   var _hlSrc=[['hl-src-aw','awUwert'],['hl-src-iw','iwUwert'],['hl-src-dach','dachUwert'],['hl-src-bodenplatte','bodenplatteUwert'],['hl-src-boden','bodenUwert'],['hl-src-fenster','fensterUwert'],['hl-src-tuer','tuerUwert']];
   _hlSrc.forEach(function(pr){var el=document.getElementById(pr[0]);if(el)el.textContent=hlQuelleKurzFuer(pr[1],hd);});
+  // Heizlastsumme Projekt: ueberschlaegige Summe aller Raeume (Anzeige, keine Speicherung).
+  var hlSumEl=document.getElementById('hl-summe-box');
+  if(hlSumEl){
+    var hlSum=berechneHeizlastProjekt(p);
+    if(hlSum.phi_gesamt>0){
+      var phiStr=hlSum.phi_gesamt.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+      hlSumEl.innerHTML='<div style="display:flex;justify-content:space-between;align-items:baseline;">'
+        +'<span style="font-size:13px;font-weight:700;color:#0051a2;">Σ Heizlast Geb\xe4ude (\xfcberschl\xe4gig)</span>'
+        +'<span style="font-size:20px;font-weight:700;color:#0051a2;">'+phiStr+' W</span>'
+        +'</div>'
+        +'<div style="font-size:11px;color:var(--text-sec);margin-top:3px;">'
+        +hlSum.raeume_mit_wert+' von '+hlSum.raeume_gesamt+' R\xe4umen mit U-Werten \xb7 keine DIN EN 12831</div>';
+      hlSumEl.style.display='';
+    }else{
+      hlSumEl.style.display='none';
+    }
+  }
   renderSanierungen(); renderGeschossliste(); renderHeizanlagenListe(); renderWarmwasserListe(); renderSchornsteineListe(); renderOffenePunkte(); renderKundenwunsch();
   initProjCardState(p);
   applyProjCardStates(p);

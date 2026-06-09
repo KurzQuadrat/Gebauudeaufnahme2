@@ -139,3 +139,112 @@ function getEffektiverHeizlastWert(r, p, feldKey, fallbackUWerteKey) {
   }
   return { wert: null, quelle: 'unbekannt' };
 }
+
+// ============================================================
+//  HEIZLAST-HILFSKONSTANTEN (verschoben aus index.html)
+// ============================================================
+// Zuordnung Bauteilflaeche-Key -> Feld in heizlastDefaults/heizlastOverrides
+// (Prioritaetskette: Raum-Override > Projekt-Standard > Bestandswert).
+// Wand "Art unbekannt" konservativ wie Aussenwand (transparent gekennzeichnet,
+// nicht stillschweigend - damit Berechnung fuer Bestandsraeume ohne AW/IW-
+// Zuordnung nicht lautlos 0 wird - siehe known-issues KI-007).
+const HL_FELD_MAP = {
+  aw: 'awUwert', iw: 'iwUwert', wand_unbekannt: 'awUwert',
+  fenster: 'fensterUwert', tuer_a: 'tuerUwert', tuer_i: 'tuerUwert',
+  boden: 'bodenplatteUwert', decke: 'bodenUwert', schraege: 'dachUwert',
+};
+
+// Bestandswert-Fallback je Bauteilflaeche (Stufe 3 der Prioritaetskette):
+// "Wand Art unbekannt" nutzt den bisherigen gemeinsamen Wand-U-Wert (u_werte.aw),
+// da diese Flaeche vor der AW/IW-Trennung dort gepflegt wurde.
+function hlFallbackKey(surfaceKey) {
+  return surfaceKey === 'wand_unbekannt' ? 'aw' : surfaceKey;
+}
+
+// ============================================================
+//  BAUTEILFLAECHEN (reine Datenfunktion)
+// ============================================================
+// Liefert die relevanten Bauteilflaechen eines Raums als Array von
+// {key, label, A, ga_def, vis, typ} – identische Logik wie der
+// bisherige surfaces-Array in renderUWertInputs().
+// Kein DOM-Zugriff, keine Seiteneffekte, kein window._lastSurfaces.
+// Liefert nur Flaechen mit A > 0.001 und vis === true.
+function berechneRaumFlaechen(r, geo) {
+  var awGrenzt = wandGrenztDefault(r, 'AW');
+  var awGaVorschlag = (awGrenzt && FX[awGrenzt]) ? awGrenzt : 'aussen';
+  var iwGrenzt = wandGrenztDefault(r, 'IW');
+  var iwGaVorschlag = (iwGrenzt === 'beheizt' || iwGrenzt === 'unbeheizt') ? iwGrenzt : 'beheizt';
+  var A_aw_netto = Math.max(0, geo.A_wand_aw - geo.A_fenster - geo.A_tuer_aussen);
+  return [
+    { key: 'aw',            label: 'Au\xdfenwand (AW)',          A: A_aw_netto,          ga_def: awGaVorschlag, vis: true,                          typ: 'aw' },
+    { key: 'iw',            label: 'Innenwand (IW)',              A: geo.A_wand_iw,        ga_def: iwGaVorschlag, vis: geo.A_wand_iw > 0.001,         typ: 'iw' },
+    { key: 'wand_unbekannt',label: 'Wand – Art unbekannt', A: geo.A_wand_unbekannt, ga_def: 'aussen',      vis: geo.A_wand_unbekannt > 0.001,  typ: 'unbekannt' },
+    { key: 'fenster',       label: 'Fenster',                    A: geo.A_fenster,        ga_def: 'aussen',      vis: geo.A_fenster > 0.001,         typ: 'aussen' },
+    { key: 'tuer_a',        label: 'Au\xdfent\xfcr',              A: geo.A_tuer_aussen,    ga_def: 'aussen',      vis: geo.A_tuer_aussen > 0.001,     typ: 'aussen' },
+    { key: 'tuer_i',        label: 'Innent\xfcr',                A: geo.A_tuer_innen,     ga_def: 'beheizt',     vis: geo.A_tuer_innen > 0.001,      typ: 'aussen' },
+    { key: 'boden',         label: 'Boden',                      A: geo.A_boden,          ga_def: 'erdreich',    vis: true,                          typ: 'aussen' },
+    { key: 'decke',         label: 'Decke',                      A: geo.A_boden,          ga_def: 'dach_kalt',   vis: true,                          typ: 'aussen' },
+    { key: 'schraege',      label: 'Dachschr\xe4ge',             A: geo.A_schraege_real,  ga_def: 'aussen',      vis: geo.A_schraege_real > 0.001,   typ: 'aussen' },
+  ].filter(function(s) { return s.vis && s.A > 0.001; });
+}
+
+// ============================================================
+//  HEIZLASTSUMME PROJEKT (reine Datenfunktion)
+// ============================================================
+// Berechnet die ueberschlaegige Heizlastsumme eines Projekts ueber alle
+// Geschosse und Raeume. Reine Datenfunktion – kein DOM-Zugriff, keine
+// Speicherung. Verwendet dieselbe Berechnungslogik wie renderHeizlastErgebnis()
+// in der Einzelraum-Ansicht (Phi_T = Sigma A * U * fx * DeltaT je Bauteil).
+// Liefert { phi_gesamt, raeume_gesamt, raeume_mit_wert }.
+//   phi_gesamt       – Summe aller Raum-Heizlasten in W
+//   raeume_gesamt    – Anzahl aller gefundenen Raeume
+//   raeume_mit_wert  – Raeume mit mindestens einer Bauteilflaeche mit U-Wert
+// Raeume ohne verwertbare U-Werte tragen 0 bei und werden nicht mitgezaehlt.
+// Kein normativer Heizlastnachweis nach DIN EN 12831.
+function berechneHeizlastProjekt(p) {
+  if (!p || !p.geschosse) return { phi_gesamt: 0, raeume_gesamt: 0, raeume_mit_wert: 0 };
+  var hd = p.heizlastDefaults || {};
+  var tAussenParsed = parseFloat(hd.tempAussenNorm);
+  var thetaE = (!isNaN(tAussenParsed)) ? tAussenParsed : THETA_E;
+  var defTU = hd.tempUnbeheiztDefault;
+  var tUnbeheiztProjekt = (defTU !== undefined && defTU !== null && defTU !== '' && !isNaN(parseFloat(defTU))) ? parseFloat(defTU) : 7;
+  var phi_gesamt = 0;
+  var raeume_gesamt = 0;
+  var raeume_mit_wert = 0;
+  (p.geschosse || []).forEach(function(g) {
+    (g.raeume || []).forEach(function(r) {
+      raeume_gesamt++;
+      var geo = berechneRaumGeometrie(r);
+      var surfaces = berechneRaumFlaechen(r, geo);
+      var ti = parseFloat(r.normtemp) || 20;
+      var dT = ti - thetaE;
+      var ovTU = (r.heizlastOverrides || {}).tempUnbeheizt;
+      var tUnbeheizt = (ovTU !== undefined && ovTU !== null && ovTU !== '' && !isNaN(parseFloat(ovTU))) ? parseFloat(ovTU) : tUnbeheiztProjekt;
+      var dT_unbeheizt = ti - tUnbeheizt;
+      var phi_raum = 0;
+      var hat_wert = false;
+      var ga = r.grenzt_an || {};
+      surfaces.forEach(function(s) {
+        var feldKey = HL_FELD_MAP[s.key];
+        var eff = getEffektiverHeizlastWert(r, p, feldKey, hlFallbackKey(s.key));
+        var U = eff.wert;
+        if (U === null || U <= 0) return;
+        var fx, dTs;
+        if (s.typ === 'iw') {
+          var gk = ga[s.key] || s.ga_def;
+          if (gk === 'unbeheizt') { fx = 1; dTs = dT_unbeheizt; }
+          else { fx = FX.beheizt.fx; dTs = dT; }
+        } else {
+          var gk2 = ga[s.key] || s.ga_def;
+          fx = FX[gk2] ? FX[gk2].fx : 1.0;
+          dTs = dT;
+        }
+        phi_raum += s.A * U * fx * dTs;
+        hat_wert = true;
+      });
+      phi_gesamt += phi_raum;
+      if (hat_wert) raeume_mit_wert++;
+    });
+  });
+  return { phi_gesamt: phi_gesamt, raeume_gesamt: raeume_gesamt, raeume_mit_wert: raeume_mit_wert };
+}
