@@ -293,13 +293,13 @@
       <button type="button" class="btn btn-sm btn-primary" style="width:100%;margin-top:8px;" onclick="leiteUWerteAusBaujahrUndSanierungAb()">U-Werte aus Baujahr/Sanierung ableiten</button>
       <div class="pcc-body" id="pcb-heizlast" style="display:none;margin-top:10px;">
       <span style="cursor:help;color:var(--text-sec);font-size:12px;display:block;margin-bottom:8px;" title="U-Wert-Standardwerte f&#252;r die &#252;berschl&#228;gige Heizlast-Vorabsch&#228;tzung. Kein normativer Heizlastnachweis nach DIN EN 12831.">&#x24D8; U-Wert-Standardwerte</span>
-      <div id="hl-summe-box" style="display:none;background:#f0f7ff;border:1px solid #b3d4f7;border-radius:8px;padding:10px 14px;margin-bottom:8px;overflow:hidden;"></div>
+      <div id="hl-summe-box" style="display:none;background:#f0f7ff;border:1px solid #b3d4f7;border-radius:8px;padding:10px 14px;margin-bottom:4px;overflow:hidden;"></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <button type="button" class="btn btn-sm btn-secondary" onclick="aktualisiereHeizlastSummeBox()" style="flex-shrink:0;">Heizlast neu berechnen</button>
+        <span style="font-size:11px;color:var(--text-sec);">Nach &#196;nderung von U-Werten neu berechnen.</span>
+      </div>
       <button type="button" id="hl-details-toggle" class="btn btn-sm btn-secondary" style="width:100%;" onclick="toggleHlDetails()">U-Wert-Details anzeigen</button>
       <div id="hl-details-panel" style="display:none;padding-top:14px;">
-        <div class="form-group">
-          <label>Quelle der Annahmen</label>
-          <input type="text" id="p-hl-quelle" placeholder="z.B. Erfahrungswert, Bestandsunterlagen, Baujahresklasse" oninput="saveHeizlastDefaultField('quelle', this.value)">
-        </div>
         <div class="form-group">
           <label><input type="checkbox" id="p-hl-baujahr-aktiv" onchange="saveHeizlastDefaultField('baujahrAbleitungAktiv', this.checked); pruefeAutoUWerteAusBaujahr()"> Baujahresabh&#228;ngige U-Wert-Vorschl&#228;ge nutzen (Quelle: Bundesanzeiger BAnz AT 04.12.2020 B1)</label>
         </div>
@@ -1720,6 +1720,29 @@ function hlQuelleKurzFuer(feldKey, hd) {
   return 'Manuelle Eingabe';
 }
 
+// Berechnet und aktualisiert die projektweite Heizlastsumme in hl-summe-box.
+// Wird von renderProjektView() und vom Button "Heizlast neu berechnen" aufgerufen.
+// Nur Anzeige, keine Speicherung.
+function aktualisiereHeizlastSummeBox() {
+  var p = currentProject();
+  var hlSumEl = document.getElementById('hl-summe-box');
+  if (!hlSumEl) return;
+  if (!p) { hlSumEl.style.display = 'none'; return; }
+  var hlSum = berechneHeizlastProjekt(p);
+  if (hlSum.phi_gesamt > 0) {
+    var phiStr = hlSum.phi_gesamt.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    hlSumEl.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:baseline;">'
+      + '<span style="font-size:13px;font-weight:700;color:#0051a2;">Σ Heizlast Geb\xe4ude (\xfcberschl\xe4gig)</span>'
+      + '<span style="font-size:20px;font-weight:700;color:#0051a2;">' + phiStr + ' W</span>'
+      + '</div>'
+      + '<div style="font-size:11px;color:var(--text-sec);margin-top:3px;">'
+      + hlSum.raeume_mit_wert + ' von ' + hlSum.raeume_gesamt + ' R\xe4umen mit U-Werten \xb7 keine DIN EN 12831</div>';
+    hlSumEl.style.display = '';
+  } else {
+    hlSumEl.style.display = 'none';
+  }
+}
+
 // ============================================================
 //  RENDER
 // ============================================================
@@ -1882,29 +1905,13 @@ function renderProjektView() {
   set('p-hl-aw-uwert',hd.awUwert);set('p-hl-iw-uwert',hd.iwUwert);set('p-hl-dach-uwert',hd.dachUwert);
   set('p-hl-bodenplatte-uwert',hd.bodenplatteUwert);set('p-hl-boden-uwert',hd.bodenUwert);set('p-hl-fenster-uwert',hd.fensterUwert);
   set('p-hl-tuer-uwert',hd.tuerUwert);set('p-hl-temp-aussen',hd.tempAussenNorm);set('p-hl-temp-unbeheizt',hd.tempUnbeheiztDefault);
-  set('p-hl-quelle',hd.quelle);
   const hlBaujahrEl=document.getElementById('p-hl-baujahr-aktiv'); if(hlBaujahrEl) hlBaujahrEl.checked=!!hd.baujahrAbleitungAktiv;
   aktualisiereBaualtersklasseAnzeige(p);
   // Quellenhinweise je U-Wert-Feld aktualisieren (nur Anzeige, keine Datenspeicherung)
   var _hlSrc=[['hl-src-aw','awUwert'],['hl-src-iw','iwUwert'],['hl-src-dach','dachUwert'],['hl-src-bodenplatte','bodenplatteUwert'],['hl-src-boden','bodenUwert'],['hl-src-fenster','fensterUwert'],['hl-src-tuer','tuerUwert']];
   _hlSrc.forEach(function(pr){var el=document.getElementById(pr[0]);if(el)el.textContent=hlQuelleKurzFuer(pr[1],hd);});
   // Heizlastsumme Projekt: ueberschlaegige Summe aller Raeume (Anzeige, keine Speicherung).
-  var hlSumEl=document.getElementById('hl-summe-box');
-  if(hlSumEl){
-    var hlSum=berechneHeizlastProjekt(p);
-    if(hlSum.phi_gesamt>0){
-      var phiStr=hlSum.phi_gesamt.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
-      hlSumEl.innerHTML='<div style="display:flex;justify-content:space-between;align-items:baseline;">'
-        +'<span style="font-size:13px;font-weight:700;color:#0051a2;">Σ Heizlast Geb\xe4ude (\xfcberschl\xe4gig)</span>'
-        +'<span style="font-size:20px;font-weight:700;color:#0051a2;">'+phiStr+' W</span>'
-        +'</div>'
-        +'<div style="font-size:11px;color:var(--text-sec);margin-top:3px;">'
-        +hlSum.raeume_mit_wert+' von '+hlSum.raeume_gesamt+' R\xe4umen mit U-Werten \xb7 keine DIN EN 12831</div>';
-      hlSumEl.style.display='';
-    }else{
-      hlSumEl.style.display='none';
-    }
-  }
+  aktualisiereHeizlastSummeBox();
   renderSanierungen(); renderGeschossliste(); renderHeizanlagenListe(); renderWarmwasserListe(); renderSchornsteineListe(); renderOffenePunkte(); renderKundenwunsch();
   initProjCardState(p);
   applyProjCardStates(p);
@@ -2246,7 +2253,6 @@ function leiteUWerteAusBaujahrUndSanierungAb() {
   verarbeite('fensterUwert', true);
 
   if (uebernommen.length) {
-    if (!hd.quelle) hd.quelle = 'Bundesanzeiger BAnz AT 04.12.2020 B1 (Baualtersklasse/Sanierungshistorie)';
     save();
     renderProjektView();
     // Heizlast-Karte aufklappen damit abgeleitete Werte sichtbar sind
