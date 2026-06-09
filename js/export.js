@@ -50,6 +50,7 @@ function downloadJSON() {
   var wrapper = {
     '_schemaVersion': 1,
     'exportedAt': new Date().toISOString(),
+    'appVersion': APP_VERSION,
     'projekt': p
   };
   var blob = new Blob([JSON.stringify(wrapper, null, 2)], { type: 'application/json' });
@@ -67,33 +68,33 @@ function importJSON(input) {
   rd.onload = function(e) {
     try {
       var raw = JSON.parse(e.target.result);
-      var pjs;
-      // Neues Format (ab v0.2.29-dev): { _schemaVersion, exportedAt, projekt: {...} }
-      if (raw && raw._schemaVersion && raw.projekt && typeof raw.projekt === 'object' && !Array.isArray(raw.projekt)) {
-        pjs = [raw.projekt];
-      } else if (Array.isArray(raw)) {
-        // Altes Format: Array von Projektobjekten
-        pjs = raw;
-      } else if (raw && typeof raw === 'object') {
-        // Altes Format: einzelnes Projektobjekt ohne Wrapper
-        pjs = [raw];
-      } else {
-        alert('Importfehler: Unbekanntes Dateiformat.');
+      // Ab v0.2.32-dev: nur Wrapper-Format { _schemaVersion, exportedAt, appVersion, projekt }
+      // Alte Formate (Array oder Einzelobjekt ohne Wrapper) werden nicht mehr akzeptiert.
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw) ||
+          !raw._schemaVersion ||
+          !raw.projekt || typeof raw.projekt !== 'object' || Array.isArray(raw.projekt)) {
+        alert('Importfehler: Diese Datei entspricht nicht dem aktuellen Gebaeudeerfassung-JSON-Format.\nBitte eine mit "JSON sichern" erstellte Datei importieren.');
         return;
       }
-      pjs.forEach(function(p) {
-        if (!p.id) p.id = uuid();
-        var idx = state.projekte.findIndex(function(ex) { return ex.id === p.id; });
-        if (idx >= 0) {
-          if (confirm('Projekt "' + p.name + '" ueberschreiben?')) state.projekte[idx] = p;
-        } else {
-          state.projekte.push(p);
-        }
-      });
+      var p = raw.projekt;
+      if (!p.id) p.id = uuid();
+      // Pflicht-Arrays defensiv setzen, damit load() und render-Funktionen sicher arbeiten
+      if (!p.geschosse) p.geschosse = [];
+      if (!p.sanierungen) p.sanierungen = [];
+      if (!p.heizanlagen) p.heizanlagen = [];
+      if (!p.warmwasserEintraege) p.warmwasserEintraege = [];
+      if (!p.schornsteine) p.schornsteine = [];
+      if (!p.offenePunkte) p.offenePunkte = [];
+      var idx = state.projekte.findIndex(function(ex) { return ex.id === p.id; });
+      if (idx >= 0) {
+        if (confirm('Projekt "' + p.name + '" ueberschreiben?')) state.projekte[idx] = p;
+      } else {
+        state.projekte.push(p);
+      }
       save();
-      load(); // defensive Migrations auf importierte Projekte anwenden
+      load(); // alle defensiven Migrations-Defaults auf importiertes Projekt anwenden
       renderProjektliste();
-      showToast('Importiert: ' + pjs.map(function(p) { return p.name; }).join(', '));
+      showToast('Importiert: ' + (p.name || p.id));
     } catch (err) {
       // SyntaxError deutet auf keine gueltige JSON-Datei hin (z.B. Textbericht statt JSON-Backup)
       if (err instanceof SyntaxError) {

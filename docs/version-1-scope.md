@@ -203,13 +203,17 @@ erschwert werden:
 
   JSON-Daten-Export (`downloadJSON()`, Button "JSON sichern" in der Datei-Karte):
   Maschinenlesbares JSON, Dateiendung .json.
-  Wrapper-Format seit v0.2.29-dev: `{ _schemaVersion: 1, exportedAt: "...", projekt: {...} }`.
+  Wrapper-Format ab v0.2.32-dev:
+    { "_schemaVersion": 1, "exportedAt": "ISO-8601", "appVersion": "vX.Y.Z-dev", "projekt": {...} }
   Kann mit importJSON() wieder eingelesen werden.
-  Alte Exporte ohne Wrapper (einzelnes Projektobjekt oder Array) bleiben importierbar.
 
   JSON-Import (`importJSON()`, Button "JSON laden" in der Datei-Karte):
-  Akzeptiert ausschliesslich JSON. Wenn eine Nicht-JSON-Datei (z.B. Textbericht) importiert
-  wird, erscheint eine verstaendliche Fehlermeldung.
+  Ab v0.2.32-dev wird ausschliesslich das Wrapper-Format akzeptiert.
+  Alte Formate (Array von Projekten oder einzelnes Projektobjekt ohne Wrapper) werden
+  nicht mehr unterstuetzt. Begruendung: App ist noch nicht produktiv genutzt, es gibt
+  keine externen Nutzer und keine produktiv relevanten Altdaten.
+  Bei falschem Format erscheint: "Importfehler: Diese Datei entspricht nicht dem aktuellen
+  Gebaeudeerfassung-JSON-Format."
 
   `createdAt` (ISO-8601) wird auf Projekt-Ebene sowie bei neuen Geschossen, Raeumen,
   Sanierungen, Heizanlagen, Warmwasser, Schornsteinen und Offenen Punkten gesetzt.
@@ -254,6 +258,65 @@ Speziell für spätere Grundriss- und LiDAR-Erweiterbarkeit:
 - Wenn LiDAR-Messwerte hinzukommen, müssen sie als separate, überschreibbare Felder
   gespeichert werden. Manuelle Laser-/Disto-Messwerte haben immer Vorrang.
   Kein stilles Überschreiben manueller Eingaben durch automatische Schätzwerte.
+
+## JSON-Projektformat (ab v0.2.32-dev)
+
+### Gueltig-Exportformat
+
+Ab v0.2.32-dev ist das einzig gueltige JSON-Export- und Importformat:
+
+```json
+{
+  "_schemaVersion": 1,
+  "exportedAt": "2026-06-09T12:00:00.000Z",
+  "appVersion": "v0.2.32-dev",
+  "projekt": { ... }
+}
+```
+
+- `_schemaVersion`: Ganzzahl, aktuell immer 1. Ermoeglicht spaetere Importer-Rueckwaertskompatibilitaet.
+- `exportedAt`: ISO-8601-Zeitstempel des Exports.
+- `appVersion`: App-Version zum Zeitpunkt des Exports (aus `js/config.js`).
+- `projekt`: Das Projektobjekt (siehe Mindeststruktur unten).
+
+### Rückwärtskompatibilität
+
+Die App ist noch nicht produktiv genutzt. Es gibt keine externen Nutzer und keine
+produktiv relevanten Altdaten. Deshalb ist Rueckwaertskompatibilitaet zu alten
+Entwicklungsformaten (Array von Projekten, Einzelobjekt ohne Wrapper) nicht verpflichtend.
+
+Der Import akzeptiert ab v0.2.32-dev ausschliesslich das Wrapper-Format.
+
+### Mindeststruktur Projektobjekt
+
+Pflichtfelder (werden beim Import defensiv gesetzt, falls fehlend):
+
+| Feld               | Typ     | Default | Hinweis                                    |
+|--------------------|---------|---------|---------------------------------------------|
+| `id`               | string  | uuid()  | UUID v4 per crypto.randomUUID()             |
+| `name`             | string  | —       | Anonyme Projektkennung                      |
+| `createdAt`        | string  | ''      | ISO-8601 bei Neuerstellung                  |
+| `geschosse`        | array   | []      | Liste der Geschoss-Objekte                  |
+| `sanierungen`      | array   | []      | Liste der Sanierungseintraege               |
+| `heizanlagen`      | array   | []      | Liste der Heizanlagen-Eintraege             |
+| `warmwasserEintraege` | array | []     | Liste der Warmwasser-Eintraege              |
+| `schornsteine`     | array   | []      | Liste der Schornstein-Eintraege             |
+| `offenePunkte`     | array   | []      | Liste der offenen Punkte / Notizen          |
+
+Weitere Felder werden in `load()` (js/state.js) defensiv ergaenzt.
+
+### Technische Schuld (dokumentiert, nicht entfernt)
+
+Die folgenden Altstrukturen existieren noch im Datenmodell und in `neuesProjekt()`,
+weil die UI sie noch direkt beschreibt (via `saveHeizanlageField()` etc.):
+
+- `p.heizanlage` (Einzelobjekt) — Ziel: mittelfristig durch `p.heizanlagen[0]` ersetzen
+- `p.warmwasser` (Einzelobjekt) — Ziel: mittelfristig durch `p.warmwasserEintraege[0]` ersetzen
+- `p.schornstein` (Einzelobjekt) — Ziel: mittelfristig durch `p.schornsteine[0]` ersetzen
+
+Die Migrations-Logik in `load()` (Einzelobjekt zu Array) bleibt erhalten, da sie
+eigene Testdaten in localStorage schuetzt. Sie kann entfernt werden, sobald der
+Wechsel zur Array-only-UI vollzogen ist.
 
 ## Corporate Design (Kurz Quadrat)
 
