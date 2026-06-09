@@ -74,7 +74,16 @@
 
     <!-- Gebäude-Stammdaten -->
     <div class="card">
-      <div class="card-title">Gebäude</div>
+      <div class="pcc-header">
+        <div class="pcc-left" onclick="toggleProjCard('gebaude')">
+          <span class="pcc-title">Geb&#228;ude</span>
+          <span class="pcc-summary" id="pcs-gebaude"></span>
+        </div>
+        <div class="pcc-right">
+          <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-gebaude" onclick="toggleProjCard('gebaude')" aria-label="ein-/ausklappen">&#9650;</button>
+        </div>
+      </div>
+      <div class="pcc-body" id="pcb-gebaude">
       <div class="form-group">
         <label>Projektnummer</label>
         <input type="text" id="p-adresse" placeholder="z.B. Projekt Nord 01" oninput="saveProjektField('adresse', this.value)">
@@ -130,11 +139,21 @@
         </label>
         <img id="foto-gebaeude-preview" src="" alt="Gebäudefoto" style="display:none;max-width:100%;max-height:220px;border-radius:8px;margin-top:8px;object-fit:cover;">
       </div>
+      </div><!-- /pcc-body gebaude -->
     </div>
 
     <!-- Kundenwunsch / Gesprächsnotiz -->
     <div class="card">
-      <div class="card-title">Kundenwunsch / Gesprächsnotiz</div>
+      <div class="pcc-header">
+        <div class="pcc-left" onclick="toggleProjCard('kundenwunsch')">
+          <span class="pcc-title">Kundenwunsch / Gespr&#228;chsnotiz</span>
+          <span class="pcc-summary" id="pcs-kundenwunsch"></span>
+        </div>
+        <div class="pcc-right">
+          <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-kundenwunsch" onclick="toggleProjCard('kundenwunsch')" aria-label="ein-/ausklappen">&#9660;</button>
+        </div>
+      </div>
+      <div class="pcc-body" id="pcb-kundenwunsch" style="display:none;">
       <p class="kw-hinweis">Nur nach Zustimmung des Kunden diktieren. Es wird kein Audio gespeichert; gespeichert wird nur der Text.</p>
       <div class="form-group kw-zustimmung-group">
         <label class="kw-zustimmung-label">
@@ -156,71 +175,129 @@
         Wenn der Browser die Berechtigung gespeichert hat, ist keine erneute Freigabe n&#246;tig.
         Edge/Chrome: Schloss-Symbol in der Adressleiste &#8250; Mikrofon auf "Zulassen" stellen.
       </div>
+      </div><!-- /pcc-body kundenwunsch -->
     </div>
 
     <!-- Sanierungen -->
     <div class="card">
-      <div class="section-header">
-        <div class="section-title">Sanierungshistorie</div>
-        <button class="btn btn-sm btn-primary card-add-btn" onclick="addSanierung()">+ Sanierung</button>
+      <div class="pcc-header">
+        <div class="pcc-left" onclick="toggleProjCard('sanierung')">
+          <span class="pcc-title">Sanierungshistorie</span>
+          <span class="pcc-summary" id="pcs-sanierung"></span>
+        </div>
+        <div class="pcc-right">
+          <button class="btn btn-sm btn-primary card-add-btn" onclick="addSanierung()">+ Sanierung</button>
+          <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-sanierung" onclick="toggleProjCard('sanierung')" aria-label="ein-/ausklappen">&#9660;</button>
+        </div>
       </div>
+      <div class="pcc-body" id="pcb-sanierung" style="display:none;">
       <div id="sanierungen-list"></div>
       <div id="sanierungen-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch keine Sanierungen erfasst</div>
+      </div><!-- /pcc-body sanierung -->
     </div>
 
     <!-- Geschosse -->
     <div class="card">
-      <div class="section-header">
-        <div class="section-title">Geschosse</div>
-        <button class="btn btn-sm btn-primary card-add-btn" onclick="addGeschoss()">+ Geschoss</button>
+      <div class="pcc-header">
+        <div class="pcc-left" onclick="toggleProjCard('geschosse')">
+          <span class="pcc-title">Geschosse</span>
+          <span class="pcc-summary" id="pcs-geschosse"></span>
+        </div>
+        <div class="pcc-right">
+          <button class="btn btn-sm btn-primary card-add-btn" onclick="addGeschoss()">+ Geschoss</button>
+          <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-geschosse" onclick="toggleProjCard('geschosse')" aria-label="ein-/ausklappen">&#9660;</button>
+        </div>
       </div>
+      <div class="pcc-body" id="pcb-geschosse" style="display:none;">
       <div id="geschoss-list"></div>
       <div id="geschoss-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch kein Geschoss angelegt</div>
+      </div><!-- /pcc-body geschosse -->
     </div>
 
     <!-- Heizanlage -->
     <div class="card">
-      <div class="section-header">
-        <div class="section-title">Heizanlage</div>
-        <button class="btn btn-sm btn-primary card-add-btn" onclick="addHeizanlage()">+ Heizanlage</button>
+      <div class="pcc-header">
+        <div class="pcc-left" onclick="toggleProjCard('heizung')">
+          <span class="pcc-title">Heizanlage</span>
+          <span class="pcc-summary" id="pcs-heizung"></span>
+        </div>
+        <div class="pcc-right">
+          <button class="btn btn-sm btn-primary card-add-btn" onclick="addHeizanlage()">+ Heizanlage</button>
+          <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-heizung" onclick="toggleProjCard('heizung')" aria-label="ein-/ausklappen">&#9660;</button>
+        </div>
       </div>
+      <div class="pcc-body" id="pcb-heizung" style="display:none;">
       <div id="heizanlagen-list"></div>
       <div id="heizanlagen-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch keine Heizanlage erfasst</div>
+      </div><!-- /pcc-body heizung -->
     </div>
 
     <!-- Warmwasser -->
     <div class="card">
-      <div class="section-header">
-        <div class="section-title">Warmwasser</div>
-        <button class="btn btn-sm btn-primary card-add-btn" onclick="addWarmwasser()">+ Warmwasser</button>
+      <div class="pcc-header">
+        <div class="pcc-left" onclick="toggleProjCard('warmwasser')">
+          <span class="pcc-title">Warmwasser</span>
+          <span class="pcc-summary" id="pcs-warmwasser"></span>
+        </div>
+        <div class="pcc-right">
+          <button class="btn btn-sm btn-primary card-add-btn" onclick="addWarmwasser()">+ Warmwasser</button>
+          <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-warmwasser" onclick="toggleProjCard('warmwasser')" aria-label="ein-/ausklappen">&#9660;</button>
+        </div>
       </div>
+      <div class="pcc-body" id="pcb-warmwasser" style="display:none;">
       <div id="warmwasser-list"></div>
       <div id="warmwasser-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch kein Warmwasserbereiter erfasst</div>
+      </div><!-- /pcc-body warmwasser -->
     </div>
 
     <!-- Schornstein -->
     <div class="card">
-      <div class="section-header">
-        <div class="section-title">Schornstein</div>
-        <button class="btn btn-sm btn-primary card-add-btn" onclick="addSchornstein()">+ Schornstein</button>
+      <div class="pcc-header">
+        <div class="pcc-left" onclick="toggleProjCard('schornstein')">
+          <span class="pcc-title">Schornstein</span>
+          <span class="pcc-summary" id="pcs-schornstein"></span>
+        </div>
+        <div class="pcc-right">
+          <button class="btn btn-sm btn-primary card-add-btn" onclick="addSchornstein()">+ Schornstein</button>
+          <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-schornstein" onclick="toggleProjCard('schornstein')" aria-label="ein-/ausklappen">&#9660;</button>
+        </div>
       </div>
+      <div class="pcc-body" id="pcb-schornstein" style="display:none;">
       <div id="schornsteine-list"></div>
       <div id="schornsteine-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch kein Schornstein erfasst</div>
+      </div><!-- /pcc-body schornstein -->
     </div>
     <!-- Offene Punkte -->
     <div class="card">
-      <div class="section-header">
-        <div class="section-title">Offene Punkte</div>
-        <button class="btn btn-sm btn-primary card-add-btn" onclick="addOffenerPunkt()">+ Notiz</button>
+      <div class="pcc-header">
+        <div class="pcc-left" onclick="toggleProjCard('offenepunkte')">
+          <span class="pcc-title">Offene Punkte</span>
+          <span class="pcc-summary" id="pcs-offenepunkte"></span>
+        </div>
+        <div class="pcc-right">
+          <button class="btn btn-sm btn-primary card-add-btn" onclick="addOffenerPunkt()">+ Notiz</button>
+          <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-offenepunkte" onclick="toggleProjCard('offenepunkte')" aria-label="ein-/ausklappen">&#9660;</button>
+        </div>
       </div>
+      <div class="pcc-body" id="pcb-offenepunkte" style="display:none;">
       <div id="offene-punkte-list"></div>
       <div id="offene-punkte-leer" style="color: var(--text-sec); font-size:14px; padding:8px 0;">Noch keine offenen Punkte erfasst</div>
+      </div><!-- /pcc-body offenepunkte -->
     </div>
 
     <!-- Heizlast-Standardwerte (projektweit) -->
     <div class="card">
-      <div class="card-title">Heizlast-Standardwerte</div>
-      <div style="color:var(--text-sec);font-size:14px;padding:4px 0 10px;">Überschlägige U-Wert-Annahmen für die Heizlast-Vorabschätzung – kein normativer Heizlastnachweis.</div>
+      <div class="pcc-header">
+        <div class="pcc-left" onclick="toggleProjCard('heizlast')">
+          <span class="pcc-title">Heizlast-Standardwerte</span>
+          <span class="pcc-summary" id="pcs-heizlast"></span>
+        </div>
+        <div class="pcc-right">
+          <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-heizlast" onclick="toggleProjCard('heizlast')" aria-label="ein-/ausklappen">&#9660;</button>
+        </div>
+      </div>
+      <div class="pcc-body" id="pcb-heizlast" style="display:none;">
+      <div style="color:var(--text-sec);font-size:14px;padding:4px 0 10px;">&#220;berschl&#228;gige U-Wert-Annahmen f&#252;r die Heizlast-Vorabsch&#228;tzung &#8211; kein normativer Heizlastnachweis.</div>
       <button type="button" class="btn btn-sm btn-primary" style="width:100%;margin-bottom:8px;" onclick="leiteUWerteAusBaujahrUndSanierungAb()">U-Werte aus Baujahr/Sanierung ableiten</button>
       <button type="button" id="hl-details-toggle" class="btn btn-sm btn-secondary" style="width:100%;" onclick="toggleHlDetails()">U-Wert-Details anzeigen</button>
       <div id="hl-details-panel" style="display:none;padding-top:14px;">
@@ -253,15 +330,26 @@
           <div class="form-group"><label>Norm-Außentemperatur (°C)</label><input type="number" step="0.5" id="p-hl-temp-aussen" placeholder="-12" oninput="saveHeizlastDefaultField('tempAussenNorm', this.value)"></div>
           <div class="form-group"><label>Temperatur unbeheizter Bereich – Standard (°C)</label><input type="number" step="0.5" id="p-hl-temp-unbeheizt" placeholder="7" oninput="saveHeizlastDefaultField('tempUnbeheiztDefault', this.value)"></div>
         </div>
-        <div style="color:var(--text-sec);font-size:12px;margin-top:4px;">Hinweis: Die hinterlegten Tabellenwerte stammen aus der "Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung im Wohngebäudebestand" vom 8. Oktober 2020 (BAnz AT 04.12.2020 B1) und sind Pauschal-/Erfahrungswerte – kein normativer Heizlastnachweis. Es werden ausschließlich Werte verwendet, die eindeutig aus dieser Quelle entnommen wurden (siehe <code>docs/quellen/README.md</code> und <code>js/uwerte-bundesanzeiger.js</code>); nichts wurde geschätzt oder ergänzt. Manuell erfasste oder abweichende Werte haben weiterhin Vorrang (siehe Prioritätslogik in <code>docs/version-1-scope.md</code>).</div>
+        <div style="color:var(--text-sec);font-size:12px;margin-top:4px;">Hinweis: Die hinterlegten Tabellenwerte stammen aus der "Bekanntmachung der Regeln zur Datenaufnahme und Datenverwendung im Wohngebäudebestand" vom 8. Oktober 2020 (BAnz AT 04.12.2020 B1) und sind Pauschal-/Erfahrungswerte &#8211; kein normativer Heizlastnachweis. Es werden ausschlie&#223;lich Werte verwendet, die eindeutig aus dieser Quelle entnommen wurden (siehe <code>docs/quellen/README.md</code> und <code>js/uwerte-bundesanzeiger.js</code>); nichts wurde gesch&#228;tzt oder erg&#228;nzt. Manuell erfasste oder abweichende Werte haben weiterhin Vorrang (siehe Priorit&#228;tslogik in <code>docs/version-1-scope.md</code>).</div>
       </div>
+      </div><!-- /pcc-body heizlast -->
     </div>
 
     <!-- Raum-/Bauteilliste -->
     <div class="card">
-      <div class="card-title">Raum-/Bauteilliste</div>
-      <p style="font-size:14px; color:var(--text-sec); margin-bottom:12px;">Strukturierte Übersicht aus den erfassten Geschoss-, Raum- und Bauteildaten — als Lese-Ansicht, ohne Eingabe.</p>
+      <div class="pcc-header">
+        <div class="pcc-left" onclick="toggleProjCard('raumliste')">
+          <span class="pcc-title">Raum-/Bauteilliste</span>
+          <span class="pcc-summary" id="pcs-raumliste"></span>
+        </div>
+        <div class="pcc-right">
+          <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-raumliste" onclick="toggleProjCard('raumliste')" aria-label="ein-/ausklappen">&#9660;</button>
+        </div>
+      </div>
+      <div class="pcc-body" id="pcb-raumliste" style="display:none;">
+      <p style="font-size:14px; color:var(--text-sec); margin-bottom:12px;">Strukturierte &#220;bersicht aus den erfassten Geschoss-, Raum- und Bauteildaten &#8212; als Lese-Ansicht, ohne Eingabe.</p>
       <button class="btn btn-secondary btn-full" onclick="showView('raumliste')">Raum-/Bauteilliste anzeigen</button>
+      </div><!-- /pcc-body raumliste -->
     </div>
   </div>
 </div>
@@ -1653,6 +1741,128 @@ function renderProjektliste() {
   }).join('');
 }
 
+// ============================================================
+//  COLLAPSIBLE PROJECT CARDS (v0.2.22-dev)
+// ============================================================
+var _projCardOpen = {};
+var _lastProjektId = null;
+var _PROJ_CARDS = ['gebaude','kundenwunsch','sanierung','geschosse','heizung','warmwasser','schornstein','offenepunkte','heizlast','raumliste'];
+
+function initProjCardState(p) {
+  if (!p || p.id === _lastProjektId) return;
+  _lastProjektId = p.id;
+  _projCardOpen = {};
+  _PROJ_CARDS.forEach(function(id) { _projCardOpen[id] = (id === 'gebaude'); });
+}
+
+function toggleProjCard(id) {
+  _projCardOpen[id] = !_projCardOpen[id];
+  applyProjCardState(id, getProjekt());
+}
+
+function applyProjCardStates(p) {
+  _PROJ_CARDS.forEach(function(id) { applyProjCardState(id, p); });
+}
+
+function applyProjCardState(id, p) {
+  var body = document.getElementById('pcb-' + id);
+  var arrow = document.getElementById('pca-' + id);
+  var sum = document.getElementById('pcs-' + id);
+  if (!body) return;
+  var open = !!_projCardOpen[id];
+  body.style.display = open ? '' : 'none';
+  if (arrow) arrow.textContent = open ? '▲' : '▼';
+  if (sum) {
+    if (open) { sum.style.display = 'none'; }
+    else { sum.style.display = 'block'; sum.textContent = p ? pcGetSummary(id, p) : ''; }
+  }
+}
+
+function pcGetSummary(id, p) {
+  switch (id) {
+    case 'gebaude':      return pcSumGebaude(p);
+    case 'kundenwunsch': return pcSumKundenwunsch(p);
+    case 'sanierung':    return pcSumSanierung(p);
+    case 'geschosse':    return pcSumGeschosse(p);
+    case 'heizung':      return pcSumHeizung(p);
+    case 'warmwasser':   return pcSumWarmwasser(p);
+    case 'schornstein':  return pcSumSchornstein(p);
+    case 'offenepunkte': return pcSumOffenePunkte(p);
+    case 'heizlast':     return pcSumHeizlast(p);
+    case 'raumliste':    return pcSumRaumliste(p);
+    default: return '';
+  }
+}
+
+function pcSumGebaude(p) {
+  var parts = [];
+  if (p.baujahr) parts.push('BJ ' + p.baujahr);
+  if (p.typ) parts.push(p.typ);
+  if (p.plz) parts.push('PLZ ' + p.plz);
+  if (p.auftragsart) parts.push(p.auftragsart);
+  return parts.length ? parts.join(' \xb7 ') : 'Keine Stammdaten';
+}
+
+function pcSumKundenwunsch(p) {
+  if (!p.kundenwunsch_text || !p.kundenwunsch_text.trim()) return 'Keine Notiz';
+  var t = p.kundenwunsch_text.replace(/\n+/g, ' ').trim();
+  return t.length > 70 ? t.slice(0, 67) + '...' : t;
+}
+
+function pcSumSanierung(p) {
+  var n = (p.sanierungen || []).length;
+  if (!n) return 'Keine Sanierungen';
+  var jahre = p.sanierungen.map(function(s) { return s.jahr; }).filter(Boolean).sort();
+  return n + ' Sanierung' + (n !== 1 ? 'en' : '') + (jahre.length ? ' \xb7 ' + jahre[0] + (jahre.length > 1 ? '–' + jahre[jahre.length - 1] : '') : '');
+}
+
+function pcSumGeschosse(p) {
+  var n = (p.geschosse || []).length;
+  if (!n) return 'Keine Geschosse';
+  var raeume = p.geschosse.reduce(function(s, g) { return s + (g.raeume ? g.raeume.length : 0); }, 0);
+  var namen = p.geschosse.map(function(g) { return g.name; }).join(', ');
+  return n + ' Geschoss' + (n !== 1 ? 'e' : '') + ' \xb7 ' + raeume + ' Raum' + (raeume !== 1 ? '\xe4ume' : '') + ' \xb7 ' + namen;
+}
+
+function pcSumHeizung(p) {
+  var list = (p.heizanlagen && p.heizanlagen.length) ? p.heizanlagen : (p.heizanlage && p.heizanlage.typ ? [p.heizanlage] : []);
+  if (!list.length) return 'Keine Heizanlage';
+  return list.map(function(h) { return [h.hersteller, h.typ, h.baujahr ? 'BJ ' + h.baujahr : ''].filter(Boolean).join(' '); }).join(' / ');
+}
+
+function pcSumWarmwasser(p) {
+  var list = (p.warmwasserEintraege && p.warmwasserEintraege.length) ? p.warmwasserEintraege : (p.warmwasser && p.warmwasser.art && p.warmwasser.art !== 'unbekannt' ? [p.warmwasser] : []);
+  if (!list.length) return 'Kein Warmwasserbereiter';
+  return list.map(function(w) { return w.art || '-'; }).join(' / ');
+}
+
+function pcSumSchornstein(p) {
+  var list = (p.schornsteine && p.schornsteine.length) ? p.schornsteine : (p.schornstein && (p.schornstein.lage || p.schornstein.form) ? [p.schornstein] : []);
+  if (!list.length) return 'Kein Schornstein';
+  return list.map(function(s) { return [s.lage, s.form].filter(Boolean).join(' / ') || '-'; }).join(' | ');
+}
+
+function pcSumOffenePunkte(p) {
+  var list = p.offenePunkte || [];
+  if (!list.length) return 'Keine offenen Punkte';
+  var n = list.length;
+  var first = (list[0].text || '').trim();
+  var label = n + ' Punkt' + (n !== 1 ? 'e' : '');
+  if (first) { var short = first.length > 50 ? first.slice(0, 47) + '...' : first; return label + ' \xb7 ' + short; }
+  return label;
+}
+
+function pcSumHeizlast(p) {
+  var hd = p.heizlastDefaults || {};
+  if (!hd.awUwert && !hd.dachUwert && !hd.fensterUwert) return 'Keine U-Werte hinterlegt';
+  return 'AW ' + (hd.awUwert || '?') + ' / Dach ' + (hd.dachUwert || '?') + ' / Fenster ' + (hd.fensterUwert || '?') + ' W/m\xb2K';
+}
+
+function pcSumRaumliste(p) {
+  var n = (p.geschosse || []).reduce(function(s, g) { return s + (g.raeume ? g.raeume.length : 0); }, 0);
+  return n ? n + ' R\xe4ume gesamt' : 'Noch keine R\xe4ume';
+}
+
 function renderProjektView() {
   const p=getProjekt(); if(!p) return;
   document.getElementById('projekt-titel').textContent=p.name;
@@ -1680,6 +1890,8 @@ function renderProjektView() {
   const hlBaujahrEl=document.getElementById('p-hl-baujahr-aktiv'); if(hlBaujahrEl) hlBaujahrEl.checked=!!hd.baujahrAbleitungAktiv;
   aktualisiereBaualtersklasseAnzeige(p);
   renderSanierungen(); renderGeschossliste(); renderHeizanlagenListe(); renderWarmwasserListe(); renderSchornsteineListe(); renderOffenePunkte(); renderKundenwunsch();
+  initProjCardState(p);
+  applyProjCardStates(p);
 }
 
 // ============================================================
@@ -2017,6 +2229,9 @@ function leiteUWerteAusBaujahrUndSanierungAb() {
     if (!hd.quelle) hd.quelle = 'Bundesanzeiger BAnz AT 04.12.2020 B1 (Baualtersklasse/Sanierungshistorie)';
     save();
     renderProjektView();
+    // Heizlast-Karte aufklappen damit abgeleitete Werte sichtbar sind
+    _projCardOpen['heizlast'] = true;
+    applyProjCardState('heizlast', p);
     // Details automatisch oeffnen, damit neu eingetragene Werte sofort sichtbar sind
     var panel = document.getElementById('hl-details-panel');
     var btn = document.getElementById('hl-details-toggle');
