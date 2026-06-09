@@ -1742,7 +1742,7 @@ function renderProjektliste() {
     var icon=p.gebaeude_foto
       ?'<img class="projekt-thumb" src="'+p.gebaeude_foto+'" alt="">'
       :'<div class="list-item-icon" style="background:#e3f0fd;color:#0071e3;">🏠</div>';
-    return '<div class="list-item" onclick="openProjekt(\''+p.id+'\')">'+icon+'<div class="list-item-body"><div class="list-item-title">'+p.name+'</div><div class="list-item-sub">'+(p.adresse||'Projektnummer fehlt')+' · '+(p.baujahr||'Baujahr?')+' · '+p.geschosse.length+' Geschoss(e)</div></div><button class="list-item-action" onclick="deleteProjekt(\''+p.id+'\',event)">🗑</button><div class="list-item-arrow">›</div></div>';
+    return '<div class="list-item" onclick="openProjekt(\''+p.id+'\')">'+icon+'<div class="list-item-body"><div class="list-item-title">'+p.name+'</div><div class="list-item-sub">'+(p.adresse||'Projektnummer fehlt')+' · '+(p.baujahr||'Baujahr?')+' · '+(p.geschosse||[]).length+' Geschoss(e)</div></div><button class="list-item-action" onclick="deleteProjekt(\''+p.id+'\',event)">🗑</button><div class="list-item-arrow">›</div></div>';
   }).join('');
 }
 

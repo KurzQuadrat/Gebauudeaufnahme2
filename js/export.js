@@ -91,6 +91,7 @@ function importJSON(input) {
         }
       });
       save();
+      load(); // defensive Migrations auf importierte Projekte anwenden
       renderProjektliste();
       showToast('Importiert: ' + pjs.map(function(p) { return p.name; }).join(', '));
     } catch (err) {
