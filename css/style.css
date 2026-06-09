@@ -573,8 +573,6 @@ textarea { resize: vertical; min-height: 80px; }
 .pcc-left {
   flex: 1;
   min-width: 0;
-  cursor: pointer;
-  user-select: none;
 }
 .pcc-title {
   display: block;

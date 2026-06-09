@@ -2,7 +2,7 @@
 // Testen über den iPhone-Home-Bildschirm erkennbar ist, ob die aktuellste Version
 // geladen wurde (siehe refresh-bar in index.html). Bei jedem relevanten Update
 // hier anpassen.
-const APP_VERSION = "v0.2.22-dev";
+const APP_VERSION = "v0.2.23-dev";
 const APP_BUILD_DATE = "2026-06-09";
 
 const GESCHOSS_OPTIONEN = [

@@ -303,6 +303,16 @@ Fehler werden in folgender Reihenfolge priorisiert:
 * Bekannte Einschränkungen iOS/PWA: Mikrofon-Berechtigung muss explizit erteilt werden; `continuous: true` kann unter Safari/iOS den Recognition-Stream automatisch beenden; `interimResults` kann unter Safari abweichen.
 * Empfehlung: Vor dem Produktiveinsatz auf dem Ziel-iPhone/iOS-Version testen. Wenn Diktat auf iOS nicht zuverlässig funktioniert, ist die manuelle Eingabe die primäre und vollständige Alternative.
 
+## KI-017: Klickbereiche der einklappbaren Projektkarten (behoben v0.2.23-dev)
+
+* Status: behoben
+* Priorität: hoch (blockierende Bedienfehler)
+* Bereich: Projektseite / alle Karten
+* Ursache: Die `.pcc-left`-Div hatte `onclick="toggleProjCard(...)"` und `flex: 1`, was zu einer unsichtbar grossen Klickflaeche quer ueber den gesamten Kartenheader fuehrte. Auf Touch-Geraeten konnten dadurch Plus-Buttons und der Toggle unbeabsichtigt gleichzeitig oder falsch ausloesen.
+* Behebung (v0.2.23-dev): `onclick` vollstaendig aus allen `.pcc-left`-Divs entfernt. Das Oeffnen/Schliessen einer Karte erfolgt ausschliesslich ueber den expliziten Pfeil-Button (pcc-toggle). Plus-Buttons haben jetzt `type="button"` und liegen ohne uebergeordneten onclick-Handler in `.pcc-right`.
+
+---
+
 ## KI-016: Edge fragt wiederholend nach Mikrofonberechtigung
 
 * Status: behoben / abgemildert (v0.2.19-dev)

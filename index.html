@@ -75,7 +75,7 @@
     <!-- Gebäude-Stammdaten -->
     <div class="card">
       <div class="pcc-header">
-        <div class="pcc-left" onclick="toggleProjCard('gebaude')">
+        <div class="pcc-left">
           <span class="pcc-title">Geb&#228;ude</span>
           <span class="pcc-summary" id="pcs-gebaude"></span>
         </div>
@@ -145,7 +145,7 @@
     <!-- Kundenwunsch / Gesprächsnotiz -->
     <div class="card">
       <div class="pcc-header">
-        <div class="pcc-left" onclick="toggleProjCard('kundenwunsch')">
+        <div class="pcc-left">
           <span class="pcc-title">Kundenwunsch / Gespr&#228;chsnotiz</span>
           <span class="pcc-summary" id="pcs-kundenwunsch"></span>
         </div>
@@ -181,12 +181,12 @@
     <!-- Sanierungen -->
     <div class="card">
       <div class="pcc-header">
-        <div class="pcc-left" onclick="toggleProjCard('sanierung')">
+        <div class="pcc-left">
           <span class="pcc-title">Sanierungshistorie</span>
           <span class="pcc-summary" id="pcs-sanierung"></span>
         </div>
         <div class="pcc-right">
-          <button class="btn btn-sm btn-primary card-add-btn" onclick="addSanierung()">+ Sanierung</button>
+          <button type="button" class="btn btn-sm btn-primary card-add-btn" onclick="addSanierung()">+ Sanierung</button>
           <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-sanierung" onclick="toggleProjCard('sanierung')" aria-label="ein-/ausklappen">&#9660;</button>
         </div>
       </div>
@@ -199,12 +199,12 @@
     <!-- Geschosse -->
     <div class="card">
       <div class="pcc-header">
-        <div class="pcc-left" onclick="toggleProjCard('geschosse')">
+        <div class="pcc-left">
           <span class="pcc-title">Geschosse</span>
           <span class="pcc-summary" id="pcs-geschosse"></span>
         </div>
         <div class="pcc-right">
-          <button class="btn btn-sm btn-primary card-add-btn" onclick="addGeschoss()">+ Geschoss</button>
+          <button type="button" class="btn btn-sm btn-primary card-add-btn" onclick="addGeschoss()">+ Geschoss</button>
           <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-geschosse" onclick="toggleProjCard('geschosse')" aria-label="ein-/ausklappen">&#9660;</button>
         </div>
       </div>
@@ -217,12 +217,12 @@
     <!-- Heizanlage -->
     <div class="card">
       <div class="pcc-header">
-        <div class="pcc-left" onclick="toggleProjCard('heizung')">
+        <div class="pcc-left">
           <span class="pcc-title">Heizanlage</span>
           <span class="pcc-summary" id="pcs-heizung"></span>
         </div>
         <div class="pcc-right">
-          <button class="btn btn-sm btn-primary card-add-btn" onclick="addHeizanlage()">+ Heizanlage</button>
+          <button type="button" class="btn btn-sm btn-primary card-add-btn" onclick="addHeizanlage()">+ Heizanlage</button>
           <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-heizung" onclick="toggleProjCard('heizung')" aria-label="ein-/ausklappen">&#9660;</button>
         </div>
       </div>
@@ -235,12 +235,12 @@
     <!-- Warmwasser -->
     <div class="card">
       <div class="pcc-header">
-        <div class="pcc-left" onclick="toggleProjCard('warmwasser')">
+        <div class="pcc-left">
           <span class="pcc-title">Warmwasser</span>
           <span class="pcc-summary" id="pcs-warmwasser"></span>
         </div>
         <div class="pcc-right">
-          <button class="btn btn-sm btn-primary card-add-btn" onclick="addWarmwasser()">+ Warmwasser</button>
+          <button type="button" class="btn btn-sm btn-primary card-add-btn" onclick="addWarmwasser()">+ Warmwasser</button>
           <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-warmwasser" onclick="toggleProjCard('warmwasser')" aria-label="ein-/ausklappen">&#9660;</button>
         </div>
       </div>
@@ -253,12 +253,12 @@
     <!-- Schornstein -->
     <div class="card">
       <div class="pcc-header">
-        <div class="pcc-left" onclick="toggleProjCard('schornstein')">
+        <div class="pcc-left">
           <span class="pcc-title">Schornstein</span>
           <span class="pcc-summary" id="pcs-schornstein"></span>
         </div>
         <div class="pcc-right">
-          <button class="btn btn-sm btn-primary card-add-btn" onclick="addSchornstein()">+ Schornstein</button>
+          <button type="button" class="btn btn-sm btn-primary card-add-btn" onclick="addSchornstein()">+ Schornstein</button>
           <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-schornstein" onclick="toggleProjCard('schornstein')" aria-label="ein-/ausklappen">&#9660;</button>
         </div>
       </div>
@@ -270,12 +270,12 @@
     <!-- Offene Punkte -->
     <div class="card">
       <div class="pcc-header">
-        <div class="pcc-left" onclick="toggleProjCard('offenepunkte')">
+        <div class="pcc-left">
           <span class="pcc-title">Offene Punkte</span>
           <span class="pcc-summary" id="pcs-offenepunkte"></span>
         </div>
         <div class="pcc-right">
-          <button class="btn btn-sm btn-primary card-add-btn" onclick="addOffenerPunkt()">+ Notiz</button>
+          <button type="button" class="btn btn-sm btn-primary card-add-btn" onclick="addOffenerPunkt()">+ Notiz</button>
           <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-offenepunkte" onclick="toggleProjCard('offenepunkte')" aria-label="ein-/ausklappen">&#9660;</button>
         </div>
       </div>
@@ -288,7 +288,7 @@
     <!-- Heizlast-Standardwerte (projektweit) -->
     <div class="card">
       <div class="pcc-header">
-        <div class="pcc-left" onclick="toggleProjCard('heizlast')">
+        <div class="pcc-left">
           <span class="pcc-title">Heizlast-Standardwerte</span>
           <span class="pcc-summary" id="pcs-heizlast"></span>
         </div>
@@ -338,7 +338,7 @@
     <!-- Raum-/Bauteilliste -->
     <div class="card">
       <div class="pcc-header">
-        <div class="pcc-left" onclick="toggleProjCard('raumliste')">
+        <div class="pcc-left">
           <span class="pcc-title">Raum-/Bauteilliste</span>
           <span class="pcc-summary" id="pcs-raumliste"></span>
         </div>
