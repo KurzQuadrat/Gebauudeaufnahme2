@@ -522,7 +522,7 @@ textarea { resize: vertical; min-height: 80px; }
   width: 18px; height: 18px; flex-shrink: 0; cursor: pointer; accent-color: var(--primary);
 }
 .kw-textarea {
-  width: 100%; min-height: 120px; resize: vertical;
+  width: 100%; min-height: 200px; resize: vertical;
   padding: 10px 12px; font-size: 15px; line-height: 1.5;
   border: 1px solid var(--border); border-radius: var(--radius-sm);
   background: var(--input-bg); color: var(--text);

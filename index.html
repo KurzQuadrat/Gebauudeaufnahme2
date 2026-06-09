@@ -143,7 +143,7 @@
         </label>
       </div>
       <div class="form-group">
-        <textarea id="kw-text" class="kw-textarea"
+        <textarea id="kw-text" class="kw-textarea" rows="9"
           placeholder="Ziele, W&#252;nsche, Bedenken, Budget, Komfort, Reihenfolge aus Kundensicht ..."
           oninput="saveKundenwunschText(this.value)"></textarea>
       </div>
@@ -1739,7 +1739,14 @@ function kwDiktatStarten() {
     kwDiktatReset();
   };
   rec.onend = function() {
-    if (ta) { ta.value = _kwBaseText; saveKundenwunschText(_kwBaseText); }
+    // Absatztrennung: nach dem Stopp "\n\n" anhaengen, damit der naechste
+    // Diktat-Abschnitt als eigener Absatz beginnt. Nur wenn Text vorhanden
+    // und noch kein doppelter Zeilenumbruch am Ende steht.
+    if (_kwBaseText && !_kwBaseText.endsWith('\n\n')) {
+      _kwBaseText = _kwBaseText.trimEnd() + '\n\n';
+      saveKundenwunschText(_kwBaseText);
+    }
+    if (ta) ta.value = _kwBaseText;
     kwSetStatus('Diktat beendet.');
     kwDiktatReset();
   };
