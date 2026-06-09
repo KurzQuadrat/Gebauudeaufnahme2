@@ -1755,7 +1755,7 @@ function initProjCardState(p) {
   if (!p || p.id === _lastProjektId) return;
   _lastProjektId = p.id;
   _projCardOpen = {};
-  _PROJ_CARDS.forEach(function(id) { _projCardOpen[id] = (id === 'geschosse'); });
+  _PROJ_CARDS.forEach(function(id) { _projCardOpen[id] = (id === 'gebaude' || id === 'geschosse'); });
 }
 
 function toggleProjCard(id) {
