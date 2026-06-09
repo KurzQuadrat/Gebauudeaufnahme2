@@ -608,3 +608,10 @@ textarea { resize: vertical; min-height: 80px; }
   font-size: 11px !important;
   line-height: 1;
 }
+
+/* ============================================================================
+   Year-select picker (v0.2.26-dev)
+   ============================================================================ */
+.year-select {
+  cursor: pointer;
+}
