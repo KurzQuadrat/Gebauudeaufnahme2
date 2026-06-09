@@ -286,3 +286,19 @@ Fehler werden in folgender Reihenfolge priorisiert:
   4. Bei großem State (> ~2 Mio. Zeichen ≈ 4 MB Speicher): Vorwarnhinweis „Projekt enthält viele Fotos. Bitte regelmäßig exportieren, um Datenverlust zu vermeiden." (6 Sekunden, gedrosselt auf einmal pro 60 Sekunden).
   5. Neue Hilfsfunktion `getStorageSizeMB()` gibt die ungefähre Größe des gespeicherten Zustands in MB zurück (intern nutzbar, keine UI-Änderung).
 * Wichtig: Es werden keine Fotos automatisch gelöscht oder verkleinert. Der Nutzer wird nur informiert. Regelmäßiger JSON-Export bei Projekten mit vielen Fotos wird dringend empfohlen.
+
+
+## KI-015: SpeechRecognition browserabhängig – muss auf iPhone/Safari/PWA getestet werden
+
+* Status: offen (browserabhängiges Verhalten, kein Fehler in der App-Logik)
+* Priorität: niedrig (Diktat ist optionales Komfortfeature; manuelle Eingabe immer verfügbar)
+* Bereich: Kundenwunsch / Gesprächsnotiz – Diktierfunktion (`index.html`, Web Speech API)
+* Hintergrund: Die Web Speech API (`SpeechRecognition` / `webkitSpeechRecognition`) wird nicht von allen Browsern unterstützt. Aktueller Stand (Stand 2024/2025):
+  - Chrome/Edge Desktop: unterstützt, funktioniert zuverlässig
+  - Safari macOS 14.1+: unterstützt (webkitSpeechRecognition)
+  - Safari iOS 14.1+: prinzipiell unterstützt, aber stark von iOS-Version und PWA-Kontext abhängig
+  - Firefox Desktop/Mobile: nicht unterstützt
+  - Chrome iOS: nutzt intern WebKit, verhält sich wie Safari iOS
+* Verhalten in der App: Wenn SpeechRecognition nicht verfügbar ist (`!window.SpeechRecognition && !window.webkitSpeechRecognition`), wird der Diktat-Button deaktiviert und ein entsprechender Hinweis angezeigt. Die manuelle Texteingabe ist in allen Fällen uneingeschränkt verfügbar.
+* Bekannte Einschränkungen iOS/PWA: Mikrofon-Berechtigung muss explizit erteilt werden; `continuous: true` kann unter Safari/iOS den Recognition-Stream automatisch beenden; `interimResults` kann unter Safari abweichen.
+* Empfehlung: Vor dem Produktiveinsatz auf dem Ziel-iPhone/iOS-Version testen. Wenn Diktat auf iOS nicht zuverlässig funktioniert, ist die manuelle Eingabe die primäre und vollständige Alternative.

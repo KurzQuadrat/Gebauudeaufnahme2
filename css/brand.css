@@ -298,7 +298,7 @@ body {
 .kq-btn--mint:hover { background: var(--kq-mint-300); }
 
 /* Outline (gleiche Pfeilform, innen weiß) — robuste Variante ohne Pseudo-Element.
-   Der bordeauxfarbene „Rahmen" entsteht durch zwei gestapelte Flächen:
+   Der bordeauxfarbene "Rahmen" entsteht durch zwei gestapelte Flächen:
    die Elementfläche (Bordeaux) + eine um die Rahmenstärke kleinere weiße
    Fläche per background, beide vom selben clip-path beschnitten. */
 .kq-btn--outline {
@@ -440,7 +440,7 @@ body {
 /* ============================================================================
    9. Badges / Hinweise
    Badges optional in Marken-Pfeilform (.kq-badge--chevron).
-   Hinweis-Boxen (.kq-note) für „Wichtig zu wissen", Status etc.
+   Hinweis-Boxen (.kq-note) für "Wichtig zu wissen", Status etc.
    ============================================================================ */
 .kq-badge {
   display: inline-flex;

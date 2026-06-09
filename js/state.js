@@ -55,6 +55,8 @@ function load() {
     if (p.auftragsart === undefined) p.auftragsart = '';
     if (p.wohneinheiten === undefined) p.wohneinheiten = 1;
     if (p.gebaeude_foto === undefined) p.gebaeude_foto = '';
+    if (p.kundenwunsch_text === undefined) p.kundenwunsch_text = '';
+    if (p.kundenwunsch_zustimmung === undefined) p.kundenwunsch_zustimmung = false;
     if (p.heizanlage.energietraeger === undefined) p.heizanlage.energietraeger = 'unbekannt';
     if (p.heizanlage.leistung === undefined) p.heizanlage.leistung = '';
     if (!p.warmwasser) p.warmwasser = { art: 'unbekannt', speicherVorhanden: 'unbekannt', speichervolumen: '', energietraeger: 'unbekannt', versorgung: 'unbekannt', baujahr: '', hersteller: '', typ: '', notiz: '' };
