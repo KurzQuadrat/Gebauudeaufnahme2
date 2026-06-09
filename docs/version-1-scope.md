@@ -159,18 +159,26 @@ von Version 1, bleibt aber langfristiges Ziel.
 - automatische Internetrecherche
 - iSFP-Variantenlogik
 - Hottgenroth-Texte
-- vollständige Heizlastberechnung
+- normative DIN-EN-12831-Heizlastberechnung (heutiges Modul ist überschlägige Vorab-
+  schätzung; normativer Nachweis ist nicht Bestandteil V1, bleibt aber Modul-Ziel)
+- vollständiger hydraulischer Abgleich
+- VdZ-Formularerstellung
+- Planung oder automatischer Vergleich von Sanierungsvarianten
+- tabellarischer Software-Export (z. B. EVEbi, Hottgenroth-Mapping)
 - automatisierte Rechts- oder Förderprüfung
 - LiDAR-gestützte Raumerfassung
 - interaktive Grundrissfläche / Canvas-Modul
 - automatische Raum-Nachbarschaftslogik aus Raumposition
 
-Diese Punkte sind nicht Bestandteil von Version 1. Einige davon (insbesondere
-Hottgenroth-Unterstützung und spätere Schnittstellen) sind ausdrücklich langfristige Ziele
-und dürfen durch heutige Entscheidungen nicht dauerhaft verbaut werden. Sie können in
-späteren Versionen folgen, erfordern aber jeweils eigene Konzepte (insbesondere zu
-Datenschutz,
-Rechtssicherheit, Hosting und Abrechnung).
+Diese Punkte sind nicht Bestandteil von Version 1. Viele davon sind ausdrücklich
+langfristige Ziele und dürfen durch heutige Entscheidungen nicht dauerhaft verbaut werden:
+
+- Hottgenroth-Unterstützung und spätere Schnittstelle bleiben im langfristigen Scope.
+- DIN-konforme Heizlast, hydraulischer Abgleich und VdZ-Formular bleiben im Scope.
+- Sanierungsvariantenplanung und Software-Exporte (EVEbi) bleiben im Scope.
+
+Sie können in späteren Versionen folgen, erfordern aber jeweils eigene Konzepte
+(technische Schnittstellen, normative Anforderungen, Datenschutz, Hosting).
 
 ## Architekturhinweis: Erweiterbarkeit
 
@@ -186,6 +194,20 @@ erschwert werden:
 - Brand-CSS als eigene Schicht (css/brand.css), die austauschbar bleibt.
 - Keine fest einkodierte Kurz-Quadrat-Logik in Fachfunktionen; Kurz Quadrat ist
   Referenznutzer, nicht einziger denkbarer Nutzer.
+
+Speziell für spätere Fachmodule (Heizlast, hydraulischer Abgleich, Sanierungsvarianten):
+
+- Daten müssen strukturiert bleiben, nicht nur Freitext. Bauteilarten, Energieträger,
+  Wandzuordnungen und angrenzende Bereiche brauchen typisierte Werte, damit spätere
+  Berechnungsmodule und Software-Mappings darauf aufbauen können.
+- Alle IDs (Räume, Bauteile, Fenster, Türen, Heizkörper, Heizanlagen, Warmwasser-
+  bereiter) müssen stabil bleiben und dürfen bei Exporten oder Datenmodell-Umbauten
+  nicht verloren gehen.
+- Manuelle Eingaben und spätere Berechnungsergebnisse müssen getrennt gespeichert
+  werden. Das heutige überschlägige Heizlastmodul darf später nicht mit einem
+  normativen DIN-Nachweis vermischt werden.
+- Exportformate sollen versioniert sein. Maschinenlesbarkeit ist Grundvoraussetzung
+  für spätere Software-Exporte (Hottgenroth, EVEbi, andere).
 
 Speziell für spätere Grundriss- und LiDAR-Erweiterbarkeit:
 

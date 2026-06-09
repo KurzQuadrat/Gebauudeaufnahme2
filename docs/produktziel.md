@@ -133,6 +133,11 @@ Folgende Funktionen sind wichtig, aber nicht Bestandteil von Version 1:
 * Plausibilitätsprüfung von Messketten
 * direkte Integration eines Disto X6
 * direkte oder teilautomatische Hottgenroth-Befüllung über eine Schnittstelle
+* DIN-EN-12831-konforme Heizlastberechnung (heutiges Modul ist überschlägige Vorabschätzung,
+  kein normativer Nachweis; späteres Modul muss methodisch getrennt sein)
+* vollständiger hydraulischer Abgleich mit VdZ-Formularausgabe
+* Planung und Vergleich von Sanierungsvarianten (Maßnahmenpakete, Investitionen, Einsparungen)
+* tabellarischer Export für andere Energieberatungssoftware, z. B. EVEbi
 * interaktive Grundrissfläche (Raumpositionierung und -ausrichtung relativ zueinander)
 * automatische Raum-Nachbarschaftslogik (strukturierte Wandgrenzen als Raum-Referenzen)
 * LiDAR-gestützte Raumerfassung (grobe Geometrie via iPhone-LiDAR-Scanner)
@@ -152,6 +157,13 @@ das bislang nicht existiert. Beide Funktionen werden frühestens in V3+ angegang
 Das heutige Datenmodell (stabile Raum-IDs, Wandrichtungen als Felder) verbaut diese
 Erweiterungen nicht.
 
+Hinweis Fachmodule allgemein: DIN-konforme Heizlast, hydraulischer Abgleich, VdZ-Formular,
+Sanierungsvariantenplanung und Software-Exporte (Hottgenroth, EVEbi) sind nicht Bestandteil
+von Version 1, aber ausdrücklich langfristige Ziele. Version 1 soll Gebäudedaten so
+strukturiert erfassen, dass diese Module später ohne grundlegende Datenmodell-Umbauten
+realisierbar sind. Überschlägige Werte (heutiges Heizlastmodul) dürfen später nicht
+mit normativen Nachweisen vermischt werden.
+
 ## 11. Nicht-Ziele Version 1
 
 Version 1 soll nicht:
@@ -159,7 +171,12 @@ Version 1 soll nicht:
 * Hottgenroth automatisch über eine direkte Schnittstelle befüllen (nicht Bestandteil V1,
   bleibt aber langfristiges Ziel)
 * eine vollständige Energieberatung ersetzen
-* normativ belastbare Heizlastnachweise erzeugen
+* normativ belastbare Heizlastnachweise nach DIN EN 12831 erzeugen (nicht Bestandteil V1,
+  bleibt aber langfristiges Modul-Ziel)
+* einen vollständigen hydraulischen Abgleich berechnen oder ein VdZ-Formular erzeugen
+  (nicht Bestandteil V1, bleibt aber langfristiges Modul-Ziel)
+* Sanierungsvarianten automatisch planen oder vergleichen (nicht Bestandteil V1,
+  bleibt aber langfristiges Modul-Ziel)
 * Förderfähigkeit rechtssicher prüfen
 * Kundendaten cloudbasiert synchronisieren
 * mehrere Nutzer verwalten

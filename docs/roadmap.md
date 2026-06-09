@@ -109,6 +109,8 @@ sind eingefroren und dokumentiert.
 - Verbesserte Hottgenroth-Exportstruktur: Prüfung und Dokumentation eines Mappings der
   App-Datenfelder auf Hottgenroth-Felder; strukturierter Export als Grundlage für
   spätere teilautomatische Übernahme
+- Prüfung eines tabellarischen Exports für andere Software (z. B. EVEbi-kompatible
+  Struktur); Exportformate versioniert und maschinenlesbar
 
 **Nicht in V2:**
 
@@ -154,6 +156,56 @@ sind eingefroren und dokumentiert.
 - Datenschutzkonzept und AV-Vertrag abgeschlossen
 - Hosting-Entscheidung getroffen
 - Betriebsprozesse (Monitoring, Backup, Incident-Response) definiert
+
+---
+
+## Langfristige Fachmodule (V2 bis V3+)
+
+**Status:** Konzept / Perspektive
+
+Diese Fachmodule sind nicht Bestandteil von Version 1. Version 1 soll aber Gebäudedaten
+so strukturiert erfassen, dass diese Module später ohne grundlegende Datenmodell-Umbauten
+realisierbar sind.
+
+### Heizlast (DIN-konform)
+
+- Langfristiges Ziel: DIN-EN-12831-konforme Heizlastberechnung als eigenständiges Modul
+- Klare Trennung zwischen der heutigen uberschlagigen Vorabschatzung (Phi_T = A x U x fx x DeltaT,
+  kein DIN-Nachweis) und einem spateren normativen Nachweis
+- Datenmodell-Voraussetzungen (in V1 bereits vorhanden oder vorzubereiten):
+  Raumflachen, Bauteilmasse, U-Werte, angrenzende Bereiche je Wandseite,
+  Norm-Aussentemperatur, Raumsolltemperaturen
+- Ergebnis eines spateren Moduls muss sauber als normativ gekennzeichnet und methodisch
+  getrennt von den heutigen uberschlagigen Werten gespeichert werden
+
+### Hydraulischer Abgleich
+
+- Langfristiges Ziel: vollstandiger hydraulischer Abgleich als eigenes Modul
+- Perspektivisch: Ausgabe des VdZ-Formulars (Vereinigung der deutschen Zentralheizungswirtschaft)
+- Voraussetzungen: Heizkorperdaten (Typ, Grosse, Anschlussart, Ventil), Raumheizlasten,
+  Anlagenparameter (Vorlauf-/Rucklauftemperatur, Pumpenleistung)
+- Heutige Heizkorpererfassung in V1 ist Grundlage; spatere Erweiterung um
+  Auslegungsparameter und Berechnungslogik muss moglich bleiben
+
+### Sanierungsvarianten
+
+- Langfristiges Ziel: Planung und Vergleich von Sanierungsvarianten
+- Massnahmenpakete, Reihenfolgen, Investitionskosten, Einsparungen und Foderoptionen
+  sollen spater verknupfbar werden
+- Der heutige Kundenwunsch / Gesprachsnotiz-Bereich kann als Grundlage fur spatere
+  Variantenpriorisierung dienen
+- Sanierungshistorie (p.sanierungen[]) ist bereits strukturiert; spatere Variantenlogik
+  konnte darauf aufbauen
+
+### Software-Exporte
+
+- Tabellarische Exporte fur andere Softwareprodukte vorbereiten
+- Konkret zu prufen: EVEbi-kompatible Tabellenstruktur (Energieberatungssoftware)
+- Konkret zu prufen: Hottgenroth-Feld-Mapping (siehe eigener Abschnitt Architektur-
+  Leitplanken)
+- Exportformate sollen versioniert, stabil und maschinenlesbar sein
+- Kein Software-Export wird jetzt gebaut; Voraussetzung ist ein stabiles, dokumentiertes
+  Quell-Datenmodell
 
 ---
 
@@ -241,6 +293,22 @@ keine Grundsanierung erfordern:
   für Bauteilarten, Energieträger, Wandzuordnungen).
 - Exportformate sollen stabil und versioniert sein; ein zukünftiges Hottgenroth-Mapping
   setzt ein stabiles Quellformat voraus.
+
+**Fachmodule und Berechnungen:**
+
+- Daten müssen strukturiert bleiben, nicht nur Freitext. Bauteilarten, Energieträger,
+  Wandzuordnungen und angrenzende Bereiche brauchen typisierte Werte, damit spätere
+  Berechnungsmodule und Software-Mappings darauf aufbauen können.
+- Räume, Bauteile, Wandseiten, Fenster, Türen, Heizkörper, Heizanlagen und
+  Warmwasserbereiter brauchen stabile IDs (UUIDs), die bei Exporten, Importen und
+  Datenmodell-Umbauten erhalten bleiben.
+- Raum-/Bauteiltabellen sollen langfristig maschinenlesbar und exportierbar bleiben.
+- Manuelle Eingaben und spätere Berechnungsergebnisse müssen getrennt gespeichert
+  werden (z. B. manuell eingetragener U-Wert vs. später berechneter Normwert).
+- Überschlägige Werte dürfen nicht mit normativen Nachweisen verwechselt werden.
+  Normative Berechnungen müssen sauber gekennzeichnet und methodisch getrennt sein.
+- Exportformate sollen versioniert werden. Maschinenlesbarkeit ist Voraussetzung für
+  spätere Hotgenroth-, EVEbi- oder andere Software-Mappings.
 
 **Allgemein:**
 
