@@ -91,7 +91,7 @@
       <div class="form-row">
         <div class="form-group">
           <label>Baujahr</label>
-          <input type="number" id="p-baujahr" placeholder="z.B. 1972" min="1800" max="2030" onfocus="if(!this.value)this.value=1977" oninput="saveProjektField('baujahr', this.value); pruefeAutoUWerteAusBaujahr()">
+          <input type="number" id="p-baujahr" placeholder="z.B. 1972" min="1800" max="2030" inputmode="numeric" oninput="saveProjektField('baujahr', this.value); pruefeAutoUWerteAusBaujahr()">
         </div>
         <div class="form-group">
           <label>Gebäudetyp</label>
@@ -296,9 +296,9 @@
           <button type="button" class="btn btn-sm btn-secondary pcc-toggle" id="pca-heizlast" onclick="toggleProjCard('heizlast')" aria-label="ein-/ausklappen">&#9660;</button>
         </div>
       </div>
-      <div class="pcc-body" id="pcb-heizlast" style="display:none;">
+      <button type="button" class="btn btn-sm btn-primary" style="width:100%;margin-top:8px;" onclick="leiteUWerteAusBaujahrUndSanierungAb()">U-Werte aus Baujahr/Sanierung ableiten</button>
+      <div class="pcc-body" id="pcb-heizlast" style="display:none;margin-top:10px;">
       <div style="color:var(--text-sec);font-size:14px;padding:4px 0 10px;">&#220;berschl&#228;gige U-Wert-Annahmen f&#252;r die Heizlast-Vorabsch&#228;tzung &#8211; kein normativer Heizlastnachweis.</div>
-      <button type="button" class="btn btn-sm btn-primary" style="width:100%;margin-bottom:8px;" onclick="leiteUWerteAusBaujahrUndSanierungAb()">U-Werte aus Baujahr/Sanierung ableiten</button>
       <button type="button" id="hl-details-toggle" class="btn btn-sm btn-secondary" style="width:100%;" onclick="toggleHlDetails()">U-Wert-Details anzeigen</button>
       <div id="hl-details-panel" style="display:none;padding-top:14px;">
         <div class="form-group">
@@ -1760,7 +1760,7 @@ function initProjCardState(p) {
   if (!p || p.id === _lastProjektId) return;
   _lastProjektId = p.id;
   _projCardOpen = {};
-  _PROJ_CARDS.forEach(function(id) { _projCardOpen[id] = (id === 'gebaude'); });
+  _PROJ_CARDS.forEach(function(id) { _projCardOpen[id] = (id === 'geschosse'); });
 }
 
 function toggleProjCard(id) {
@@ -2277,7 +2277,7 @@ function renderSanierungen() {
   // "Maßnahme"-Feld, dessen Optionen keine stabile Bauteilstruktur abbilden.
   const detailtypOpts=Object.keys(UWERTE_OPAK).concat(Object.keys(UWERTE_TRANSPARENT));
   const detailtypSelect=(s)=>'<select onchange="saveSanierungField(\''+s.id+'\',\'detailtyp\',this.value)"><option value="">– kein U-Wert-Bezug / unbekannt –</option>'+detailtypOpts.map(k=>{const kat=UWERTE_OPAK[k]||UWERTE_TRANSPARENT[k];return '<option value="'+k+'" '+(s.detailtyp===k?'selected':'')+'>'+kat.label+'</option>';}).join('')+'</select>';
-  c.innerHTML=p.sanierungen.map(s=>'<div class="sub-item"><div class="sub-item-header"><div class="sub-item-title">Sanierung</div><button onclick="deleteSanierung(\''+s.id+'\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">✕</button></div><div class="form-row"><div class="form-group"><label>Maßnahme</label><select onchange="saveSanierungField(\''+s.id+'\',\'massnahme\',this.value)">'+opts.map(m=>'<option value="'+m+'" '+(s.massnahme===m?'selected':'')+'>'+(m||'Wählen...')+'</option>').join('')+'</select></div><div class="form-group"><label>Jahr</label><input type="number" value="'+(s.jahr||'')+'" placeholder="1979" min="1800" max="2030" onfocus="if(!this.value)this.value=2000" oninput="saveSanierungField(\''+s.id+'\',\'jahr\',this.value)"></div></div><div class="form-group"><label>Detailtyp / Aufbau (für U-Wert-Ableitung Heizlast, optional)</label>'+detailtypSelect(s)+'<div style="color:var(--text-sec);font-size:11px;margin-top:3px;">Quelle: Bundesanzeiger BAnz AT 04.12.2020 B1 (siehe docs/quellen/README.md). Wird genutzt, um aus dieser Sanierung + Jahr einen U-Wert-Vorschlag fuer GENAU das betroffene Bauteil abzuleiten (siehe "U-Werte aus Baujahr/Sanierung ableiten" bei den Heizlast-Standardwerten).</div></div><div class="form-group"><label>Details</label><input type="text" value="'+(s.details||'')+'" placeholder="z.B. 2-fach Verglasung" oninput="saveSanierungField(\''+s.id+'\',\'details\',this.value)"></div></div>').join('');
+  c.innerHTML=p.sanierungen.map(s=>'<div class="sub-item"><div class="sub-item-header"><div class="sub-item-title">Sanierung</div><button onclick="deleteSanierung(\''+s.id+'\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">✕</button></div><div class="form-row"><div class="form-group"><label>Maßnahme</label><select onchange="saveSanierungField(\''+s.id+'\',\'massnahme\',this.value)">'+opts.map(m=>'<option value="'+m+'" '+(s.massnahme===m?'selected':'')+'>'+(m||'Wählen...')+'</option>').join('')+'</select></div><div class="form-group"><label>Jahr</label><input type="number" value="'+(s.jahr||'')+'" placeholder="z.B. 2005" min="1800" max="2030" inputmode="numeric" oninput="saveSanierungField(\''+s.id+'\',\'jahr\',this.value)"></div></div><div class="form-group"><label>Detailtyp / Aufbau (für U-Wert-Ableitung Heizlast, optional)</label>'+detailtypSelect(s)+'<div style="color:var(--text-sec);font-size:11px;margin-top:3px;">Quelle: Bundesanzeiger BAnz AT 04.12.2020 B1 (siehe docs/quellen/README.md). Wird genutzt, um aus dieser Sanierung + Jahr einen U-Wert-Vorschlag fuer GENAU das betroffene Bauteil abzuleiten (siehe "U-Werte aus Baujahr/Sanierung ableiten" bei den Heizlast-Standardwerten).</div></div><div class="form-group"><label>Details</label><input type="text" value="'+(s.details||'')+'" placeholder="z.B. 2-fach Verglasung" oninput="saveSanierungField(\''+s.id+'\',\'details\',this.value)"></div></div>').join('');
 }
 
 function renderGeschossliste() {
@@ -2318,7 +2318,7 @@ function renderHeizanlagenListe() {
       +'<div class="form-group"><label>Energietr&#228;ger</label><select onchange="saveHeizanlageEintragField(\''+hz.id+'\',\'energietraeger\',this.value)">'+energien.map(function(e){return '<option value="'+e+'" '+(hz.energietraeger===e?'selected':'')+'>'+e+'</option>';}).join('')+'</select></div></div>'
       +'<div class="form-row"><div class="form-group"><label>Hersteller</label><input type="text" value="'+(hz.hersteller||'')+'" placeholder="z.B. Viessmann" oninput="saveHeizanlageEintragField(\''+hz.id+'\',\'hersteller\',this.value)"></div>'
       +'<div class="form-group"><label>Modell</label><input type="text" value="'+(hz.modell||'')+'" placeholder="Modellbezeichnung" oninput="saveHeizanlageEintragField(\''+hz.id+'\',\'modell\',this.value)"></div></div>'
-      +'<div class="form-row"><div class="form-group"><label>Baujahr</label><input type="number" value="'+(hz.baujahr||'')+'" placeholder="2005" min="1900" max="2100" oninput="saveHeizanlageEintragField(\''+hz.id+'\',\'baujahr\',this.value)"></div>'
+      +'<div class="form-row"><div class="form-group"><label>Baujahr</label><input type="number" value="'+(hz.baujahr||'')+'" placeholder="z.B. 2005" min="1900" max="2100" inputmode="numeric" oninput="saveHeizanlageEintragField(\''+hz.id+'\',\'baujahr\',this.value)"></div>'
       +'<div class="form-group"><label>Leistung (kW)</label><input type="number" value="'+(hz.leistung||'')+'" placeholder="15" oninput="saveHeizanlageEintragField(\''+hz.id+'\',\'leistung\',this.value)"></div></div>'
       +'<div class="form-group"><label>Notiz</label><input type="text" value="'+(hz.notiz||'')+'" placeholder="Bemerkungen" oninput="saveHeizanlageEintragField(\''+hz.id+'\',\'notiz\',this.value)"></div>'
       +'<div class="form-group"><label>Foto</label><label id="foto-hz-label-'+hz.id+'" class="foto-label'+(hz.foto?' has-photo':'')+'" onclick="document.getElementById(\'foto-hz-input-'+hz.id+'\').click()"><span>'+(hz.foto?'&#x2713;':'&#128247;')+'</span></label>'
@@ -2361,7 +2361,7 @@ function renderWarmwasserListe() {
       +'<div class="form-row"><div class="form-group"><label>Versorgung</label><select onchange="saveWarmwasserEintragField(\''+ww.id+'\',\'versorgung\',this.value)">'+versorgungen.map(function(v){return '<option value="'+v+'" '+(ww.versorgung===v?'selected':'')+'>'+v+'</option>';}).join('')+'</select></div>'
       +'<div class="form-group"><label>Speicher</label><select onchange="saveWarmwasserEintragField(\''+ww.id+'\',\'speicherVorhanden\',this.value)">'+speicherOpts.map(function(s){return '<option value="'+s+'" '+(ww.speicherVorhanden===s?'selected':'')+'>'+s+'</option>';}).join('')+'</select></div></div>'
       +'<div class="form-row"><div class="form-group"><label>Speichervolumen (L)</label><input type="number" value="'+(ww.speichervolumen||'')+'" placeholder="80" oninput="saveWarmwasserEintragField(\''+ww.id+'\',\'speichervolumen\',this.value)"></div>'
-      +'<div class="form-group"><label>Baujahr</label><input type="number" value="'+(ww.baujahr||'')+'" placeholder="2010" min="1900" max="2100" oninput="saveWarmwasserEintragField(\''+ww.id+'\',\'baujahr\',this.value)"></div></div>'
+      +'<div class="form-group"><label>Baujahr</label><input type="number" value="'+(ww.baujahr||'')+'" placeholder="z.B. 2010" min="1900" max="2100" inputmode="numeric" oninput="saveWarmwasserEintragField(\''+ww.id+'\',\'baujahr\',this.value)"></div></div>'
       +'<div class="form-row"><div class="form-group"><label>Hersteller</label><input type="text" value="'+(ww.hersteller||'')+'" placeholder="Hersteller" oninput="saveWarmwasserEintragField(\''+ww.id+'\',\'hersteller\',this.value)"></div>'
       +'<div class="form-group"><label>Typ</label><input type="text" value="'+(ww.typ||'')+'" placeholder="Modell" oninput="saveWarmwasserEintragField(\''+ww.id+'\',\'typ\',this.value)"></div></div>'
       +'<div class="form-group"><label>Notiz</label><input type="text" value="'+(ww.notiz||'')+'" placeholder="Bemerkungen" oninput="saveWarmwasserEintragField(\''+ww.id+'\',\'notiz\',this.value)"></div>'

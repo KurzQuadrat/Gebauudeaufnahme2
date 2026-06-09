@@ -177,4 +177,6 @@ Seit v0.2.2-dev ist das Kurz-Quadrat-Corporate-Design als reine CSS-Schicht eing
 - Datenbank
 - SaaS-/Abo-Modell
 
+Hinweis Projektkarten-Initialzustand (seit v0.2.25-dev): Beim Oeffnen eines Projekts ist nur die Karte "Geschosse" initial aufgeklappt. EG wird bei neuen Projekten automatisch angelegt und ist sofort bearbeitbar. Jahresfelder (Baujahr, Sanierungsjahr, Heizanlage/Warmwasser-Baujahr) verwenden ausschliesslich Placeholder-Werte als Beispiele -- keine onfocus-Vorbesetzung, keine versteckten Defaultwerte. Der Button "U-Werte aus Baujahr/Sanierung ableiten" bleibt im Heizlastmodul immer sichtbar (ausserhalb des einklappbaren Detailbereichs).
+
 Hinweis Geschossdetails (seit v0.2.12-dev): Jedes Geschoss hat ein Feld "Lichte Höhe Standard (m)" (`g.lichteHoeheStandard`), das als Startwert für neu angelegte Räume dieses Geschosses übernommen wird. Die Raumhöhe bleibt danach unabhängig und manuell überschreibbar; bestehende Raumwerte werden nicht automatisch geändert. Als Dachgeschosse gelten: DG (Bestand), DG 1, DG 2, Spitzboden – diese erhalten im Geschossdetail ein Dachwinkel-Feld und die Dachschrägen-/Gauben-Sektion. Nicht-Dachgeschosse (KG, EG, 1.OG, 2.OG, 3.OG) zeigen dieses Feld nicht. Das Anlegen mehrerer Dachgeschosse (DG 1, DG 2) ist über GESCHOSS_OPTIONEN möglich.
