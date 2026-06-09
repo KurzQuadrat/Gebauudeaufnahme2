@@ -494,6 +494,7 @@ textarea { resize: vertical; min-height: 80px; }
 .datei-aktionen { display: flex; gap: 8px; }
 .datei-aktionen .btn { flex: 1; }
 .refresh-bar .app-version { font-size: 11px; color: var(--text-sec); white-space: nowrap; }
+.projekt-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
 
 /* ============================================================================
    Analysis result badge

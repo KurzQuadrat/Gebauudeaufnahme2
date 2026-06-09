@@ -3,7 +3,7 @@
 // ============================================================
 function generateExportText(p) {
   let out=''; const L=t=>out+=t+'\n'; const H=t=>{out+='\n'+'='.repeat(50)+'\n';L(t);out+='='.repeat(50)+'\n';}; const S=t=>{out+='\n'+'-'.repeat(35)+'\n';L(t);out+='-'.repeat(35)+'\n';};
-  H('GEBAUDEAUFNAHME: '+p.name); L('Adresse: '+(p.adresse||'-')); L('Datum:   '+(p.datum||'-')); L('Baujahr: '+(p.baujahr||'-')); L('Typ:     '+(p.typ||'-')); L('PLZ:     '+(p.plz||'-'));
+  H('GEBAUDEAUFNAHME: '+p.name); L('Projektnummer: '+(p.adresse||'-')); L('Datum:         '+(p.datum||'-')); L('Baujahr:       '+(p.baujahr||'-')); L('Typ:           '+(p.typ||'-')); L('PLZ:           '+(p.plz||'-')); if(p.gebaeude_foto) L('Gebaudefoto:   vorhanden');
   H('1. PROJEKTEINGABE'); L('-> PLZ/Klimadaten: '+(p.plz||'___'));
   H('2. SANIERUNGSHISTORIE'); if(p.sanierungen.length)p.sanierungen.forEach(s=>L('  '+(s.massnahme||'-')+' - '+(s.jahr||'????')+(s.details?' - '+s.details:''))); else L('  Keine Sanierungen');
   H('3. HEIZANLAGE');

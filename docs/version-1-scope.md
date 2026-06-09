@@ -22,7 +22,7 @@ Hinweis Raum-/Bauteilliste: Als Zwischenschritt vor dem PDF-Bericht ist die Raum
 - Auftragsart
 - offene Punkte
 
-Hinweis: Projektstammdaten in der App sind anonymisiert. Statt einer echten Adresse wird eine anonyme Projektkennung / ein Lagehinweis erfasst (intern weiterhin im Feld `adresse` gespeichert, in der UI klar als anonymes Feld beschriftet). Auftragsart und Anzahl Wohneinheiten sind seit diesem Schritt als Stammdatenfelder umgesetzt.
+Hinweis: Projektstammdaten in der App sind anonymisiert. Das Feld heißt in der UI seit v0.2.14 "Projektnummer" (intern weiterhin `adresse`). Auftragsart und Anzahl Wohneinheiten sind als Stammdatenfelder umgesetzt. Anzahl Wohneinheiten wird nur angezeigt, wenn Gebäudetyp MFH ausgewählt ist. Ein Hausfoto (Gebäudefoto) kann in der Gebäude-Karte erfasst werden (komprimiert als `gebaeude_foto` gespeichert) und wird in der Projektübersicht als kleines Thumbnail angezeigt.
 
 Hinweis offene Punkte: „Offene Punkte“ sind als strukturierte Liste je Projekt umgesetzt (`p.offenePunkte[]`, Karten-/Listenmuster wie bei der Sanierungshistorie). Jeder Punkt enthält `text`, `status` (offen/in Prüfung/erledigt/zurückgestellt, Standard „offen“), `prioritaet` (niedrig/mittel/hoch, Standard „mittel“), `bereich` (Allgemein/Projekt/Geschoss/Raum/Wand/Fenster/Tür/Dach/Heizung/Warmwasser/Foto/Export/Sonstiges, Standard „Allgemein“) und `notiz`. Die Erfassung ist rein manuell, ohne automatische Prüfung oder Generierung und ohne Anbindung an PDF/Bericht. Bestehende Projekte ohne `offenePunkte` erhalten defensiv eine leere Liste; JSON-Export/-Import bleibt unverändert, da die gesamte Projektstruktur inklusive `offenePunkte` übernommen wird.
 

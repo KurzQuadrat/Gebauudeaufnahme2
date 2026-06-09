@@ -99,6 +99,24 @@ function handleFoto(input, key) {
   })();
 }
 
+function handleFotoGebaeude(input) {
+  const file = input.files[0];
+  if (!file) return;
+  (async () => {
+    let b64;
+    try { b64 = await getStorablePhoto(file); } catch (e) { showToast('Foto konnte nicht verarbeitet werden: ' + e.message); return; }
+    const p = getProjekt();
+    p.gebaeude_foto = b64;
+    save();
+    const lbl = document.getElementById('foto-gebaeude-label');
+    if (lbl) { lbl.classList.add('has-photo'); const sp = lbl.querySelector('span'); if (sp) sp.textContent = '✓ Foto vorhanden'; }
+    const prev = document.getElementById('foto-gebaeude-preview');
+    if (prev) { prev.src = b64; prev.style.display = 'block'; }
+    showToast('Gebaudefoto gespeichert.');
+    renderProjektliste();
+  })();
+}
+
 function handleFotoHzEintrag(input, id) {
   const file = input.files[0];
   if (!file) return;

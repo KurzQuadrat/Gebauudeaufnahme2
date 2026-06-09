@@ -20,6 +20,7 @@ function load() {
   state.projekte.forEach(p => {
     if (p.auftragsart === undefined) p.auftragsart = '';
     if (p.wohneinheiten === undefined) p.wohneinheiten = 1;
+    if (p.gebaeude_foto === undefined) p.gebaeude_foto = '';
     if (p.heizanlage.energietraeger === undefined) p.heizanlage.energietraeger = 'unbekannt';
     if (p.heizanlage.leistung === undefined) p.heizanlage.leistung = '';
     if (!p.warmwasser) p.warmwasser = { art: 'unbekannt', speicherVorhanden: 'unbekannt', speichervolumen: '', energietraeger: 'unbekannt', versorgung: 'unbekannt', baujahr: '', hersteller: '', typ: '', notiz: '' };
