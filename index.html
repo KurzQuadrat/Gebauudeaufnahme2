@@ -39,12 +39,12 @@
     </div>
     <div class="card">
       <div class="card-title">Datei</div>
-      <div style="display:flex; gap:8px;">
-        <label class="btn btn-secondary" style="flex:1; cursor:pointer; text-align:center;">
-          ⬆ JSON importieren
+      <div class="datei-aktionen">
+        <label class="btn btn-secondary">
+          Importieren
           <input type="file" accept=".json" style="display:none" onchange="importJSON(this)">
         </label>
-        <button class="btn btn-secondary" style="flex:1;" onclick="exportAll()">⬇ Alle exportieren</button>
+        <button class="btn btn-secondary" onclick="exportAll()">Exportieren</button>
       </div>
     </div>
     <div class="card" id="projektliste">

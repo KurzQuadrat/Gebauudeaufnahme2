@@ -491,6 +491,8 @@ textarea { resize: vertical; min-height: 80px; }
   border-top: 1px solid var(--border); z-index: 90;
 }
 .refresh-bar .btn { flex: 1; }
+.datei-aktionen { display: flex; gap: 8px; }
+.datei-aktionen .btn { flex: 1; }
 .refresh-bar .app-version { font-size: 11px; color: var(--text-sec); white-space: nowrap; }
 
 /* ============================================================================
