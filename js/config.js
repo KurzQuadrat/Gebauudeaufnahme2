@@ -2,8 +2,8 @@
 // Testen über den iPhone-Home-Bildschirm erkennbar ist, ob die aktuellste Version
 // geladen wurde (siehe refresh-bar in index.html). Bei jedem relevanten Update
 // hier anpassen.
-const APP_VERSION = "v0.2.41-dev";
-const APP_BUILD_DATE = "2026-06-09";
+const APP_VERSION = "v0.2.42-dev";
+const APP_BUILD_DATE = "2026-06-10";
 
 // Erlaubte Detailtypen je Sanierungsma\xdfnahme (aus js/uwerte-bundesanzeiger.js).
 // Steuert, welche Optionen im Detailtyp-Dropdown der Sanierungskarte sichtbar sind.
@@ -43,3 +43,32 @@ const FX = {
 const THETA_E = -12; // Frankfurt DIN EN 12831 Anhang NA
 
 const NORMTEMPS = {'Wohnen':20,'Schlafen':18,'Bad':24,'Küche':20,'Flur':15,'Büro':20,'Keller':10,'Abstellraum':10,'Sonstiges':20};
+
+// Sortierindex fuer Geschoss-Anzeige (oben nach unten: Spitzboden zuerst, KG zuletzt)
+function getGeschossSortIndex(name) {
+  if (!name) return -1;
+  var n = String(name).trim();
+  if (n === 'Spitzboden') return 60;
+  if (n === 'DG 2')       return 52;
+  if (n === 'DG 1')       return 51;
+  if (n === 'DG')         return 50;
+  if (n === '3.OG')       return 40;
+  if (n === '2.OG')       return 30;
+  if (n === '1.OG')       return 20;
+  if (n === 'EG')         return 10;
+  if (n === 'KG')         return 0;
+  // Generisch: X.OG
+  var ogMatch = n.match(/^(\d+)\.OG$/);
+  if (ogMatch) return 10 + parseInt(ogMatch[1], 10) * 10;
+  // Generisch: DG X
+  var dgMatch = n.match(/^DG\s+(\d+)$/);
+  if (dgMatch) return 50 + parseInt(dgMatch[1], 10);
+  return -1;
+}
+
+// Gibt Kopie des Arrays sortiert von oben (Spitzboden) nach unten (KG) zurueck
+function sortiereGeschosseFuerAnzeige(geschosse) {
+  return (geschosse || []).slice().sort(function(a, b) {
+    return getGeschossSortIndex(b.name) - getGeschossSortIndex(a.name);
+  });
+}

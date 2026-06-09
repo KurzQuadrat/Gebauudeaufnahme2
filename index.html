@@ -1093,7 +1093,7 @@ function opSetStatus(id, msg) {
 function sammleRaumBauteilDaten(p) {
   const dash = v => (v === undefined || v === null || v === '' ? '—' : v);
   const out = [];
-  (p.geschosse || []).forEach(g => {
+  sortiereGeschosseFuerAnzeige(p.geschosse).forEach(g => {
     const raeume = (g.raeume || []).map(r => {
       const wandTeile = [];
       [['N', 'wand_n1', 'wand_n2'], ['O', 'wand_o1', 'wand_o2'], ['S', 'wand_s1', 'wand_s2'], ['W', 'wand_w1', 'wand_w2']].forEach(([dir, k1, k2]) => {
@@ -1854,7 +1854,7 @@ function pcSumGeschosse(p) {
   var n = (p.geschosse || []).length;
   if (!n) return 'Keine Geschosse';
   var raeume = p.geschosse.reduce(function(s, g) { return s + (g.raeume ? g.raeume.length : 0); }, 0);
-  var namen = p.geschosse.map(function(g) { return g.name; }).join(', ');
+  var namen = sortiereGeschosseFuerAnzeige(p.geschosse).map(function(g) { return g.name; }).join(', ');
   return n + ' Geschoss' + (n !== 1 ? 'e' : '') + ' \xb7 ' + raeume + ' Raum' + (raeume !== 1 ? '\xe4ume' : '') + ' \xb7 ' + namen;
 }
 
@@ -2415,7 +2415,7 @@ function renderGeschossliste() {
   if(!p.geschosse.length){c.innerHTML='';l.style.display='block';return;}
   l.style.display='none';
   const icons={KG:'⬇',EG:'🏠','1.OG':'⬆','2.OG':'⬆','3.OG':'⬆',DG:'🔺','DG 1':'🔺','DG 2':'🔺',Spitzboden:'△'};
-  c.innerHTML=p.geschosse.map(g=>'<div class="list-item" onclick="openGeschoss(\''+g.id+'\')"><div class="list-item-icon" style="background:#f0f7ff;color:#0071e3;font-size:22px;">'+(icons[g.name]||'◻')+'</div><div class="list-item-body"><div class="list-item-title">'+g.name+'</div><div class="list-item-sub"><span class="badge '+(g.beheizung==='beheizt'?'badge-green':'badge-gray')+'">'+g.beheizung+'</span> · '+g.raeume.length+' Raum/Räume</div></div><button class="list-item-action" onclick="deleteGeschoss(\''+g.id+'\',event)">🗑</button><div class="list-item-arrow">›</div></div>').join('');
+  c.innerHTML=sortiereGeschosseFuerAnzeige(p.geschosse).map(g=>'<div class="list-item" onclick="openGeschoss(\''+g.id+'\')"><div class="list-item-icon" style="background:#f0f7ff;color:#0071e3;font-size:22px;">'+(icons[g.name]||'◻')+'</div><div class="list-item-body"><div class="list-item-title">'+g.name+'</div><div class="list-item-sub"><span class="badge '+(g.beheizung==='beheizt'?'badge-green':'badge-gray')+'">'+g.beheizung+'</span> · '+g.raeume.length+' Raum/Räume</div></div><button class="list-item-action" onclick="deleteGeschoss(\''+g.id+'\',event)">🗑</button><div class="list-item-arrow">›</div></div>').join('');
 }
 
 // ---- Heizanlage (Array) ----
