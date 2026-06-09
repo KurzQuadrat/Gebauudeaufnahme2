@@ -194,9 +194,23 @@ erschwert werden:
 
 - Projekt-IDs und Foto-IDs als UUIDs, ohne Kundendaten im Schlüssel.
 - Exportformat mit Versionsfeld, damit spätere Importer rueckwaertskompatibel sein koennen.
-  Seit v0.2.29-dev: JSON-Export verwendet einen Wrapper mit `_schemaVersion: 1` und
-  `exportedAt` (ISO-8601-Zeitstempel). Das Projektobjekt liegt unter `wrapper.projekt`.
+  Es gibt zwei klar getrennte Exportformate (seit v0.2.30-dev):
+
+  Textbericht-Export (`exportAll()`, Button "Export" im Header):
+  Lesbarer Strukturtext aller Projekte, Dateiendung .txt.
+  Dient der menschlichen Lesbarkeit und als Eingabehilfe fuer Hottgenroth.
+  Kann nicht mit importJSON() importiert werden und ist nicht dafuer vorgesehen.
+
+  JSON-Daten-Export (`downloadJSON()`, Button "JSON sichern" in der Datei-Karte):
+  Maschinenlesbares JSON, Dateiendung .json.
+  Wrapper-Format seit v0.2.29-dev: `{ _schemaVersion: 1, exportedAt: "...", projekt: {...} }`.
+  Kann mit importJSON() wieder eingelesen werden.
   Alte Exporte ohne Wrapper (einzelnes Projektobjekt oder Array) bleiben importierbar.
+
+  JSON-Import (`importJSON()`, Button "JSON laden" in der Datei-Karte):
+  Akzeptiert ausschliesslich JSON. Wenn eine Nicht-JSON-Datei (z.B. Textbericht) importiert
+  wird, erscheint eine verstaendliche Fehlermeldung.
+
   `createdAt` (ISO-8601) wird auf Projekt-Ebene sowie bei neuen Geschossen, Raeumen,
   Sanierungen, Heizanlagen, Warmwasser, Schornsteinen und Offenen Punkten gesetzt.
   Bestehende Projekte erhalten `createdAt: ''` (defensive Initialisierung, kein erfundenes Datum).

@@ -94,7 +94,12 @@ function importJSON(input) {
       renderProjektliste();
       showToast('Importiert: ' + pjs.map(function(p) { return p.name; }).join(', '));
     } catch (err) {
-      alert('Importfehler: ' + err.message);
+      // SyntaxError deutet auf keine gueltige JSON-Datei hin (z.B. Textbericht statt JSON-Backup)
+      if (err instanceof SyntaxError) {
+        alert('Importfehler: Die Datei ist kein gueltiges JSON.\nBitte nur JSON-Backups importieren (nicht den Textbericht).');
+      } else {
+        alert('Importfehler: ' + err.message);
+      }
     }
   };
   rd.readAsText(file);
