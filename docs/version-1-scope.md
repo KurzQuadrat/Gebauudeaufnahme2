@@ -140,7 +140,12 @@ Hinweis Versionsanzeige: In der Projektübersicht wird eine sichtbare App-Versio
 
 ## Nicht Bestandteil Version 1
 
-- direkte Hottgenroth-Befüllung
+Hinweis Hottgenroth: Version 1 ist ausdrücklich darauf ausgerichtet, Gebäudedaten so zu
+erfassen und aufzubereiten, dass die spätere Weiterverarbeitung in Hottgenroth erleichtert
+wird. Eine automatische Befüllung über eine direkte Schnittstelle ist nicht Bestandteil
+von Version 1, bleibt aber langfristiges Ziel.
+
+- automatische oder direkte Hottgenroth-Befüllung über eine Schnittstelle
 - vollständige Energieberatung
 - normativer Heizlastnachweis
 - rechtssichere Förderprüfung
@@ -160,8 +165,11 @@ Hinweis Versionsanzeige: In der Projektübersicht wird eine sichtbare App-Versio
 - interaktive Grundrissfläche / Canvas-Modul
 - automatische Raum-Nachbarschaftslogik aus Raumposition
 
-Diese Punkte sind explizit kein Entwicklungsziel für Version 1. Sie können in späteren
-Versionen folgen, erfordern aber jeweils eigene Konzepte (insbesondere zu Datenschutz,
+Diese Punkte sind nicht Bestandteil von Version 1. Einige davon (insbesondere
+Hottgenroth-Unterstützung und spätere Schnittstellen) sind ausdrücklich langfristige Ziele
+und dürfen durch heutige Entscheidungen nicht dauerhaft verbaut werden. Sie können in
+späteren Versionen folgen, erfordern aber jeweils eigene Konzepte (insbesondere zu
+Datenschutz,
 Rechtssicherheit, Hosting und Abrechnung).
 
 ## Architekturhinweis: Erweiterbarkeit

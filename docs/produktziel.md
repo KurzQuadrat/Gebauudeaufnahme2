@@ -132,10 +132,17 @@ Folgende Funktionen sind wichtig, aber nicht Bestandteil von Version 1:
 * hydraulischer Abgleich als vollständige Berechnung
 * Plausibilitätsprüfung von Messketten
 * direkte Integration eines Disto X6
-* direkte Hottgenroth-Befüllung
+* direkte oder teilautomatische Hottgenroth-Befüllung über eine Schnittstelle
 * interaktive Grundrissfläche (Raumpositionierung und -ausrichtung relativ zueinander)
 * automatische Raum-Nachbarschaftslogik (strukturierte Wandgrenzen als Raum-Referenzen)
 * LiDAR-gestützte Raumerfassung (grobe Geometrie via iPhone-LiDAR-Scanner)
+
+Hinweis Hottgenroth: Eine direkte Hottgenroth-Schnittstelle ist nicht Bestandteil von
+Version 1. Die App ist aber ausdrücklich darauf ausgerichtet, Gebäudedaten so strukturiert
+zu erfassen und aufzubereiten, dass die spätere Weiterverarbeitung in Hottgenroth mit
+möglichst geringem Aufwand möglich ist. Eine spätere teilautomatisierte oder direkte
+Hottgenroth-Befüllung bleibt langfristiges Ziel und darf durch heutige Architektur-
+entscheidungen nicht verbaut werden.
 
 Hinweis LiDAR/Grundriss: Diese Funktionen sind perspektivisch sinnvoll, aber technisch
 aufwendig und setzen stabile Vorarbeiten im Datenmodell voraus. LiDAR ist im reinen
@@ -149,7 +156,8 @@ Erweiterungen nicht.
 
 Version 1 soll nicht:
 
-* Hottgenroth direkt automatisch befüllen
+* Hottgenroth automatisch über eine direkte Schnittstelle befüllen (nicht Bestandteil V1,
+  bleibt aber langfristiges Ziel)
 * eine vollständige Energieberatung ersetzen
 * normativ belastbare Heizlastnachweise erzeugen
 * Förderfähigkeit rechtssicher prüfen

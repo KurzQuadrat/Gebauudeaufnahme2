@@ -31,8 +31,10 @@ bereitgestellt werden. Siehe docs/roadmap.md und docs/produktziel.md.
 
 Dies ist keine vollständige Energieberatungssoftware. Ziel ist die strukturierte Datenerfassung
 vor Ort. Die exportierten Daten dienen als Grundlage für die Weiterverarbeitung in
-Energieberatungstools wie Hottgenroth. Eine direkte automatische Befüllung von Hottgenroth ist
-kein Ziel von Version 1.
+Energieberatungstools wie Hottgenroth. Ziel der App ist es, Gebäudedaten so strukturiert zu
+erfassen, dass die spätere Weiterverarbeitung in Hottgenroth mit möglichst geringem Aufwand
+möglich ist. Eine automatische oder direkte Hottgenroth-Befüllung über eine Schnittstelle ist
+nicht Bestandteil von Version 1, bleibt aber langfristig im Scope.
 
 ## Datenschutz
 

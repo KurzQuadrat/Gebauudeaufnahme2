@@ -33,6 +33,9 @@ V1 intern  →  V1.5 Pilot  →  V2 Produktfähigkeit  →  V3 SaaS / kommerziel
 - Lokale Speicherung im Browser (localStorage)
 - Mobile Nutzung auf iPhone
 - Keine Cloud, kein Login, kein Server
+- Datenerfassung und Ausgabe so strukturiert, dass die spätere Weiterverarbeitung in
+  Hottgenroth mit möglichst geringem Aufwand möglich ist (Hottgenroth-vorbereitende
+  Erfassung als ausdrückliches V1-Ziel)
 
 **Nicht in V1:**
 
@@ -41,7 +44,8 @@ V1 intern  →  V1.5 Pilot  →  V2 Produktfähigkeit  →  V3 SaaS / kommerziel
 - Cloud-Synchronisation
 - Mehrbenutzerbetrieb
 - öffentlicher SaaS-Betrieb
-- vollständige Hottgenroth-Integration
+- automatische oder direkte Hottgenroth-Befüllung über eine Schnittstelle
+  (Hottgenroth-Unterstützung als langfristiges Ziel bleibt im Scope)
 - automatisierte Rechts- oder Förderprüfung
 - KI-Fotoanalyse als produktive Pflichtfunktion
 - LiDAR-gestützte Raumerfassung
@@ -102,6 +106,9 @@ sind eingefroren und dokumentiert.
 - Optional: Disto-X6-Integration oder vergleichbare Messgeräteanbindung
 - Konzept interaktive Raumpositionierung (Vorstufe Grundriss): Raum-Koordinaten und
   Nachbarschaftsreferenzen im Datenmodell vorbereiten, noch ohne UI
+- Verbesserte Hottgenroth-Exportstruktur: Prüfung und Dokumentation eines Mappings der
+  App-Datenfelder auf Hottgenroth-Felder; strukturierter Export als Grundlage für
+  spätere teilautomatische Übernahme
 
 **Nicht in V2:**
 
@@ -136,6 +143,9 @@ sind eingefroren und dokumentiert.
 - Hosting- und Betriebskonzept
 - Nutzungsbedingungen und rechtliche Rahmenbedingungen
 - Updateprozess und Versionsverwaltung
+- Prüfung und ggf. Umsetzung einer teilautomatisierten oder direkten
+  Hottgenroth-Befüllung (setzt verfügbare Schnittstelle und technische Klärung
+  mit Hottgenroth voraus; nicht vollständige Automation ohne Prüfung)
 
 **Voraussetzungen:**
 
@@ -219,6 +229,18 @@ gleich. Nur das Backend (localStorage → IndexedDB → Cloud) wechselt.
 
 Diese Prinzipien gelten bereits in V1 und sollen sicherstellen, dass spätere Stufen
 keine Grundsanierung erfordern:
+
+**Hottgenroth-Kompatibilität:**
+
+- Das Datenmodell soll langfristig Hottgenroth-fähig bleiben. Raum-, Bauteil-, Wand-,
+  Fenster-, Tür-, Heizungs- und Warmwasserdaten sollen strukturiert, eindeutig
+  referenzierbar und exportierbar bleiben, damit später ein Mapping auf Hottgenroth-
+  Felder möglich ist.
+- Keine Datenmodell-Entscheidung treffen, die ein späteres Hottgenroth-Mapping dauerhaft
+  unmöglich macht (z. B. unstrukturierte Freitextfelder statt klar typisierter Werte
+  für Bauteilarten, Energieträger, Wandzuordnungen).
+- Exportformate sollen stabil und versioniert sein; ein zukünftiges Hottgenroth-Mapping
+  setzt ein stabiles Quellformat voraus.
 
 **Allgemein:**
 
