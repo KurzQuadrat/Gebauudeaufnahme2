@@ -302,3 +302,18 @@ Fehler werden in folgender Reihenfolge priorisiert:
 * Verhalten in der App: Wenn SpeechRecognition nicht verfügbar ist (`!window.SpeechRecognition && !window.webkitSpeechRecognition`), wird der Diktat-Button deaktiviert und ein entsprechender Hinweis angezeigt. Die manuelle Texteingabe ist in allen Fällen uneingeschränkt verfügbar.
 * Bekannte Einschränkungen iOS/PWA: Mikrofon-Berechtigung muss explizit erteilt werden; `continuous: true` kann unter Safari/iOS den Recognition-Stream automatisch beenden; `interimResults` kann unter Safari abweichen.
 * Empfehlung: Vor dem Produktiveinsatz auf dem Ziel-iPhone/iOS-Version testen. Wenn Diktat auf iOS nicht zuverlässig funktioniert, ist die manuelle Eingabe die primäre und vollständige Alternative.
+
+## KI-016: Edge fragt wiederholend nach Mikrofonberechtigung
+
+* Status: behoben / abgemildert (v0.2.19-dev)
+* Priorität: niedrig (Diktat ist optionales Komfortfeature)
+* Bereich: Kundenwunsch / Gesprächsnotiz – Diktierfunktion
+* Ursache: Edge (und andere Browser) speichern Mikrofonberechtigungen nur für sichere Origins (HTTPS oder localhost). Bei file://-Zugriff wird die Berechtigung pro Session neu abgefragt. Zusätzlich konnte ein fehlender Guard in kwDiktatStarten() bei Doppelklick mehrfach start() aufrufen.
+* Behobene Punkte (v0.2.19-dev):
+  1. Guard in kwDiktatStarten(): wenn _kwRecognition bereits aktiv ist, wird kein zweites SpeechRecognition-Objekt erzeugt und kein zweites start() aufgerufen.
+  2. _kwRecognition wird erst in onstart gesetzt, nicht vor start() – so ist der Guard bei sofortigem Fehler (z.B. not-allowed vor onstart) korrekt zurueckgesetzt.
+  3. renderKundenwunsch() setzt UI-Zustand (Status, Buttons, disabled) nicht zurueck, solange ein Diktat laeuft.
+  4. kwAktualisiereStartBtn() prueft _kwRecognition und sperrt den Button waehrend des Diktats.
+  5. Permissions API (navigator.permissions.query) wird nach renderKundenwunsch() rein lesend abgefragt – loest keine Berechtigungsabfrage aus, zeigt nur den aktuellen Berechtigungsstatus an.
+  6. Sichtbarer Hinweis (kw-perm-hint): wird eingeblendet bei not-allowed-Fehler oder bei blockiertem Mikrofonstatus; zeigt Kurzanleitung zum Schloss-Symbol in Edge/Chrome.
+* Hinweis an Nutzer: Damit Edge die Berechtigung dauerhaft speichert, muss die App ueber einen lokalen HTTP(S)-Server (z.B. VS Code Live Server, localhost) und nicht ueber file:// geoeffnet werden. Dann im Schloss-Symbol der Adressleiste "Mikrofon: Zulassen" setzen.

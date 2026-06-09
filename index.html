@@ -152,6 +152,10 @@
         <button class="btn btn-sm btn-secondary" id="kw-stop-btn" onclick="kwDiktatStoppen()" style="display:none;">&#9209; Diktat stoppen</button>
       </div>
       <div id="kw-status" class="kw-status">Bereit</div>
+      <div id="kw-perm-hint" class="kw-perm-hint" style="display:none;">
+        Wenn der Browser die Berechtigung gespeichert hat, ist keine erneute Freigabe n&#246;tig.
+        Edge/Chrome: Schloss-Symbol in der Adressleiste &#8250; Mikrofon auf "Zulassen" stellen.
+      </div>
     </div>
 
     <!-- Sanierungen -->
@@ -1610,6 +1614,8 @@ function kwAktualisiereStartBtn() {
   var p = getProjekt();
   var startBtn = document.getElementById('kw-start-btn');
   if (!startBtn) return;
+  // Wenn Diktat laeuft: Start-Button bleibt gesperrt (ist ohnehin ausgeblendet)
+  if (_kwRecognition) { startBtn.disabled = true; return; }
   var erlaubt = !!(p && p.kundenwunsch_zustimmung && _kwSpeechAvailable);
   startBtn.disabled = !erlaubt;
 }
@@ -1619,6 +1625,8 @@ function renderKundenwunsch() {
   if (ta) ta.value = p.kundenwunsch_text || '';
   var cb = document.getElementById('kw-zustimmung');
   if (cb) cb.checked = !!p.kundenwunsch_zustimmung;
+  // Wenn Diktat laeuft: UI-Zustand (Status, Buttons) nicht zuruecksetzen
+  if (_kwRecognition) return;
   kwAktualisiereStartBtn();
   var statusEl = document.getElementById('kw-status');
   if (statusEl && !_kwSpeechAvailable) {
@@ -1626,15 +1634,53 @@ function renderKundenwunsch() {
   } else if (statusEl) {
     statusEl.textContent = 'Bereit';
   }
+  // Optionaler Mikrofonstatus-Check via Permissions API (nur Info, kein Pflicht)
+  kwPruefeMikrofonStatus();
 }
 
 var _kwRecognition = null;
 var _kwSpeechAvailable = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
 var _kwBaseText = '';
 
+// Permissions API: Mikrofonstatus anzeigen, falls Browser es unterstuetzt.
+// Loest keine Berechtigungsabfrage aus – rein lesend.
+function kwPruefeMikrofonStatus() {
+  if (!_kwSpeechAvailable) return;
+  if (!navigator.permissions || !navigator.permissions.query) return;
+  try {
+    navigator.permissions.query({ name: 'microphone' }).then(function(result) {
+      var statusEl = document.getElementById('kw-status');
+      var hintEl = document.getElementById('kw-perm-hint');
+      if (_kwRecognition) return; // Diktat laeuft bereits – nicht stoeren
+      if (result.state === 'granted') {
+        if (statusEl) statusEl.textContent = 'Mikrofon: Berechtigung erteilt. Bereit.';
+        if (hintEl) hintEl.style.display = 'none';
+      } else if (result.state === 'denied') {
+        if (statusEl) statusEl.textContent = 'Mikrofon: Berechtigung blockiert. Bitte in den Browser-Einstellungen erlauben.';
+        if (hintEl) hintEl.style.display = '';
+      } else {
+        // 'prompt' = noch nicht gefragt – kein Hinweis noetig
+        if (statusEl) statusEl.textContent = 'Bereit';
+        if (hintEl) hintEl.style.display = 'none';
+      }
+      // Statusaenderungen beobachten (z.B. wenn Nutzer Berechtigung waehrend Sitzung aendert)
+      result.onchange = function() {
+        if (!_kwRecognition) kwPruefeMikrofonStatus();
+      };
+    }).catch(function() {
+      // Permissions API nicht unterstuetzt oder Fehler – kein Problem, weiter wie bisher
+    });
+  } catch(e) {}
+}
+
 function kwDiktatStarten() {
   if (!_kwSpeechAvailable) {
     kwSetStatus('Diktat wird in diesem Browser nicht unterst\xfctzt. Bitte Text manuell eingeben.');
+    return;
+  }
+  // Guard: Diktat laeuft bereits – kein zweiter start()-Aufruf
+  if (_kwRecognition) {
+    kwSetStatus('Diktat l\xe4uft bereits.');
     return;
   }
   var p = getProjekt();
@@ -1643,23 +1689,26 @@ function kwDiktatStarten() {
     return;
   }
   var SRClass = window.SpeechRecognition || window.webkitSpeechRecognition;
-  _kwRecognition = new SRClass();
-  _kwRecognition.lang = 'de-DE';
-  _kwRecognition.continuous = true;
-  _kwRecognition.interimResults = true;
+  var rec = new SRClass();
+  rec.lang = 'de-DE';
+  rec.continuous = true;
+  rec.interimResults = true;
 
   var ta = document.getElementById('kw-text');
   _kwBaseText = (ta && ta.value) ? ta.value : '';
   if (_kwBaseText && !_kwBaseText.endsWith(' ')) _kwBaseText += ' ';
 
-  _kwRecognition.onstart = function() {
+  rec.onstart = function() {
+    _kwRecognition = rec; // erst nach onstart setzen: klar signalisiert "laeuft"
     kwSetStatus('Diktat l\xe4uft …');
     var sb = document.getElementById('kw-start-btn');
     var stb = document.getElementById('kw-stop-btn');
     if (sb) sb.style.display = 'none';
     if (stb) stb.style.display = '';
+    var hintEl = document.getElementById('kw-perm-hint');
+    if (hintEl) hintEl.style.display = 'none';
   };
-  _kwRecognition.onresult = function(event) {
+  rec.onresult = function(event) {
     var interim = '';
     var finalPart = '';
     for (var i = event.resultIndex; i < event.results.length; i++) {
@@ -1673,24 +1722,43 @@ function kwDiktatStarten() {
     }
     if (ta) ta.value = _kwBaseText + interim;
   };
-  _kwRecognition.onerror = function(event) {
+  rec.onerror = function(event) {
     var msg = 'Diktat-Fehler.';
-    if (event.error === 'not-allowed') msg = 'Mikrofonzugriff verweigert.';
-    else if (event.error === 'no-speech') msg = 'Keine Spracheingabe erkannt.';
-    else if (event.error === 'network') msg = 'Netzwerkfehler beim Diktat.';
+    var zeigHint = false;
+    if (event.error === 'not-allowed') {
+      msg = 'Mikrofonzugriff verweigert.';
+      zeigHint = true;
+    } else if (event.error === 'no-speech') {
+      msg = 'Keine Spracheingabe erkannt.';
+    } else if (event.error === 'network') {
+      msg = 'Netzwerkfehler beim Diktat.';
+    }
     kwSetStatus(msg);
+    var hintEl = document.getElementById('kw-perm-hint');
+    if (hintEl) hintEl.style.display = zeigHint ? '' : 'none';
     kwDiktatReset();
   };
-  _kwRecognition.onend = function() {
+  rec.onend = function() {
     if (ta) { ta.value = _kwBaseText; saveKundenwunschText(_kwBaseText); }
     kwSetStatus('Diktat beendet.');
     kwDiktatReset();
   };
-  try { _kwRecognition.start(); }
-  catch(e) { kwSetStatus('Diktat konnte nicht gestartet werden: ' + e.message); kwDiktatReset(); }
+  // _kwRecognition wird erst in onstart gesetzt – so ist bei einem
+  // sofortigen Fehler vor onstart der Guard korrekt zurueckgesetzt.
+  try {
+    rec.start();
+  } catch(e) {
+    kwSetStatus('Diktat konnte nicht gestartet werden: ' + e.message);
+    kwDiktatReset();
+  }
 }
 function kwDiktatStoppen() {
-  if (_kwRecognition) { try { _kwRecognition.stop(); } catch(e) {} }
+  if (_kwRecognition) {
+    try { _kwRecognition.stop(); } catch(e) {
+      // stop() kann werfen wenn recognition bereits beendet ist
+      kwDiktatReset();
+    }
+  }
 }
 function kwDiktatReset() {
   _kwRecognition = null;
