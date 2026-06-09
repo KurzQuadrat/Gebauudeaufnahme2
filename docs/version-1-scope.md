@@ -146,12 +146,34 @@ Hinweis Versionsanzeige: In der Projektübersicht wird eine sichtbare App-Versio
 - rechtssichere Förderprüfung
 - Cloud-Synchronisation
 - Mehrbenutzerbetrieb
+- öffentlicher SaaS-Betrieb
+- Login / Benutzerverwaltung
+- Bezahlfunktion / Abo-Verwaltung
 - vollständige Fotodokumentationssoftware
 - KI-Fotoanalyse als produktive Pflichtfunktion
 - automatische Internetrecherche
 - iSFP-Variantenlogik
 - Hottgenroth-Texte
 - vollständige Heizlastberechnung
+- automatisierte Rechts- oder Förderprüfung
+
+Diese Punkte sind explizit kein Entwicklungsziel für Version 1. Sie können in späteren
+Versionen folgen, erfordern aber jeweils eigene Konzepte (insbesondere zu Datenschutz,
+Rechtssicherheit, Hosting und Abrechnung).
+
+## Architekturhinweis: Erweiterbarkeit
+
+Version 1 ist intern und lokal. Trotzdem sollen technische Entscheidungen so getroffen
+werden, dass spätere externe Nutzung nicht massiv erschwert wird:
+
+- Projekt-IDs und Foto-IDs als UUIDs, ohne Kundendaten im Schlüssel.
+- Exportformat mit Versionsfeld, damit spätere Importer rückwärtskompatibel sein können.
+- Datenmodellerweiterungen defensiv laden (kein Hard-Fail bei unbekannten Feldern).
+- Fotostruktur perspektivisch von localStorage zu IndexedDB und später zu Cloud-Speicher
+  migrierbar halten (siehe docs/roadmap.md Etappe Fotomigration).
+- Brand-CSS als eigene Schicht (css/brand.css), die austauschbar bleibt.
+- Keine fest einkodierte Kurz-Quadrat-Logik in Fachfunktionen; Kurz Quadrat ist
+  Referenznutzer, nicht einziger denkbarer Nutzer.
 
 ## Corporate Design (Kurz Quadrat)
 

@@ -163,11 +163,26 @@ Funktionen, die nur Komfort bieten oder technisch interessant sind, aber keinen 
 
 ## Langfristige Produktvision
 
-Die Anwendung wird zunächst für Kurz Quadrat entwickelt. Kurz Quadrat ist der erste Nutzer und Pilotkunde. Ziel ist, den realen Arbeitsprozess eines Energieberaters bei der Vor-Ort-Erfassung deutlich zu verbessern.
+Die Anwendung wird zunächst für Kurz Quadrat entwickelt. Kurz Quadrat ist erster Nutzer und
+Referenzpilotkunde. Ziel ist, den realen Arbeitsprozess eines Energieberaters bei der
+Vor-Ort-Erfassung deutlich zu verbessern.
 
-Langfristig kann aus der Anwendung ein Abo- oder SaaS-Produkt für andere Energieberater entstehen. Deshalb soll die Datenstruktur perspektivisch so gedacht werden, dass spätere Mandantenfähigkeit, Datenbanknutzung, projektübergreifende Analysen und ein kommerzieller Betrieb möglich bleiben.
+Nach einer stabilen internen Version sollen ausgewählte externe Energieberater als
+Pilot-/Betatester eingebunden werden, um Rückmeldungen zu Bedienbarkeit, Datenfeldern und
+Exporten zu sammeln. Die App ist in dieser Phase ausdrücklich als Testversion gekennzeichnet;
+es wird keine Gewähr für Vollständigkeit oder fachliche Richtigkeit übernommen.
 
-Version 1 bleibt bewusst lokal, einfach und anonymisiert. Eine zentrale Datenbank, Benutzerverwaltung, Cloud-Synchronisation und Mehrbenutzerbetrieb sind keine Ziele von Version 1.
+Langfristig kann aus der Anwendung ein Abo- oder SaaS-Produkt für andere Energieberater
+entstehen. Die technische Architektur soll so gestaltet sein, dass spätere Mandantenfähigkeit,
+Datenbanknutzung, projektübergreifende Analysen und kommerzieller Betrieb möglich bleiben.
+
+Version 1 bleibt bewusst lokal, einfach und anonymisiert. Eine zentrale Datenbank,
+Benutzerverwaltung, Cloud-Synchronisation und Mehrbenutzerbetrieb sind keine Ziele von
+Version 1.
+
+Hinweis zur Pilotphase: Externe Tester sollen nur mit klar kommuniziertem Beta-Status
+eingebunden werden. Kein produktives Kundendaten-Cloud-System ohne vorherige
+Datenschutz- und Rechtsprüfung (DSGVO, AV-Vertrag, Hosting-Konzept).
 
 ## Perspektive Datenbank und Analysen
 
@@ -187,12 +202,39 @@ Für spätere Versionen soll geprüft werden:
 
 Für eine spätere Nutzung durch andere Energieberater wären zusätzlich erforderlich:
 
-- Benutzerkonten
+- Benutzerkonten und Authentifizierung
 - Mandantenfähigkeit
 - Rollen- und Rechtemodell
-- DSGVO- und Datenschutzkonzept
+- DSGVO- und Datenschutzkonzept (inkl. AV-Vertrag)
 - Hosting- und Backup-Konzept
 - Lösch- und Exportkonzept
 - Abrechnung und Abo-Verwaltung
 - Support- und Onboarding-Prozess
 - Nutzungsbedingungen und rechtliche Rahmenbedingungen
+- sichere Foto-/Datenhaltung (Cloud-Speicher, Zugriffskontrolle)
+- Offline-first plus Cloud-Synchronisation
+- Projekt-Dashboard und Teamfähigkeit
+- Updateprozess und Versionsverwaltung
+
+Keine dieser Punkte ist Bestandteil von Version 1. Sie sind Voraussetzung vor einem
+öffentlichen oder kommerziellen Betrieb und müssen vor Einbindung externer Nutzer in
+produktivem Kontext geprüft und umgesetzt sein.
+
+## Architektur-Leitplanken für künftige Erweiterbarkeit
+
+Folgende Prinzipien sollen bei der Entwicklung beachtet werden, um spätere Erweiterungen
+nicht zu verbauen:
+
+- Keine kurzfristigen Lösungen bauen, die Mehrbenutzerfähigkeit oder Mandantenfähigkeit
+  massiv erschweren.
+- Keine Kundendaten in Dateinamen oder globalen IDs speichern.
+- Projekt-IDs und Foto-IDs sollen sauber und nutzerunabhängig sein (UUIDs).
+- Exportformate sollen stabil und versioniert sein (Versionsfeld im Export).
+- Datenmodelländerungen sollen migrationsfähig bleiben (defensive Initialisierung,
+  Versionsprüfung beim Laden).
+- Fotostruktur soll von localStorage zu IndexedDB/Blob-Speicher und perspektivisch zu
+  Cloud-Speicher migrierbar sein, ohne Daten zu verlieren.
+- Funktionen sollen nicht hart auf Kurz Quadrat intern verdrahtet werden; Kurz Quadrat
+  bleibt Referenznutzer, nicht einziger denkbarer Nutzer.
+- Brand-/Design-Tokens sollen als austauschbare Schicht bleiben (css/brand.css),
+  sodass andere Nutzer künftig eigene Styles verwenden können.
