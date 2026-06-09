@@ -1,0 +1,1316 @@
+Haftungsausschluss:
+Bei den im Internetangebot ,,Info-Portal Energieeinsparung" des Bundesinstituts für Bau-, Stadt und Raumforschung enthalte-
+nen Verordnungs- und Gesetzestexten handelt es sich um unverbindliche Lesefassungen. Sie können heruntergeladen und zur
+privaten Information genutzt werden. Trotz sorgfältiger Bearbeitung kann für die Inhalte jedoch keine Gewähr übernommen
+werden. Amtliche und im Streitfall maßgebliche Textfassungen finden sich ausschließlich in den amtlichen Verkündungsblättern
+­ das sind für das Bundesrecht das Bundesgesetzblatt bzw. der Bundesanzeiger.
+
+                                                Nichtamtliche Lesefassung
+           (Gültigkeitszeitraum dieses Textstandes: 1. Februar 2002 bis 7. Dezember 2004)
+
+                                        Verordnung
+                      über energiesparenden Wärmeschutz
+           und energiesparende Anlagentechnik bei Gebäuden
+                     (Energieeinsparverordnung - EnEV) *)
+
+                               Vom 16. November 2001
+                                     (BGBl. I S.3085)
+
+Auf Grund des § 1 Abs. 2, des § 2 Abs. 2 und 3, des § 3 Abs. 2, der §§ 4 bis 6, des
+§ 7 Abs. 3 bis 5 und des § 8 des Energieeinsparungsgesetzes vom 22. Juli 1976
+(BGBl. I S. 1873), von denen die §§ 4 und 5 durch Artikel 1 des Gesetzes vom
+20. Juni 1980 (BGBl. I S. 701) geändert worden sind, verordnet die Bundesregierung:
+
+__________________
+*) Die §§ 3 bis 7 und 8 Abs. 3 und die Anhänge 1, 2 und 4 dienen der Umsetzung des Artikels 5 der
+Richtlinie 93/76/EWG des Rates vom 13. September 1993 zur Begrenzung der Kohlendioxidemissio-
+nen durch eine effizientere Energienutzung - SAVE - (ABl. EG Nr. L 237 S. 28), § 13 dient der Umset-
+zung des Artikels 2 dieser Richtlinie. § 11 Abs. 1 bis 3 und § 18 Nr. 1 dienen der Umsetzung der
+Richtlinie 92/42/EWG des Rates vom 21. Mai 1992 über die Wirkungsgrade von mit flüssigen oder
+gasförmigen Brennstoffen beschickten neuen Warmwasserheizkesseln (ABl. EG Nr. L 167 S. 17, L
+195 S. 32), geändert durch Artikel 12 der Richtlinie 93/68/EWG des Rates vom 22. Juli 1993 (ABl. EG
+Nr. L 220 S. 1).
+Die Verpflichtungen aus der Richtlinie 98/34/EG des Europäischen Parlaments und des Rates vom
+22. Juni 1998 über ein Informationsverfahren auf dem Gebiet der Normen und technischen Vorschrif-
+ten und der Vorschriften für die Dienste der Informationsgesellschaft (ABl. EG Nr. L 204 S. 37), geän-
+dert durch die Richtlinie 98/48/EG des Europäischen Parlaments und des Rates vom 20. Juli 1998
+(ABl. EG Nr. L 217 S. 18), sind beachtet worden.
+                                      -2-
+
+                                      Inhaltsübersicht
+
+                                               Abschnitt 1
+                                      Allgemeine Vorschriften
+
+§ 1 Geltungsbereich
+§ 2 Begriffsbestimmungen
+
+                                                             Abschnitt 2
+                                                   Zu errichtende Gebäude
+
+§ 3 Gebäude mit normalen Innentemperaturen
+§ 4 Gebäude mit niedrigen Innentemperaturen
+§ 5 Dichtheit, Mindestluftwechsel
+§ 6 Mindestwärmeschutz, Wärmebrücken
+§ 7 Gebäude mit geringem Volumen
+
+                                                             Abschnitt 3
+                                           Bestehende Gebäude und Anlagen
+
+§ 8 Änderung von Gebäuden
+§ 9 Nachrüstung bei Anlagen und Gebäuden
+§ 10 Aufrechterhaltung der energetischen Qualität
+
+                                                             Abschnitt 4
+                               Heizungstechnische Anlagen, Warmwasseranlagen
+
+§ 11 Inbetriebnahme von Heizkesseln
+§ 12 Verteilungseinrichtungen und Warmwasseranlagen
+
+                                                             Abschnitt 5
+                                Gemeinsame Vorschriften, Ordnungswidrigkeiten
+
+§ 13 Ausweise über Energie- und Wärmebedarf, Energieverbrauchskennwerte
+§ 14 Getrennte Berechnungen für Teile eines Gebäudes
+§ 15 Regeln der Technik
+§ 16 Ausnahmen
+§ 17 Befreiungen
+§ 18 Ordnungswidrigkeiten
+
+                                               Abschnitt 6
+                                      Schlussbestimmungen
+
+§ 19 Übergangsvorschrift
+§ 20 Inkrafttreten, Außerkrafttreten
+
+Anhang 1                                            Anhänge
+Anhang 2
+Anhang 3  Anforderungen an zu errichtende Gebäude mit normalen Innentemperaturen (zu § 3)
+
+Anhang 4  Anforderungen an zu errichtende Gebäude mit niedrigen Innentemperaturen (zu § 4)
+Anhang 5
+          Anforderungen bei Änderung von Außenbauteilen bestehender Gebäude (zu § 8
+          Abs. 1) und bei Errichtung von Gebäuden mit geringem Volumen (§ 7)
+
+          Anforderungen an die Dichtheit und den Mindestluftwechsel (zu § 5)
+
+          Anforderungen zur Begrenzung der Wärmeabgabe von Wärmeverteilungs- und Warm-
+          wasserleitungen sowie Armaturen (zu § 12 Abs. 5)
+                                                               -3-
+
+                                                 Abschnitt 1
+                                       Allgemeine Vorschriften
+
+                                                       §1
+                                             Geltungsbereich
+
+(1) Diese Verordnung stellt Anforderungen an
+1. Gebäude mit normalen Innentemperaturen (§ 2 Nr. 1 und 2) und
+2. Gebäude mit niedrigen Innentemperaturen (§ 2 Nr. 3)
+einschließlich ihrer Heizungs-, raumlufttechnischen und zur Warmwasserbereitung
+dienenden Anlagen.
+
+(2) Diese Verordnung gilt mit Ausnahme des § 11 nicht für
+1. Betriebsgebäude, die überwiegend zur Aufzucht oder zur Haltung von Tieren
+
+       genutzt werden,
+2. Betriebsgebäude, soweit sie nach ihrem Verwendungszweck großflächig und
+
+       lang anhaltend offen gehalten werden müssen,
+3. unterirdische Bauten,
+4. Unterglasanlagen und Kulturräume für Aufzucht, Vermehrung und Verkauf von
+
+       Pflanzen,
+5. Traglufthallen, Zelte und sonstige Gebäude, die dazu bestimmt sind, wiederholt
+
+       aufgestellt und zerlegt zu werden.
+Auf Bestandteile des Heizsystems, die sich nicht im räumlichen Zusammenhang mit
+Gebäuden nach Absatz 1 befinden, ist nur § 11 anzuwenden.
+
+                                                       §2
+                                        Begriffsbestimmungen
+
+Im Sinne dieser Verordnung
+1. sind Gebäude mit normalen Innentemperaturen solche Gebäude, die nach ih-
+
+       rem Verwendungszweck auf eine Innentemperatur von 19 Grad Celsius und
+       mehr und jährlich mehr als vier Monate beheizt werden,
+2. sind Wohngebäude solche Gebäude im Sinne von Nummer 1, die ganz oder
+       deutlich überwiegend zum Wohnen genutzt werden,
+3. sind Gebäude mit niedrigen Innentemperaturen solche Gebäude, die nach ih-
+       rem Verwendungszweck auf eine Innentemperatur von mehr als 12 Grad Celsi-
+                                                               -4-
+
+       us und weniger als 19 Grad Celsius und jährlich mehr als vier Monate beheizt
+       werden,
+4. sind beheizte Räume solche Räume, die auf Grund bestimmungsgemäßer Nut-
+       zung direkt oder durch Raumverbund beheizt werden,
+5. sind erneuerbare Energien zu Heizungszwecken, zur Warmwasserbereitung
+       oder zur Lüftung von Gebäuden eingesetzte und im räumlichen Zusammen-
+       hang dazu gewonnene Solarenergie, Umweltwärme, Erdwärme und Biomasse,
+6. ist ein Heizkessel der aus Kessel und Brenner bestehende Wärmeerzeuger, der
+       zur Übertragung der durch die Verbrennung freigesetzten Wärme an den Wär-
+       meträger Wasser dient,
+7. sind Geräte der mit einem Brenner auszurüstende Kessel und der zur Ausrüs-
+       tung eines Kessels bestimmte Brenner,
+8. ist die Nennwärmeleistung die höchste von dem Heizkessel im Dauerbetrieb
+       nutzbar abgegebene Wärmemenge je Zeiteinheit; ist der Heizkessel für einen
+       Nennwärmeleistungsbereich eingerichtet, so ist die Nennwärmeleistung die in
+       den Grenzen des Nennwärmeleistungsbereichs fest eingestellte und auf einem
+       Zusatzschild angegebene höchste nutzbare Wärmeleistung; ohne Zusatzschild
+       gilt als Nennwärmeleistung der höchste Wert des Nennwärmeleistungsbereichs,
+9. ist ein Standardheizkessel ein Heizkessel, bei dem die durchschnittliche Be-
+       triebstemperatur durch seine Auslegung beschränkt sein kann,
+10. ist ein Niedertemperatur-Heizkessel ein Heizkessel, der kontinuierlich mit einer
+       Eintrittstemperatur von 35 bis 40 Grad Celsius betrieben werden kann und in
+       dem es unter bestimmten Umständen zur Kondensation des in den Abgasen
+       enthaltenen Wasserdampfes kommen kann,
+11. ist ein Brennwertkessel ein Heizkessel, der für die Kondensation eines Groß-
+       teils des in den Abgasen enthaltenen Wasserdampfes konstruiert ist.
+                                                               -5-
+
+                                                 Abschnitt 2
+                                       Zu errichtende Gebäude
+
+                                                       §3
+                          Gebäude mit normalen Innentemperaturen
+
+(1) Zu errichtende Gebäude mit normalen Innentemperaturen sind so auszuführen,
+dass
+1. bei Wohngebäuden der auf die Gebäudenutzfläche bezogene Jahres-
+
+       Primärenergiebedarf und
+2. bei anderen Gebäuden der auf das beheizte Gebäudevolumen bezogene Jah-
+
+       res-Primärenergiebedarf
+sowie der spezifische, auf die wärmeübertragende Umfassungsfläche bezogene
+Transmissionswärmeverlust die Höchstwerte in Anhang 1 Tabelle 1 nicht überschrei-
+ten.
+
+(2) Der Jahres-Primärenergiebedarf und der spezifische, auf die wärmeübertra-
+gende Umfassungsfläche bezogene Transmissionswärmeverlust sind zu berechnen
+1. bei Wohngebäuden, deren Fensterflächenanteil 30 vom Hundert nicht über-
+
+       schreitet, nach dem vereinfachten Verfahren nach Anhang 1 Nr. 3 oder nach
+       dem in Anhang 1 Nr. 2 festgelegten Nachweisverfahren,
+2. bei anderen Gebäuden nach dem in Anhang 1 Nr. 2 festgelegten Nachweisver-
+       fahren.
+
+(3) Die Begrenzung des Jahres-Primärenergiebedarfs nach Absatz 1 gilt nicht für
+Gebäude, die beheizt werden
+1. mindestens zu 70 vom Hundert durch Wärme aus Kraft-Wärme-Kopplung,
+2. mindestens zu 70 vom Hundert durch erneuerbare Energien mittels selbsttätig
+
+       arbeitender Wärmeerzeuger,
+3. überwiegend durch Einzelfeuerstätten für einzelne Räume oder Raumgruppen
+
+       sowie sonstige Wärmeerzeuger, für die keine Regeln der Technik vorliegen.
+Bei Gebäuden nach Satz 1 Nr. 3 darf der spezifische, auf die wärmeübertragende
+Umfassungsfläche bezogene Transmissionswärmeverlust 76 vom Hundert des jewei-
+ligen Höchstwertes nach Anhang 1 Tabelle 1 Spalte 5 nicht überschreiten.
+                                                               -6-
+
+(4) Um einen energiesparenden sommerlichen Wärmeschutz sicherzustellen, sind
+bei Gebäuden, deren Fensterflächenanteil 30 vom Hundert überschreitet, die Anfor-
+derungen an die Sonneneintragskennwerte oder die Kühlleistung nach Anhang 1 Nr.
+2.9 einzuhalten.
+
+                                                       §4
+                          Gebäude mit niedrigen Innentemperaturen
+
+Bei zu errichtenden Gebäuden mit niedrigen Innentemperaturen darf der nach An-
+hang 2 Nr. 2 zu bestimmende spezifische, auf die wärmeübertragende Umfassungs-
+fläche bezogene Transmissionswärmeverlust die Höchstwerte in Anhang 2 Nr. 1
+nicht überschreiten.
+
+                                                       §5
+                                   Dichtheit, Mindestluftwechsel
+
+(1) Zu errichtende Gebäude sind so auszuführen, dass die wärmeübertragende
+Umfassungsfläche einschließlich der Fugen dauerhaft luftundurchlässig entspre-
+chend dem Stand der Technik abgedichtet ist. Dabei muss die Fugendurchlässigkeit
+außen liegender Fenster, Fenstertüren und Dachflächenfenster Anhang 4 Nr. 1 ge-
+nügen. Wird die Dichtheit nach den Sätzen 1 und 2 überprüft, ist Anhang 4 Nr. 2 ein-
+zuhalten.
+
+(2) Zu errichtende Gebäude sind so auszuführen, dass der zum Zwecke der Ge-
+sundheit und Beheizung erforderliche Mindestluftwechsel sichergestellt ist. Werden
+dazu andere Lüftungseinrichtungen als Fenster verwendet, müssen diese Anhang 4
+Nr. 3 entsprechen.
+
+                                                       §6
+                              Mindestwärmeschutz, Wärmebrücken
+
+(1) Bei zu errichtenden Gebäuden sind Bauteile, die gegen die Außenluft, das Erd-
+reich oder Gebäudeteile mit wesentlich niedrigeren Innentemperaturen abgrenzen,
+so auszuführen, dass die Anforderungen des Mindestwärmeschutzes nach den an-
+erkannten Regeln der Technik eingehalten werden.
+                                                               -7-
+
+(2) Zu errichtende Gebäude sind so auszuführen, dass der Einfluss konstruktiver
+Wärmebrücken auf den Jahres-Heizwärmebedarf nach den Regeln der Technik und
+den im jeweiligen Einzelfall wirtschaftlich vertretbaren Maßnahmen so gering wie
+möglich gehalten wird. Der verbleibende Einfluss der Wärmebrücken ist bei der Er-
+mittlung des spezifischen, auf die wärmeübertragende Umfassungsfläche bezogene
+Transmissionswärmeverlusts und des Jahres-Primärenergiebedarfs nach Anhang 1
+Nr. 2.5 zu berücksichtigen.
+
+                                                       §7
+                                  Gebäude mit geringem Volumen
+
+Übersteigt das beheizte Gebäudevolumen eines zu errichtenden Gebäudes
+100 Kubikmeter nicht und werden die Anforderungen des Abschnitts 4 eingehalten,
+gelten die übrigen Anforderungen dieser Verordnung als erfüllt, wenn die Wärme-
+durchgangskoeffizienten der Außenbauteile die in Anhang 3 Tabelle 1 genannten
+Werte nicht überschreiten.
+
+                                                 Abschnitt 3
+                                Bestehende Gebäude und Anlagen
+
+                                                       §8
+                                       Änderung von Gebäuden
+(1) Soweit bei beheizten Räumen in Gebäuden nach § 1 Abs. 1 Änderungen ge-
+mäß Anhang 3 Nr. 1 bis 5 durchgeführt werden, dürfen die in Anhang 3 Tabelle 1
+festgelegten Wärmedurchgangskoeffizienten der betroffenen Außenbauteile nicht
+überschritten werden. Dies gilt nicht für Änderungen, die
+1. bei Außenwänden, außen liegenden Fenstern, Fenstertüren und Dachflächen-
+       fenstern weniger als 20 vom Hundert der Bauteilflächen gleicher Orientierung
+       im Sinne von Anhang 1 Tabelle 2 Zeile 4 Spalte 3 oder
+2. bei anderen Außenbauteilen weniger als 20 vom Hundert der jeweiligen Bauteil-
+       fläche
+betreffen.
+
+(2) Absatz 1 Satz 1 gilt als erfüllt, wenn das geänderte Gebäude insgesamt den
+jeweiligen Höchstwert nach Anhang 1 Tabelle 1 oder Anhang 2 Tabelle 1 um nicht
+mehr als 40 vom Hundert überschreitet.
+                                                               -8-
+
+(3) Bei der Erweiterung des beheizten Gebäudevolumens um zusammenhängend
+mindestens 30 Kubikmeter sind für den neuen Gebäudeteil die jeweiligen Vorschrif-
+ten für zu errichtende Gebäude einzuhalten. Ein Energiebedarfsausweis ist nur unter
+den Voraussetzungen des § 13 Abs. 2 auszustellen.
+
+                                                       §9
+                           Nachrüstung bei Anlagen und Gebäuden
+
+(1) Eigentümer von Gebäuden müssen Heizkessel, die mit flüssigen oder gasför-
+migen Brennstoffen beschickt werden und vor dem 1. Oktober 1978 eingebaut oder
+aufgestellt worden sind, bis zum 31. Dezember 2006 außer Betrieb nehmen. Heiz-
+kessel nach Satz 1, die nach § 11 Abs. 1 in Verbindung mit § 23 der Verordnung ü-
+ber kleine und mittlere Feuerungsanlagen so ertüchtigt wurden, dass die zulässigen
+Abgasverlustgrenzwerte eingehalten sind, oder deren Brenner nach dem 1. Novem-
+ber 1996 erneuert worden sind, müssen bis zum 31. Dezember 2008 außer Betrieb
+genommen werden. Die Sätze 1 und 2 sind nicht anzuwenden, wenn die vorhande-
+nen Heizkessel Niedertemperatur-Heizkessel oder Brennwertkessel sind, sowie auf
+heizungstechnische Anlagen, deren Nennwärmeleistung weniger als 4 Kilowatt oder
+mehr als 400 Kilowatt beträgt, und auf Heizkessel nach § 11 Abs. 3 Nr. 2 bis 4.
+
+(2) Eigentümer von Gebäuden müssen bei heizungstechnischen Anlagen unge-
+dämmte, zugängliche Wärmeverteilungs- und Warmwasserleitungen sowie Armatu-
+ren, die sich nicht in beheizten Räumen befinden, bis zum 31. Dezember 2006 nach
+Anhang 5 zur Begrenzung der Wärmeabgabe dämmen.
+
+(3) Eigentümer von Gebäuden mit normalen Innentemperaturen müssen nicht be-
+gehbare, aber zugängliche oberste Geschossdecken beheizter Räume bis zum
+31. Dezember 2006 so dämmen, dass der Wärmedurchgangskoeffizient der Ge-
+schossdecke 0,30 Watt/(m²K) nicht überschreitet.
+
+(4) Bei Wohngebäuden mit nicht mehr als zwei Wohnungen, von denen zum Zeit-
+punkt des Inkrafttretens dieser Verordnung eine der Eigentümer selbst bewohnt, sind
+die Anforderungen nach den Absätzen 1 bis 3 nur im Falle eines Eigentümerwech-
+sels zu erfüllen. Die Frist beträgt zwei Jahre ab dem Eigentumsübergang; sie läuft
+jedoch nicht vor dem 31. Dezember 2006, in den Fällen des Absatzes 1 Satz 2 nicht
+vor dem 31. Dezember 2008, ab.
+                                                               -9-
+
+                                                      § 10
+                        Aufrechterhaltung der energetischen Qualität
+
+(1) Außenbauteile dürfen nicht in einer Weise verändert werden, dass die energeti-
+sche Qualität des Gebäudes verschlechtert wird. Das Gleiche gilt für Anlagen nach
+dem Abschnitt 4, soweit sie zum Nachweis der Anforderungen energieeinsparrechtli-
+cher Vorschriften des Bundes zu berücksichtigen waren.
+
+(2) Energiebedarfssenkende Einrichtungen in Anlagen nach Absatz 1 sind be-
+triebsbereit zu erhalten und bestimmungsgemäß zu nutzen. Satz 1 gilt als erfüllt, so-
+weit der Einfluss einer energiebedarfssenkenden Einrichtung auf den Jahres-
+Primärenergiebedarf durch anlagentechnische oder bauliche Maßnahmen ausgegli-
+chen wird.
+
+(3) Heizungs- und Warmwasseranlagen sowie raumlufttechnische Anlagen sind
+sachgerecht zu bedienen, zu warten und instand zu halten. Für die Wartung und In-
+standhaltung ist Fachkunde erforderlich. Fachkundig ist, wer die zur Wartung und
+Instandhaltung notwendigen Fachkenntnisse und Fertigkeiten besitzt.
+
+                                                  Abschnitt 4
+                    Heizungstechnische Anlagen, Warmwasseranlagen
+
+                                                      § 11
+                                 Inbetriebnahme von Heizkesseln
+(1) Heizkessel, die mit flüssigen oder gasförmigen Brennstoffen beschickt werden
+und deren Nennwärmeleistung mindestens 4 Kilowatt und höchstens 400 Kilowatt
+beträgt, dürfen zum Zwecke der Inbetriebnahme in Gebäuden nur eingebaut oder
+aufgestellt werden, wenn sie mit der CE-Kennzeichnung nach § 5 Abs. 1 und 2 der
+Verordnung über das Inverkehrbringen von Heizkesseln und Geräten nach dem
+Bauproduktengesetz vom 28. April 1998 (BGBl. I S. 796) oder nach Artikel 7 Abs. 1
+Satz 2 der Richtlinie 92/42/EWG des Rates vom 21. Mai 1992 über die Wirkungsgra-
+de von mit flüssigen oder gasförmigen Brennstoffen beschickten neuen Warmwas-
+serheizkesseln (ABl. EG Nr. L 167 S. 17, L 195 S. 32), geändert durch Artikel 12 der
+Richtlinie 93/68/EWG des Rates vom 22. Juli 1993 (ABl. EG Nr. L 220 S. 1), verse-
+hen sind. Satz 1 gilt auch für Heizkessel, die aus Geräten zusammengefügt werden.
+                                                              - 10 -
+
+Dabei sind die Parameter zu beachten, die sich aus der den Geräten beiliegenden
+EG-Konformitätserklärung ergeben.
+
+(2) Soweit Gebäude, deren Jahres-Primärenergiebedarf nicht nach § 3 Abs. 1 be-
+grenzt ist, mit Heizkesseln nach Absatz 1 ausgestattet werden, müssen diese Nie-
+dertemperatur-Heizkessel oder Brennwertkessel sein. Ausgenommen sind beste-
+hende Gebäude mit normalen Innentemperaturen, wenn der Jahres-
+Primärenergiebedarf den jeweiligen Höchstwert nach Anhang 1 Tabelle 1 um nicht
+mehr als 40 vom Hundert überschreitet.
+
+(3) Absatz 1 ist nicht anzuwenden auf
+1. einzeln produzierte Heizkessel,
+2. Heizkessel, die für den Betrieb mit Brennstoffen ausgelegt sind, deren Eigen-
+
+       schaften von den marktüblichen flüssigen und gasförmigen Brennstoffen erheb-
+       lich abweichen,
+3. Anlagen zur ausschließlichen Warmwasserbereitung,
+4. Küchenherde und Geräte, die hauptsächlich zur Beheizung des Raumes, in
+       dem sie eingebaut oder aufgestellt sind, ausgelegt sind, daneben aber auch
+       Warmwasser für die Zentralheizung und für sonstige Gebrauchszwecke liefern,
+5. Geräte mit einer Nennwärmeleistung von weniger als 6 Kilowatt zur Versorgung
+       eines Warmwasserspeichersystems mit Schwerkraftumlauf.
+
+(4) Heizkessel, deren Nennwärmeleistung kleiner als 4 Kilowatt oder größer als
+400 Kilowatt ist, und Heizkessel nach Absatz 3 dürfen nur dann zum Zwecke der In-
+betriebnahme in Gebäuden eingebaut oder aufgestellt werden, wenn sie nach aner-
+kannten Regeln der Technik gegen Wärmeverluste gedämmt sind.
+
+                                                      § 12
+                    Verteilungseinrichtungen und Warmwasseranlagen
+
+(1) Wer Zentralheizungen in Gebäude einbaut oder einbauen lässt, muss diese mit
+zentralen selbsttätig wirkenden Einrichtungen zur Verringerung und Abschaltung der
+Wärmezufuhr sowie zur Ein- und Ausschaltung elektrischer Antriebe in Abhängigkeit
+von
+                                                              - 11 -
+
+1. der Außentemperatur oder einer anderen geeigneten Führungsgröße und
+2. der Zeit
+ausstatten. Soweit die in Satz 1 geforderten Ausstattungen bei bestehenden Gebäu-
+den nicht vorhanden sind, muss der Eigentümer sie nachrüsten oder nachrüsten las-
+sen. Bei Wasserheizungen, die ohne Wärmeübertrager an eine Nah- oder Fernwär-
+meversorgung angeschlossen sind, gilt die Vorschrift hinsichtlich der Verringerung
+und Abschaltung der Wärmezufuhr auch ohne entsprechende Einrichtungen in den
+Haus- und Kundenanlagen als erfüllt, wenn die Vorlauftemperatur des Nah- oder
+Fernheiznetzes in Abhängigkeit von der Außentemperatur und der Zeit durch ent-
+sprechende Einrichtungen in der zentralen Erzeugungsanlage geregelt wird.
+
+(2) Wer heizungstechnische Anlagen mit Wasser als Wärmeträger in Gebäude ein-
+baut oder einbauen lässt, muss diese mit selbsttätig wirkenden Einrichtungen zur
+raumweisen Regelung der Raumtemperatur ausstatten. Dies gilt nicht für Einzelheiz-
+geräte, die zum Betrieb mit festen oder flüssigen Brennstoffen eingerichtet sind. Mit
+Ausnahme von Wohngebäuden ist für Gruppen von Räumen gleicher Art und Nut-
+zung eine Gruppenregelung zulässig. Fußbodenheizungen in Gebäuden, die vor
+dem Inkrafttreten dieser Verordnung errichtet worden sind, dürfen abweichend von
+Satz 1 mit Einrichtungen zur raumweisen Anpassung der Wärmeleistung an die Heiz-
+last ausgestattet werden. Soweit die in Satz 1 bis 3 geforderten Ausstattungen bei
+bestehenden Gebäuden nicht vorhanden sind, muss der Eigentümer sie nachrüsten.
+
+(3) Wer Umwälzpumpen in Heizkreisen von Zentralheizungen mit mehr als 25 Ki-
+lowatt Nennwärmeleistung erstmalig einbaut, einbauen lässt oder vorhandene ersetzt
+oder ersetzen lässt, hat dafür Sorge zu tragen, dass diese so ausgestattet oder be-
+schaffen sind, dass die elektrische Leistungsaufnahme dem betriebsbedingten För-
+derbedarf selbsttätig in mindestens drei Stufen angepasst wird, soweit sicherheits-
+technische Belange des Heizkessels dem nicht entgegenstehen.
+
+(4) Wer in Warmwasseranlagen Zirkulationspumpen einbaut oder einbauen lässt,
+muss diese mit selbsttätig wirkenden Einrichtungen zur Ein- und Ausschaltung aus-
+statten.
+                                                              - 12 -
+
+(5) Wer Wärmeverteilungs- und Warmwasserleitungen sowie Armaturen in Gebäu-
+den erstmalig einbaut oder vorhandene ersetzt, muss deren Wärmeabgabe nach
+Anhang 5 begrenzen.
+
+(6) Wer Einrichtungen, in denen Heiz- oder Warmwasser gespeichert wird, erstma-
+lig in Gebäude einbaut oder vorhandene ersetzt, muss deren Wärmeabgabe nach
+anerkannten Regeln der Technik begrenzen.
+
+                                                 Abschnitt 5
+                     Gemeinsame Vorschriften, Ordnungswidrigkeiten
+
+                                                      § 13
+    Ausweise über Energie- und Wärmebedarf, Energieverbrauchskennwerte
+
+(1) Für zu errichtende Gebäude mit normalen Innentemperaturen sind die wesentli-
+chen Ergebnisse der nach dieser Verordnung erforderlichen Berechnungen, insbe-
+sondere die spezifischen Werte des Transmissionswärmeverlusts, der Anlagenauf-
+wandszahl der Anlagen für Heizung, Warmwasserbereitung und Lüftung, des End-
+energiebedarfs nach einzelnen Energieträgern und des Jahres-Primärenergiebedarfs
+in einem Energiebedarfsausweis zusammenzustellen. In dem Ausweis ist auf die
+normierten Bedingungen hinzuweisen. Einzelheiten über den Energiebedarfsausweis
+werden in einer Allgemeinen Verwaltungsvorschrift der Bundesregierung mit Zu-
+stimmung des Bundesrates bestimmt. Rechte Dritter werden durch den Ausweis
+nicht berührt.
+
+(2) Für Gebäude mit normalen Innentemperaturen, die wesentlich geändert wer-
+den, ist ein Energiebedarfsausweis entsprechend Absatz 1 auszustellen, wenn im
+Zusammenhang mit den wesentlichen Änderungen die erforderlichen Berechnungen
+in entsprechender Anwendung des Absatzes 1 durchgeführt worden sind. Einzelhei-
+ten, insbesondere bezüglich der erleichterten Feststellung der Eigenschaften von
+Gebäudeteilen, die von der Änderung nicht betroffen sind, werden in der Allgemeinen
+Verwaltungsvorschrift nach Absatz 1 Satz 3 geregelt. Eine wesentliche Änderung
+liegt vor, wenn
+1. innerhalb eines Jahres mindestens drei der in Anhang 3 Nr. 1 bis 5 genannten
+
+       Änderungen in Verbindung mit dem Austausch eines Heizkessels oder der Um-
+                                                              - 13 -
+
+       stellung einer Heizungsanlage auf einen anderen Energieträger durchgeführt
+       werden oder
+2. das beheizte Gebäudevolumen um mehr als 50 vom Hundert erweitert wird.
+
+(3) Für zu errichtende Gebäude mit niedrigen Innentemperaturen sind die wesentli-
+chen Ergebnisse der Berechnungen nach dieser Verordnung, insbesondere der spe-
+zifische, auf die wärmeübertragende Umfassungsfläche bezogene Transmissions-
+wärmeverlust, in einem Wärmebedarfsausweis zusammenzustellen. Absatz 1 Satz 2
+bis 4 gilt entsprechend.
+
+(4) Der Energiebedarfsausweis nach den Absätzen 1 und 2 oder der Wärmebe-
+darfsausweis nach Absatz 3 ist den nach Landesrecht zuständigen Behörden auf
+Verlangen vorzulegen und Käufern, Mietern und sonstigen Nutzungsberechtigten der
+Gebäude auf Anforderung zur Einsichtnahme zugänglich zu machen.
+
+(5) Soweit ein Energiebedarfsausweis nach den Absätzen 1 oder 2 nicht zu erstel-
+len ist, können insbesondere die Eigentümer von Wohngebäuden, die zur
+verbrauchsabhängigen Abrechnung der Heizkosten nach der Verordnung über die
+Heizkostenabrechnung verpflichtet sind, den Käufern, Mietern, sonstigen Nutzungs-
+berechtigten und Miet- und Kaufinteressenten den Energieverbrauchskennwert zu-
+sammen mit den wesentlichen Gebäude- und Nutzungsmerkmalen gemäß Absatz 6
+Satz 2 mitteilen. Energieverbrauchskennwerte im Sinne dieser Vorschrift sind die
+witterungsbereinigten Energieverbräuche für Raumheizung in Kilowattstunden pro
+Quadratmeter Wohnfläche des Gebäudes und Jahr. Für die Witterungsbereinigung
+des Energieverbrauchs ist das in VDI 3807 : Juni 1994*) angegebene Verfahren an-
+zuwenden. Die für die Witterungsbereinigung erforderlichen Daten sind den Be-
+kanntmachungen nach Absatz 6 zu entnehmen.
+
+(6) Als Vergleichsmaßstab für Energieverbrauchskennwerte nach Absatz 5 gibt das
+Bundesministerium für Verkehr, Bau- und Wohnungswesen im Einvernehmen mit
+dem Bundesministerium für Wirtschaft und Technologie im Bundesanzeiger durch-
+schnittliche Energieverbrauchskennwerte und deren Bandbreiten, die den topogra-
+phischen Unterschieden in den einzelnen Klimazonen Rechnung tragen, sowie die
+für die Witterungsbereinigung erforderlichen Daten bekannt. Bei der Bekanntma-
+
+*) Veröffentlicht im Beuth-Verlag GmbH, Berlin
+                                                              - 14 -
+
+chung durchschnittlicher Energieverbrauchskennwerte ist sachgerecht nach den we-
+sentlichen Gebäude- und Nutzungsmerkmalen zu unterscheiden.
+
+(7) Die Ausweise nach den Absätzen 1 bis 3 und die Energieverbrauchskennwerte
+nach Absatz 5 sind energiebezogene Merkmale eines Gebäudes im Sinne der Richt-
+linie 93/76/EWG des Rates vom 13. September 1993 zur Begrenzung der Kohlendi-
+oxidemissionen durch eine effizientere Energienutzung (ABl. EG Nr. L 237 S. 28).
+
+                                                      § 14
+                    Getrennte Berechnungen für Teile eines Gebäudes
+
+Teile eines Gebäudes dürfen wie eigenständige Gebäude behandelt werden, insbe-
+sondere wenn sie sich hinsichtlich der Nutzung, der Innentemperatur oder des Fens-
+terflächenanteils unterscheiden. Für die Trennwände zwischen den Gebäudeteilen
+gelten Anhang 1 Nr. 2.7 und Anhang 2 Nr. 2 Satz 3 entsprechend. Soweit im Einzel-
+fall nach Satz 1 verfahren wird, ist dies für dieses Gebäude in den Ausweisen nach
+§ 13 Abs. 1 bis 3 deutlich zu machen.
+
+                                                      § 15
+                                           Regeln der Technik
+
+(1) Das Bundesministerium für Verkehr, Bau- und Wohnungswesen kann im Ein-
+vernehmen mit dem Bundesministerium für Wirtschaft und Technologie durch Be-
+kanntmachung im Bundesanzeiger auf Veröffentlichungen sachverständiger Stellen
+über anerkannte Regeln der Technik hinweisen, soweit in dieser Verordnung auf sol-
+che Regeln Bezug genommen wird.
+
+(2) Zu den anerkannten Regeln der Technik gehören auch Normen, technische
+Vorschriften oder sonstige Bestimmungen anderer Mitgliedstaaten der Europäischen
+Gemeinschaft oder sonstiger Vertragsstaaten des Abkommens über den Europäi-
+schen Wirtschaftsraum, wenn ihre Einhaltung das geforderte Schutzniveau in Bezug
+auf Energieeinsparung und Wärmeschutz dauerhaft gewährleistet.
+
+(3) Soweit eine Bewertung von Baustoffen, Bauteilen und Anlagen im Hinblick auf
+die Anforderungen dieser Verordnung auf Grund anerkannter Regeln der Technik
+nicht möglich ist, weil solche Regeln nicht vorliegen oder wesentlich von ihnen ab-
+gewichen wird, sind gegenüber der nach Landesrecht zuständigen Behörde die für
+                                                              - 15 -
+
+eine Bewertung erforderlichen Nachweise zu führen. Der Nachweis nach Satz 1 ent-
+fällt für Baustoffe, Bauteile und Anlagen,
+1. die nach den Vorschriften des Bauproduktengesetzes oder anderer Rechtsvor-
+
+     schriften zur Umsetzung von Richtlinien der Europäischen Gemeinschaften, de-
+     ren Regelungen auch Anforderungen zur Energieeinsparung umfassen, mit der
+     CE-Kennzeichnung versehen sind und nach diesen Vorschriften zulässige und
+     von den Ländern bestimmte Klassen- und Leistungsstufen aufweisen, oder
+2. bei denen nach bauordnungsrechtlichen Vorschriften über die Verwendung von
+     Bauprodukten auch die Einhaltung dieser Verordnung sichergestellt wird.
+
+                                                      § 16
+                                                Ausnahmen
+
+(1) Soweit bei Baudenkmälern oder sonstiger besonders erhaltenswerter Bausub-
+stanz die Erfüllung der Anforderungen dieser Verordnung die Substanz oder das Er-
+scheinungsbild beeinträchtigen und andere Maßnahmen zu einem unverhältnismäßig
+hohen Aufwand führen würden, lassen die nach Landesrecht zuständigen Behörden
+auf Antrag Ausnahmen zu.
+
+(2) Soweit die Ziele dieser Verordnung durch andere als in dieser Verordnung vor-
+gesehene Maßnahmen im gleichen Umfang erreicht werden, lassen die nach Lan-
+desrecht zuständigen Behörden auf Antrag Ausnahmen zu. In einer Allgemeinen
+Verwaltungsvorschrift kann die Bundesregierung mit Zustimmung des Bundesrates
+bestimmen, unter welchen Bedingungen die Voraussetzungen nach Satz 1 als erfüllt
+gelten.
+
+                                                      § 17
+                                                Befreiungen
+
+Die nach Landesrecht zuständigen Behörden können auf Antrag von den Anforde-
+rungen dieser Verordnung befreien, soweit die Anforderungen im Einzelfall wegen
+besonderer Umstände durch einen unangemessenen Aufwand oder in sonstiger
+Weise zu einer unbilligen Härte führen. Eine unbillige Härte liegt insbesondere vor,
+wenn die erforderlichen Aufwendungen innerhalb der üblichen Nutzungsdauer, bei
+Anforderungen an bestehende Gebäude innerhalb angemessener Frist durch die
+eintretenden Einsparungen nicht erwirtschaftet werden können.
+                                                              - 16 -
+
+                                                      § 18
+                                         Ordnungswidrigkeiten
+
+Ordnungswidrig im Sinne des § 8 Abs. 1 Nr. 1 des Energieeinsparungsgesetzes
+handelt, wer vorsätzlich oder fahrlässig
+1. entgegen § 11 Abs. 1 Satz 1, auch in Verbindung mit Satz 2, einen Heizkessel
+
+       einbaut oder aufstellt,
+2. entgegen § 12 Abs. 1 Satz 1 oder Abs. 2 Satz 1 eine Zentralheizung oder eine
+
+       heizungstechnische Anlage nicht oder nicht rechtzeitig ausstattet,
+3. entgegen § 12 Abs. 3 nicht dafür Sorge trägt, dass Umwälzpumpen in der dort
+
+       genannten Weise ausgestattet oder beschaffen sind oder
+4. entgegen § 12 Abs. 5 die Wärmeabgabe von Wärmeverteilungs- und Warm-
+
+       wasserleitungen sowie Armaturen nicht oder nicht rechtzeitig begrenzt.
+
+                                                 Abschnitt 6
+                                        Schlussbestimmungen
+
+                                                      § 19
+                                          Übergangsvorschrift
+
+Diese Verordnung ist nicht anzuwenden auf die Errichtung und die Änderung von
+Gebäuden, wenn für das Vorhaben vor dem Inkrafttreten dieser Verordnung der
+Bauantrag gestellt oder die Bauanzeige erstattet ist. Auf genehmigungs- und anzei-
+gefreie Bauvorhaben ist diese Verordnung nicht anzuwenden, wenn mit der Bauaus-
+führung vor dem Inkrafttreten dieser Verordnung begonnen worden ist. Auf Bauvor-
+haben nach den Sätzen 1 und 2 sind die bis zum 31. Januar 2002 geltenden Vor-
+schriften der Wärmeschutzverordnung vom 16. August 1994 (BGBl. I S. 2121) und
+der Heizungsanlagen-Verordnung in der Fassung der Bekanntmachung vom 4. Mai
+1998 (BGBl. I S. 851) weiter anzuwenden.
+                                                              - 17 -
+
+                                                      § 20
+                                   Inkrafttreten, Außerkrafttreten
+
+(1) § 13 Abs. 1 Satz 3, § 15 und § 16 Abs. 2 dieser Verordnung treten am Tage
+nach der Verkündung in Kraft. Im Übrigen tritt diese Verordnung am 1. Februar 2002
+in Kraft.
+
+(2) Am 1. Februar 2002 treten die Wärmeschutzverordnung vom 16. August 1994
+(BGBl. I S. 2121) und die Heizungsanlagen-Verordnung in der Fassung der Be-
+kanntmachung vom 4. Mai 1998 (BGBl. I S. 851) außer Kraft.
+
+                                                __________
+                                    Der Bundesrat hat zugestimmt.
+
+                                   Berlin, den November 2001
+
+                                          Der Bundeskanzler
+                                         Der Bundesminister
+                                für Wirtschaft und Technologie
+                                         Der Bundesminister
+                          für Verkehr, Bau- und Wohnungswesen
+                                     - 18 -
+
+                                                             Anhang 1
+        Anforderungen an zu errichtende Gebäude mit normalen Innentemperaturen (zu § 3)
+
+1. Höchstwerte des Jahres-Primärenergiebedarfs und des spezifischen
+      Transmissionswärmeverlusts (zu § 3 Abs. 1)
+
+1.1 Tabelle der Höchstwerte
+
+                                     Tabelle 1
+
+       Höchstwerte des auf die Gebäudenutzfläche und des auf das beheizte Gebäudevolumen
+
+   bezogenen Jahres-Primärenergiebedarfs und des spezifischen, auf die wärmeübertragende
+
+Umfassungsfläche bezogenen Transmissionswärmeverlusts in Abhängigkeit vom Verhältnis A/ Ve
+
+             Jahres-Primärenergiebedarf                                Spezifischer, auf die
+                                                                       wärmeübertragende
+                                                                 Umfassungsfläche bezogener
+                                                                  Transmissionswärmeverlust
+
+Ver-      Qp´´ in kWh/(m²a)                    Qp´ in kWh/(m³a)     HT´ in W/(m²K)
+hält-                                          bezogen auf das
+
+nis bezogen auf die Gebäudenutzfläche beheizte Gebäu-
+                                               devolumen
+A/Ve
+                              Wohngebäude                        Nichtwohnge-
+       Wohngebäude außer       mit überwie-    andere Gebäude       bäude mit     Nichtwohnge-
+       solchen nach Spalte 3  gender Warm-                                         bäude mit ei-
+                               wasserberei-                      einem Fenster-
+                                                                  flächenanteil      nem Fen-
+                              tung aus elekt-                        30% und     sterflächenanteil
+                              rischem Strom                      Wohngebäude
+                                                                                         >30%
+
+1         2                   3                       4          5                  6
+
+0,2 66,00 + 2600/(100+AN)     88,00            14,72             1,05            1,55
+
+0,3 73,53 + 2600/(100+AN)     95,53            17,13             0,80            1,15
+
+0,4 81,06 + 2600/(100+AN) 103,06               19,54             0,68            0,95
+
+0,5 88,58 + 2600/(100+AN) 110,58               21,95             0,60            0,83
+
+0,6 96,11 + 2600/(100+AN) 118,11               24,36             0,55            0,75
+
+0,7 103,64 + 2600/(100+AN) 125,64              26,77             0,51            0,69
+
+0,8 111,17 + 2600/(100+AN) 133,17              29,18             0,49            0,65
+
+0,9 118,70 + 2600/(100+AN) 140,70              31,59             0,47            0,62
+
+1 126,23 + 2600/(100+AN) 148,23                34,00             0,45            0,59
+
+1,05 130,00 + 2600/(100+AN) 152,00             35,21             0,44            0,58
+
+1.2 Zwischenwerte zu Tabelle 1
+Zwischenwerte zu den in Tabelle 1 festgelegten Höchstwerten sind nach folgenden Gleichungen zu
+ermitteln:
+
+Spalte 2  Qp´´ = 50,94 + 75,29  A/Ve+ 2600/(100+ AN)                             in kWh/(m²a)
+Spalte 3  Qp´´ = 72,94 + 75,29  A/Ve                                             in kWh/(m²a)
+Spalte 4  Qp´ = 9,9 + 24,1  A/Ve                                                 in kWh/(m³a)
+                                    - 19 -
+
+Spalte 5  HT´ = 0,3 + 0,15/(A/Ve)                                                in W/(m²K)
+Spalte 6  HT´ = 0,35 + 0,24/(A/Ve)                                               in W/(m²K)
+
+1.3 Definition der Bezugsgrößen
+
+1.3.1 Die wärmeübertragende Umfassungsfläche A eines Gebäudes in m² ist nach Anhang B der DIN
+EN ISO 13789 : 1999-10, Fall "Außenabmessung"*), zu ermitteln. Die zu berücksichtigenden Flächen
+sind die äußere Begrenzung einer abgeschlossenen beheizten Zone. Außerdem ist die wärmeüber-
+tragende Umfassungsfläche A so festzulegen, dass ein in DIN EN 832 : 1998-12 beschriebenes Ein-
+Zonen-Modell entsteht, das mindestens die beheizten Räume einschließt.
+
+1.3.2 Das beheizte Gebäudevolumen Ve in m³ ist das Volumen, das von der nach Nr. 1.3.1 ermittelten
+wärmeübertragende Umfassungsfläche A umschlossen wird.
+
+1.3.3 Das Verhältnis A/Ve in m-1 ist die errechnete wärmeübertragende Umfassungsfläche nach Nr.
+1.3.1 bezogen auf das beheizte Gebäudevolumen nach Nr. 1.3.2.
+
+1.3.4 Die Gebäudenutzfläche AN in m² wird bei Wohngebäuden wie folgt ermittelt:  AN = 0,32 Ve
+
+2. Rechenverfahren zur Ermittlung der Werte des zu errichtenden Gebäudes
+        (zu § 3 Abs. 2 und 4)
+
+2.1 Berechnung des Jahres-Primärenergiebedarfs
+
+2.1.1 Der Jahres-Primärenergiebedarf Qp für Gebäude ist nach DIN EN 832 : 1998-12 in Verbindung
+mit DIN V 4108-6 : 2000-11 und DIN V 4701-10 : 2001-02 zu ermitteln. Der in diesem Rechengang zu
+bestimmende Jahres-Heizwärmebedarf Qh ist nach dem Monatsbilanzverfahren nach DIN EN 832 :
+1998-12 mit den in DIN V 4108 - 6: 2000-11 Anhang D genannten Randbedingungen zu ermitteln. In
+DIN V 4108 - 6: 2000-11 angegebene Vereinfachungen für den Berechnungsgang nach DIN EN 832 :
+1998-12 dürfen angewandt werden. Zur Berücksichtigung von Lüftungsanlagen mit Wärmerückgewin-
+nung sind die methodischen Hinweise unter Nr. 4.1 der DIN V 4701-10: 2001-02 zu beachten.
+
+2.1.2 Bei Gebäuden, die zu 80 vom Hundert oder mehr durch elektrische Speicherheizsysteme be-
+heizt werden, darf der Primärenergiefaktor bei den Nachweisen nach § 3 Abs. 2 für den für Heizung
+und Lüftung bezogenen Strom für die Dauer von acht Jahren ab dem Inkrafttreten dieser Verordnung
+abweichend von der DIN V 4701-10: 2001-02 mit 2,0 angesetzt werden. Soweit bei diesen Gebäuden
+eine dezentrale elektrische Warmwasserbereitung vorgesehen wird, darf die Regelung nach Satz 1
+auch auf den von diesem System bezogenen Strom angewandt werden. Die Regelungen nach Satz 1
+und 2 erstrecken sich nicht auf die Angaben nach § 13 Abs. 1. Elektrische Speicherheizsysteme im
+Sinne des Satzes 1 sind Heizsysteme mit unterbrechbarem Strombezug in Verbindung mit einer luft-
+technischen Anlage mit einer Wärmerückgewinnung, die nur in den Zeiten außerhalb des unterbro-
+
+*) Alle zitierten DIN-Normen sind im Beuth-Verlag GmbH, Berlin, veröffentlicht.
+                           - 20 -
+
+chenen Betriebes durch eine Widerstandsheizung Wärme in einem geeigneten Speichermedium spei-
+chern.
+
+2.1.3 Werden Ein- und Zweifamilienhäuser mit Niedertemperaturkesseln ausgestattet, deren System-
+temperatur 55/45 °C überschreitet, erhöht sich bei monolithischer Außenwandkonstruktion der
+Höchstwert des zulässigen Jahres-Primärenergiebedarfs Qp´´ in Tabelle 1 jeweils um 3 vom Hundert.
+Diese Regelung gilt für die Dauer von fünf Jahren ab dem 1. Februar 2002.
+
+2.2 Berücksichtigung der Warmwasserbereitung bei Wohngebäuden
+
+Bei Wohngebäuden ist der Energiebedarf für Warmwasser in der Berechnung des Jahres-
+Primärenergiebedarfs zu berücksichtigen. Als Nutz-Wärmebedarf für die Warmwasserbereitung QW im
+Sinne von DIN V 4701-10: 2001-02 sind 12,5 kWh/(m²a) anzusetzen.
+
+2.3 Berechnung des spezifischen Transmissionswärmeverlusts
+
+Der spezifische Transmissionswärmeverlust HT ist nach DIN EN 832 : 1998-12 mit den in DIN V 4108
+- 6: 2000-11 Anhang D genannten Randbedingungen zu ermitteln. In DIN V 4108 - 6: 2000-11 ange-
+gebene Vereinfachungen für den Berechnungsgang nach DIN EN 832 : 1998-12 dürfen angewandt
+werden.
+
+2.4 Beheiztes Luftvolumen
+
+Bei den Berechnungen gemäß Nr. 2.1 ist das beheizte Luftvolumen V nach DIN EN 832 :1998­12 zu
+ermitteln. Vereinfacht darf es wie folgt berechnet werden:
+
+V = 0,76 Ve  bei Gebäuden bis zu 3 Vollgeschossen
+V = 0,80 Ve  in den übrigen Fällen.
+
+2.5 Wärmebrücken
+Wärmebrücken sind bei der Ermittlung des Jahres-Heizwärmebedarfs auf eine der folgenden Arten zu
+berücksichtigen:
+
+a) Berücksichtigung durch Erhöhung der Wärmedurchgangskoeffizienten um
+        UWB = 0,10 W/(m²K) für die gesamte wärmeübertragende Umfassungsfläche,
+
+b) bei Anwendung von Planungsbeispielen nach DIN 4108 Bbl 2 : 1998-08 Berücksichtigung durch
+        Erhöhung der Wärmedurchgangskoeffizienten um UWB = 0,05 W/(m²K) für die gesamte wär-
+        meübertragende Umfassungsfläche,
+
+c) durch genauen Nachweis der Wärmebrücken nach DIN V 4108 - 6: 2000­11 in Verbindung mit
+        weiteren anerkannten Regeln der Technik
+                                                              - 21 -
+
+Soweit der Wärmebrückeneinfluss bei Außenbauteilen bereits bei der Bestimmung des Wärmedurch-
+lasskoeffizienten U berücksichtigt worden ist, darf die wärmeübertragende Umfassungsfläche A bei
+der Berücksichtigung des Wärmebrückeneinflusses nach Buchstabe a, b oder c um die entsprechen-
+de Bauteilfläche vermindert werden.
+
+2.6 Ermittlung der solaren Wärmegewinne bei Fertighäusern und vergleichbaren Gebäuden
+Werden Gebäude nach Plänen errichtet, die für mehrere Gebäude an verschiedenen Standorten er-
+stellt worden sind, dürfen bei der Berechnung die solaren Gewinne so ermittelt werden, als wären alle
+Fenster dieser Gebäude nach Osten oder Westen orientiert.
+
+2.7 Aneinander gereihte Bebauung
+
+Bei der Berechnung von aneinander gereihten Gebäuden werden Gebäudetrennwände
+a) zwischen Gebäuden mit normalen Innentemperaturen als nicht wärmedurchlässig angenommen
+
+       und bei der Ermittlung der Werte A und A/Ve nicht berücksichtigt,
+b) zwischen Gebäuden mit normalen Innentemperaturen und Gebäuden mit niedrigen Innentempe-
+
+       raturen bei der Berechnung des Wärmedurchgangskoeffizienten mit einem Temperatur-
+       Korrekturfaktor Fu nach DIN V 4108 - 6: 2000-11 gewichtet und
+c) zwischen Gebäuden mit normalen Innentemperaturen und Gebäuden mit wesentlich niedrigeren
+       Innentemperaturen im Sinne von DIN 4108 - 2: 2001-03 bei der Berechnung des Wärmedurch-
+       gangskoeffizienten mit einem Temperatur-Korrekturfaktor Fu = 0,5 gewichtet.
+
+Werden beheizte Teile eines Gebäudes getrennt berechnet, gilt Satz 1 Buchstabe a sinngemäß für die
+Trennflächen zwischen den Gebäudeteilen. Werden aneinander gereihte Gebäude gleichzeitig erstellt,
+dürfen sie hinsichtlich der Anforderungen des § 3 wie ein Gebäude behandelt werden. § 13 bleibt un-
+berührt.
+
+Ist die Nachbarbebauung bei aneinander gereihter Bebauung nicht gesichert, müssen die Trennwän-
+de mindestens den Mindestwärmeschutz nach § 6 Abs. 1 aufweisen.
+
+2.8 Fensterflächenanteil (zu § 3 Abs. 2 und 4 und zu Anhang 1 Nr. 1)
+Der Fensterflächenanteil des gesamten Gebäudes f nach § 3 Abs. 2 und 4 ist wie folgt zu ermitteln:
+
+                                                    f = Aw
+                                                        A w + A AW
+
+mit
+Aw Fläche der Fenster
+AAW Fläche der Außenwände.
+
+Wird ein Dachgeschoss beheizt, so sind bei der Ermittlung des Fensterflächenanteils die Fläche aller
+Fenster des beheizten Dachgeschosses in die Fläche Aw und die Fläche der zur wärmeübertragenden
+Umfassungsfläche gehörenden Dachschrägen in die Fläche AAW einzubeziehen.
+                                                              - 22 -
+
+2.9 Sommerlicher Wärmeschutz (zu § 3 Abs. 4)
+
+2.9.1 Als höchstzulässige Sonneneintragskennwerte nach § 3 Abs. 4 sind die in DIN 4108 - 2: 2001-
+03 Abschnitt 8 festgelegten Werte einzuhalten. Der Sonneneintragskennwert des zu errichtenden
+Gebäudes ist nach dem dort genannten Verfahren zu bestimmen.
+
+2.9.2 Werden Gebäude mit Ausnahme von Wohngebäuden nutzungsbedingt mit Anlagen ausgestat-
+tet, die Raumluft unter Einsatz von Energie kühlen, so dürfen diese Gebäude abweichend von Nr.
+2.9.1 auch so ausgeführt werden, dass die Kühlleistung bezogen auf das gekühlte Gebäudevolumen
+nach dem Stand der Technik und den im Einzelfall wirtschaftlich vertretbaren Maßnahmen so gering
+wie möglich gehalten wird. Dabei sind insbesondere die Maßnahmen zu berücksichtigen, die das un-
+ter Nr. 2.9.1 angegebene Berechnungsverfahren zur Verminderung des Sonneneintragskennwertes
+vorsieht.
+
+2.10 Voraussetzungen für die Anrechnung mechanisch betriebener Lüftungsanlagen (zu § 3
+        Abs. 2)
+
+Im Rahmen der Berechnung nach Nr. 2 ist bei mechanischen Lüftungsanlagen die Anrechnung der
+Wärmerückgewinnung oder einer regelungstechnisch verminderten Luftwechselrate nur zulässig,
+wenn
+a) die Dichtheit des Gebäudes nach Anhang 4 Nr. 2 nachgewiesen wird,
+b) in der Lüftungsanlage die Zuluft nicht unter Einsatz von elektrischer oder aus fossilen Brenn-
+
+        stoffen gewonnener Energie gekühlt wird und
+c) der mit Hilfe der Anlage erreichte Luftwechsel § 5 Abs. 2 genügt.
+
+Die bei der Anrechnung der Wärmerückgewinnung anzusetzenden Kennwerte der Lüftungsanlagen
+sind nach anerkannten Regeln der Technik zu bestimmen oder den allgemeinen bauaufsichtlichen
+Zulassungen der verwendeten Produkte zu entnehmen. Lüftungsanlagen müssen mit Einrichtungen
+ausgestattet sein, die eine Beeinflussung der Luftvolumenströme jeder Nutzeinheit durch den Nutzer
+erlauben. Es muss sichergestellt sein, dass die aus der Abluft gewonnene Wärme vorrangig vor der
+vom Heizsystem bereitgestellten Wärme genutzt wird.
+
+3. Vereinfachtes Verfahren für Wohngebäude (zu § 3 Abs. 2 Nr. 1)
+
+Der Jahres-Primärenergiebedarf ist vereinfacht wie folgt zu ermitteln:
+
+                                      Qp = (Qh + Q W ) ep
+
+Dabei bedeuten
+Qh, der Jahres-Heizwärmebedarf
+QW der Zuschlag für Warmwasser nach Nr. 2.2
+ep die Anlagenaufwandszahl nach DIN V 4701-10 : 2001-02 Nr. 4.2.6 in Verbindung mit An-
+
+        hang C.5 (grafisches Verfahren); auch die ausführlicheren Rechengänge nach DIN V 4701-10 :
+        2001-02 dürfen zur Ermittlung von ep angewandt werden.
+                                                              - 23 -
+
+Der Einfluss der Wärmebrücken ist durch Anwendung der Planungsbeispiele nach DIN 4108 Bbl 2 :
+1998-08 zu begrenzen.
+Die Nr. 2.1.2, 2.6 und 2.7 gelten entsprechend.
+Der Jahres-Heizwärmebedarf ist nach Tabelle 2 und 3 zu ermitteln:
+                                            - 24 -
+
+                                                   Tabelle 2
+           Vereinfachtes Verfahren zur Ermittlung des Jahres-Heizwärmebedarfs
+
+Zeile Zu ermittelnde Größen             Gleichung               Zu verwendende Randbedingung
+
+           1                                2                                 3
+
+1 Jahres-                    Qh = 66 (HT + HV)­ 0,95 (Qs + Qi)
+
+   Heizwärmebedarf Qh
+
+   Spezifischer Transmis- HT =  (Fxi Ui Ai) + 0,05 A 1)         Temperatur-Korrekturfaktoren Fxi
+   sionswärmeverlust HT                                         nach Tabelle 3
+
+2  bezogen auf die wär-             HT
+   meübertragende Um-               A
+                             HT ´=
+
+   fassungsfläche
+
+                             HV = 0,19 Ve                       ohne Dichtheitsprüfung
+                                                                nach Anhang 4 Nr. 2
+3 Spezifischer Lüftungs-
+   wärmeverlust HV                                              mit Dichtheitsprüfung
+                             HV = 0,163 Ve                      nach Anhang 4 Nr. 2
+
+                                                                Solare Einstrahlung:
+
+                                                                Orientierung            (IS)j,HP
+
+                                                                Südost bis Südwest 270
+                                                                                                kWh/(m².a)
+
+                                                                Nordwest bis Nordost 100
+                                                                                                kWh/(m².a)
+
+4 Solare Gewinne QS QS =  (Is)j,HP  0,567 gi Ai 2)              übrige Richtungen       155
+                                                                                        kWh/(m².a)
+
+                                                                Dachflächenfenster 225
+                                                                mit Neigungen< 30°3) kWh/(m².a)
+
+                                                                Die Fläche der Fenster Ai mit der
+                                                                Orientierung j (Süd, West, Ost,
+                                                                Nord und horizontal) ist nach den
+                                                                lichten Fassadenöffnungsmaßen zu
+                                                                ermitteln.
+
+5 Interne Gewinne Qi Qi = 22 AN                                 AN: Gebäudenutzfläche nach
+                                                                Nr. 1.3.4
+
+1) Die Wärmedurchgangskoeffizienten der Bauteile Ui sind nach DIN EN ISO 6946 : 1996-11 und
+        nach DIN EN ISO 10077-1 : 2000-11 zu ermitteln oder sind technischen Produkt-
+        Spezifikationen (z.B. für Dachflächenfenster) zu entnehmen. Bei an das Erdreich grenzenden
+        Bauteilen ist der äußere Wärmeübergangswiderstand gleich Null zu setzen.
+
+2) Der Gesamtenergiedurchlassgrad gi (für senkrechte Einstrahlung) ist technischen Produkt-
+        Spezifikationen zu entnehmen oder nach DIN EN 410 : 1998-12 zu ermitteln. Besondere ener-
+        giegewinnende Systeme, wie z.B. Wintergärten oder transparente Wärmedämmung, können im
+        vereinfachten Verfahren keine Berücksichtigung finden.
+
+3) Dachflächenfenster mit Neigungen  30° sind hinsichtlich der Orientierung wie senkrechte
+        Fenster zu behandeln.
+- 25 -
+
+               Tabelle 3
+Temperatur-Korrekturfaktoren Fxi
+
+Wärmestrom nach außen über Bauteil i              Temperatur-Korrekturfaktor Fxi
+Außenwand, Fenster                                                   1
+Dach (als Systemgrenze)                                              1
+Oberste Geschossdecke (Dachraum nicht ausgebaut)                    0,8
+Abseitenwand (Drempelwand)                                          0,8
+Wände und Decken zu unbeheizten Räumen                              0,5
+Unterer Gebäudeabschluss:
+- Kellerdecke/-wände zu unbeheiztem Keller                          0,6
+- Fußboden auf Erdreich
+- Flächen des beheizten Kellers gegen Erdreich
+                                 - 26 -
+
+                                                     Anhang 2
+Anforderungen an zu errichtende Gebäude mit niedrigen Innentemperaturen (zu § 4)
+
+1. Höchstwerte des spezifischen, auf die wärmeübertragende Umfassungsflä-
+      che bezogenen Transmissionswärmeverlusts
+
+                                 Tabelle 1
+
+Höchstwerte in Abhängigkeit vom Verhältnis A/Ve
+
+                        A/Ve 1)          Höchstwerte HT´
+                        in m-1            in W/(m²  K) 2)
+
+                        < 0,20              1,03
+
+                        0,30                0,86
+
+                        0,40                0,78
+
+                        0,50                0,73
+
+                        0,60                0,70
+
+                        0,70                0,67
+
+                        0,80                0,66
+
+                        0,90                0,64
+
+                        > 1,00              0,63
+
+1) Die A/Ve -Werte sind nach Anhang 1 Nr. 1.3 zu ermitteln.
+2) Zwischenwerte sind nach folgender Gleichung zu ermitteln:
+
+HT´ = 0,53 + 0,1  Ve/A  in W/(m²K)
+
+2. Berechnung des spezifischen, auf die wärmeübertragende Umfassungsflä-
+      che bezogenen Transmissionswärmeverlusts HT´
+
+Der spezifische, auf die wärmeübertragende Umfassungsfläche bezogene Transmissionswärmever-
+lust HT´ ist aus dem spezifischen Transmissionswärmeverlust HT zu bestimmen, der nach DIN EN 832
+: 1998-12 in Verbindung mit DIN V 4108-6 : 2000-11 zu berechnen ist. Bei der Berechnung von HT
+dürfen die Temperatur-Reduktionsfaktoren nach DIN V 4108-6 : 2000-11 verwendet werden. Bei an-
+einander gereihten Gebäuden dürfen die Gebäudetrennwände als wärmeundurchlässig angenommen
+werden.
+                                                              - 27 -
+
+                                                             Anhang 3
+                                                       Anforderungen bei
+                   Änderung von Außenbauteilen bestehender Gebäude (zu § 8 Abs. 1)
+                       und bei Errichtung von Gebäuden mit geringem Volumen (§ 7)
+
+1. Außenwände
+
+Soweit bei beheizten Räumen Außenwände
+a) ersetzt, erstmalig eingebaut
+
+oder in der Weise erneuert werden, dass
+
+b) Bekleidungen in Form von Platten oder plattenartigen Bauteilen oder Verschalungen sowie
+        Mauerwerks-Vorsatzschalen angebracht werden,
+
+c) auf der Innenseite Bekleidungen oder Verschalungen aufgebracht werden,
+d) Dämmschichten eingebaut werden,
+e) bei einer bestehenden Wand mit einem Wärmedurchgangskoeffizienten größer 0,9 W/(m².K)
+
+        der Außenputz erneuert wird oder
+f) neue Ausfachungen in Fachwerkwände eingesetzt werden,
+sind die jeweiligen Höchstwerte der Wärmedurchgangskoeffizienten nach Tabelle 1 Zeile 1 einzuhal-
+ten. Bei einer Kerndämmung von mehrschaligem Mauerwerk gemäß Buchstabe d gilt die Anforderung
+als erfüllt, wenn der bestehende Hohlraum zwischen den Schalen vollständig mit Dämmstoff ausgefüllt
+wird.
+
+2. Fenster, Fenstertüren und Dachflächenfenster
+
+Soweit bei beheizten Räumen außen liegende Fenster, Fenstertüren oder Dachflächenfenster in der
+Weise erneuert werden, dass
+a) das gesamte Bauteil ersetzt oder erstmalig eingebaut wird,
+b) zusätzliche Vor- oder Innenfenster eingebaut werden oder
+c) die Verglasung ersetzt wird,
+sind die Anforderungen nach Tabelle 1 Zeile 2 einzuhalten. Satz 1 gilt nicht für Schaufenster und Tür-
+anlagen aus Glas. Bei Maßnahmen gemäß Buchstabe c gilt Satz 1 nicht, wenn der vorhandene Rah-
+men zur Aufnahme der vorgeschriebenen Verglasung ungeeignet ist. Werden Maßnahmen nach
+Buchstabe c an Kasten- oder Verbundfenstern durchgeführt, so gelten die Anforderungen als erfüllt,
+wenn eine Glastafel mit einer infrarot-reflektierenden Beschichtung mit einer Emissivität n  0,20 ein-
+gebaut wird. Werden bei Maßnahmen nach Satz 1
+1. Schallschutzverglasungen mit einem bewerteten Schalldämmmaß der Verglasung von
+
+        Rw,R  40 dB nach DIN EN ISO 717-1 : 1997-01 oder einer vergleichbaren Anforderung oder
+2. Isolierglas-Sonderaufbauten zur Durchschusshemmung, Durchbruchhemmung oder Sprengwir-
+
+        kungshemmung nach den Regeln der Technik oder
+3. Isolierglas-Sonderaufbauten als Brandschutzglas mit einer Einzelelementdicke von mindestens
+
+        18 mm nach DIN 4102-13 : 1990-05 oder einer vergleichbaren Anforderung
+                                                              - 28 -
+
+verwendet, sind abweichend von Satz 1 die Anforderungen nach Tabelle 1 Zeile 3 einzuhalten.
+
+3. Außentüren
+
+Bei der Erneuerung von Außentüren dürfen nur Außentüren eingebaut werden, deren Türfläche einen
+Wärmedurchgangskoeffizienten von 2,9 W/m² K nicht überschreitet. Nr. 2 Satz 2 bleibt unberührt.
+
+4. Decken, Dächer und Dachschrägen
+4.1 Steildächer
+
+Soweit bei Steildächern Decken unter nicht ausgebauten Dachräumen sowie Decken und Wände
+(einschließlich Dachschrägen), die beheizte Räume nach oben gegen die Außenluft abgrenzen,
+a) ersetzt, erstmalig eingebaut
+
+oder in der Weise erneuert werden, dass
+
+b) die Dachhaut bzw. außenseitige Bekleidungen oder Verschalungen ersetzt oder neu aufgebaut
+        werden,
+
+c) innenseitige Bekleidungen oder Verschalungen aufgebracht oder erneuert werden,
+d) Dämmschichten eingebaut werden,
+e) zusätzliche Bekleidungen oder Dämmschichten an Wänden zum unbeheizten Dachraum einge-
+
+        baut werden,
+sind für die betroffenen Bauteile die Anforderungen nach Tabelle 1 Zeile 4 a einzuhalten. Wird bei
+Maßnahmen nach Buchstabe b oder d der Wärmeschutz als Zwischensparrendämmung ausgeführt
+und ist die Dämmschichtdicke wegen einer innenseitigen Bekleidung und der Sparrenhöhe begrenzt,
+so gilt die Anforderung als erfüllt, wenn die nach den Regeln der Technik höchstmögliche Dämm-
+schichtdicke eingebaut wird.
+
+4.2 Flachdächer
+
+Soweit bei beheizten Räumen Flachdächer
+a) ersetzt, erstmalig eingebaut
+
+oder in der Weise erneuert werden, dass
+
+b) die Dachhaut bzw. außenseitige Bekleidungen oder Verschalungen ersetzt oder neu aufgebaut
+        werden,
+
+c) innenseitige Bekleidungen oder Verschalungen aufgebracht oder erneuert werden,
+d) Dämmschichten eingebaut werden,
+sind die Anforderungen nach Tabelle 1 Zeile 4 b einzuhalten. Werden bei der Flachdacherneuerung
+Gefälledächer durch die keilförmige Anordnung einer Dämmschicht aufgebaut, so ist der Wärme-
+durchgangskoeffizient nach DIN EN ISO 6946 : 1996-11, Anhang C zu ermitteln. Der Bemessungs-
+wert des Wärmedurchgangswiderstandes am tiefsten Punkt der neuen Dämmschicht muss den Min-
+destwärmeschutz nach § 6 Abs. 1 gewährleisten.
+                                                              - 29 -
+
+5. Wände und Decken gegen unbeheizte Räume und gegen Erdreich
+
+Soweit bei beheizten Räumen Decken und Wände, die an unbeheizte Räume oder an Erdreich gren-
+zen,
+a) ersetzt, erstmalig eingebaut
+
+oder in der Weise erneuert werden, dass
+
+b) außenseitige Bekleidungen oder Verschalungen, Feuchtigkeitssperren oder Drainagen ange-
+        bracht oder erneuert,
+
+c) innenseitige Bekleidungen oder Verschalungen an Wände angebracht,
+d) Fußbodenaufbauten auf der beheizten Seite aufgebaut oder erneuert,
+e) Deckenbekleidungen auf der Kaltseite angebracht oder
+f) Dämmschichten eingebaut werden,
+sind die Anforderungen nach Tabelle 1 Zeile 5 einzuhalten. Die Anforderungen nach Buchstabe d
+gelten als erfüllt, wenn ein Fußbodenaufbau mit der ohne Anpassung der Türhöhen höchstmöglichen
+Dämmschichtdicke (bei einem Bemessungswert der Wärmeleitfähigkeit = 0,04 W/(m  K) ausgeführt
+wird.
+
+6. Vorhangfassaden
+
+Soweit bei beheizten Räumen Vorhangfassaden in der Weise erneuert werden, dass
+a) das gesamte Bauteil ersetzt oder erstmalig eingebaut wird,
+b) die Füllung (Verglasung oder Paneele) ersetzt wird,
+
+sind die Anforderungen nach Tabelle 1 Zeile 2 c einzuhalten. Werden bei Maßnahmen nach Satz 1
+Sonderverglasungen entsprechend Nr. 2 Satz 2 verwendet, sind abweichend von Satz 1 die Anforde-
+rungen nach Tabelle 1 Zeile 3 c einzuhalten.
+                                             - 30 -
+
+7. An fo rde run ge n
+
+                                             Tabelle 1
+
+                   Höchstwerte der Wärmedurchgangskoeffizienten
+          bei erstmaligem Einbau, Ersatz und Erneuerung von Bauteilen
+
+Zeile      Bauteil              Maßnahme nach           Gebäude nach      Gebäude nach
+                                                        § 1 Abs. 1 Nr. 1  § 1 Abs. 1 Nr. 2
+  1a           1                          2
+    b  Außenwände              allgemein             maximaler Wärmedurchgangskoeffizient Umax 1)
+                               Nr. 1 b, d und e                            in W / (m²·K)
+
+                                                        3                 4
+
+                                                        0,45              0,75
+
+                                                        0,35              0,75
+
+2 a Außen liegende Fenster,                             1,7 2)                      2,8 2)
+
+       Fenstertüren,           Nr. 2 a und b            1,5 3)            keine Anforderung
+                                                        1,9 4)                      3,0 4)
+       Dachflächenfenster
+
+b Verglasungen                 Nr. 2 c
+
+c Vorhangfassaden              allgemein
+
+3 a Außen liegende Fenster,
+
+       Fenstertüren,           Nr. 2 a und b            2,0 2)                      2,8 2)
+       Dachflächenfenster                               1,6 3)            keine Anforderung
+
+       mit Sonderverglasungen
+
+b Sonderverglasungen Nr. 2 c
+
+c Vorhangfassaden mit          Nr. 6 Satz 2             2,3 4)            3,0 4)
+    Sonderverglasungen
+
+4 a Decken, Dächer und         Nr. 4.1                  0,30              0,40
+       Dachschrägen
+
+b Dächer                       Nr. 4.2                  0,25              0,40
+
+5 a Decken und Wände ge- Nr. 5 b und e                  0,40              keine Anforderung
+                                                                          keine Anforderung
+b      gen unbeheizte Räume    Nr. 5 a, c, d und f      0,50
+       oder Erdreich
+
+1) Wärmedurchgangskoeffizient des Bauteils unter Berücksichtigung der neuen und der vorhan-
+        denen Bauteilschichten; für die Berechnung opaker Bauteile ist DIN EN ISO 6946 : 1996-11 zu
+        verwenden.
+
+2) Wärmedurchgangskoeffizient des Fensters; er ist technischen Produkt-Spezifikationen zu ent-
+        nehmen oder nach DIN EN ISO 10077-1 : 2000-11 zu ermitteln.
+
+3) Wärmedurchgangskoeffizient der Verglasung; er ist technischen Produkt-Spezifikationen zu
+        entnehmen oder nach DIN EN 673 : 2001-1 zu ermitteln.
+
+4) Wärmedurchgangskoeffizient der Vorhangfassade; er ist nach anerkannten Regeln der Technik
+        zu ermitteln.
+                                   - 31 -
+
+                                                             Anhang 4
+                   Anforderungen an die Dichtheit und den Mindestluftwechsel (zu § 5)
+
+1. Anforderungen an außen liegende Fenster, Fenstertüren und Dachflächenfenster
+Außen liegende Fenster, Fenstertüren und Dachflächenfenster müssen den Klassen nach Tabelle 1
+entsprechen.
+
+                                            Tabelle 1
+
+                         Klassen der Fugendurchlässigkeit von
+       außen liegenden Fenstern, Fenstertüren und Dachflächenfenstern
+
+Zeile  Anzahl der Vollgeschosse des Gebäudes  Klasse der Fugendurchlässigkeit nach
+  1                          bis zu 2               DIN EN 12 207 - 1 : 2000-06
+  2
+                           mehr als 2                                 2
+
+                                                                      3
+
+2. Nachweis der Dichtheit des gesamten Gebäudes
+
+Wird eine Überprüfung der Anforderungen nach § 5 Abs. 1 durchgeführt, so darf der nach DIN EN
+13 829 : 2001-02 bei einer Druckdifferenz zwischen Innen und Außen von 50 Pa gemessene Volu-
+menstrom - bezogen auf das beheizte Luftvolumen - bei Gebäuden
+
+- ohne raumlufttechnische Anlagen             3 h-1 und
+- mit raumlufttechnischen Anlagen             1,5 h-1
+
+nicht überschreiten.
+
+3. Anforderungen an Lüftungseinrichtungen
+
+Lüftungseinrichtungen in der Gebäudehülle müssen einstellbar und leicht regulierbar sein. Im ge-
+schlossenen Zustand müssen sie der Tabelle 1 genügen. Soweit in anderen Rechtsvorschriften An-
+forderungen an die Lüftung gestellt werden, bleiben diese Vorschriften unberührt. Satz 1 ist nicht an-
+zuwenden, wenn als Lüftungseinrichtungen selbsttätig regelnde Außenluftdurchlässe unter Verwen-
+dung einer geeigneten Führungsgröße eingesetzt werden.
+                                     - 32 -
+
+                                                     Anhang 5
+                       Anforderungen zur Begrenzung der Wärmeabgabe
+von Wärmeverteilungs- und Warmwasserleitungen sowie Armaturen (zu § 12 Abs. 5)
+
+1. Die Wärmeabgabe von Wärmeverteilungs- und Warmwasserleitungen sowie Armaturen ist
+durch Wärmedämmung nach Maßgabe der Tabelle 1 zu begrenzen.
+
+                                                          Tabelle 1
+       Wärmedämmung von Wärmeverteilungs- und Warmwasserleitungen sowie Armaturen
+
+Zeile              Art der                                           Mindestdicke der Dämm-
+       der Leitungen/Armaturen                                       schicht, bezogen auf eine
+  1                                                                Wärmeleitfähigkeit von 0,035
+  2
+  3                                                                             W/(m·K)
+  4
+  5    Innendurchmesser bis 22 mm                                  20 mm
+
+  6    Innendurchmesser über 22 mm bis 35 mm                       30 mm
+
+  7    Innendurchmesser über 35 mm bis 100 mm                      gleich Innendurchmesser
+
+       Innendurchmesser über 100 mm                                100 mm
+
+       Leitungen und Armaturen nach den Zeilen 1 bis 4 in          1/2 der Anforderungen
+       Wand- und Deckendurchbrüchen, im Kreuzungsbereich           der Zeilen 1 bis 4
+       von Leitungen, an Leitungsverbindungsstellen, bei zentra-
+       len Leitungsnetzverteilern
+
+       Leitungen von Zentralheizungen nach den Zeilen 1 bis 4,     1/2 der Anforderungen
+       die nach Inkrafttreten dieser Verordnung in Bauteilen zwi-  der Zeilen 1 bis 4
+       schen beheizten Räumen verschiedener Nutzer verlegt
+       werden
+
+       Leitungen nach Zeile 6 im Fußbodenaufbau                    6 mm
+
+Soweit sich Leitungen von Zentralheizungen nach den Zeilen 1 bis 4 in beheizten Räumen oder in
+Bauteilen zwischen beheizten Räumen eines Nutzers befinden und ihre Wärmeabgabe durch freilie-
+gende Absperreinrichtungen beeinflusst werden kann, werden keine Anforderungen an die Mindestdi-
+cke der Dämmschicht gestellt. Dies gilt auch für Warmwasserleitungen in Wohnungen bis zum Innen-
+durchmesser 22 mm, die weder in den Zirkulationskreislauf einbezogen noch mit elektrischer Begleit-
+heizung ausgestattet sind.
+
+2. Bei Materialien mit anderen Wärmeleitfähigkeiten als 0,035 W/(m·K) sind die Mindestdicken der
+Dämmschichten entsprechend umzurechnen. Für die Umrechnung und die Wärmeleitfähigkeit des
+Dämmmaterials sind die in Regeln der Technik enthaltenen Rechenverfahren und Rechenwerte zu
+verwenden.
+
+3. Bei Wärmeverteilungs- und Warmwasserleitungen dürfen die Mindestdicken der Dämmschich-
+ten nach Tabelle 1 insoweit vermindert werden, als eine gleichwertige Begrenzung der Wärmeabgabe
+auch bei anderen Rohrdämmstoffanordnungen und unter Berücksichtigung der Dämmwirkung der
+Leitungswände sichergestellt ist.
+

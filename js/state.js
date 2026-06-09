@@ -218,13 +218,45 @@ function saveWarmwasserEintragField(id, field, value) {
 // Heizlast-Standardwerte (projektweit): überschlägige Erfassungshilfe, kein
 // normativer Heizlastnachweis. Speichert U-Wert- und Temperaturannahmen, die
 // als Default für alle Räume gelten und je Raum überschrieben werden können.
+//
+// Bei U-Wert-Feldern wird zusätzlich ein Herkunfts-Flag gesetzt:
+//   hd[field + '_manuell']         : true wenn vom Nutzer manuell eingegeben
+//   hd[field + '_ableitungsquelle']: 'Baujahr' oder 'Sanierung' (automatisch gesetzt
+//                                    von leiteUWerteAusBaujahrUndSanierungAb)
+// Diese Flags steuern die Quellenanzeige in hlQuelleKurzFuer() und verhindern,
+// dass manuell eingegebene Werte durch automatische Ableitung überschrieben werden.
+const UWERT_FELDER_HL = ['awUwert', 'iwUwert', 'dachUwert', 'bodenplatteUwert', 'bodenUwert', 'fensterUwert', 'tuerUwert'];
+
 function saveHeizlastDefaultField(field, value) {
   const p = getProjekt();
   if (!p) return;
   if (!p.heizlastDefaults) p.heizlastDefaults = {};
-  if (field === 'baujahrAbleitungAktiv') p.heizlastDefaults[field] = !!value;
-  else p.heizlastDefaults[field] = value;
+  if (field === 'baujahrAbleitungAktiv') {
+    p.heizlastDefaults[field] = !!value;
+  } else {
+    p.heizlastDefaults[field] = value;
+    // U-Wert-Felder: bei manueller Eingabe als manuell markieren, damit
+    // automatische Ableitung dieses Feld nicht ueberschreibt.
+    if (UWERT_FELDER_HL.indexOf(field) >= 0) {
+      var hatWert = (value !== '' && value !== null && value !== undefined && String(value).trim() !== '');
+      p.heizlastDefaults[field + '_manuell'] = hatWert;
+      if (hatWert) delete p.heizlastDefaults[field + '_ableitungsquelle'];
+    }
+  }
   save();
+}
+
+// Setzt ein U-Wert-Feld zurück (Wert leeren, Flags loeschen).
+// Ermoeglicht dem Nutzer, ein manuell eingetragenes Feld wieder fuer die
+// automatische Ableitung freizugeben. Aktualisiert anschliessend die Ansicht.
+function resetHeizlastDefaultField(field) {
+  var p = getProjekt();
+  if (!p || !p.heizlastDefaults) return;
+  p.heizlastDefaults[field] = '';
+  p.heizlastDefaults[field + '_manuell'] = false;
+  delete p.heizlastDefaults[field + '_ableitungsquelle'];
+  save();
+  if (typeof renderProjektView === 'function') renderProjektView();
 }
 
 // Raumbezogene Heizlast-Overrides: überschreiben die projektweiten

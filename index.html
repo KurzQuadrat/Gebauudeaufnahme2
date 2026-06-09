@@ -316,13 +316,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Au&#223;enwand AW</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-aw-uwert" placeholder="0.28" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('awUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-aw">-</small></td></tr>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Innenwand IW</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-iw-uwert" placeholder="1.40" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('iwUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-iw">-</small></td></tr>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Dach</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-dach-uwert" placeholder="0.24" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('dachUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-dach">-</small></td></tr>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Bodenplatte</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-bodenplatte-uwert" placeholder="0.35" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('bodenplatteUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-bodenplatte">-</small></td></tr>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Boden/Decke</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-boden-uwert" placeholder="0.50" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('bodenUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-boden">-</small></td></tr>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Fenster</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-fenster-uwert" placeholder="1.30" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('fensterUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-fenster">-</small></td></tr>
-            <tr><td style="padding:6px 8px 6px 0;font-size:13px;">T&#252;ren</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-tuer-uwert" placeholder="1.80" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('tuerUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-tuer">-</small></td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Au&#223;enwand AW</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-aw-uwert" placeholder="0.28" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('awUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-aw">-</small> <button type="button" onclick="resetHeizlastDefaultField('awUwert')" title="Wert zur&#252;cksetzen" style="font-size:10px;padding:1px 4px;border:1px solid var(--border);background:none;color:var(--text-sec);cursor:pointer;border-radius:3px;vertical-align:middle;">&#215;</button></td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Innenwand IW</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-iw-uwert" placeholder="1.40" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('iwUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-iw">-</small> <button type="button" onclick="resetHeizlastDefaultField('iwUwert')" title="Wert zur&#252;cksetzen" style="font-size:10px;padding:1px 4px;border:1px solid var(--border);background:none;color:var(--text-sec);cursor:pointer;border-radius:3px;vertical-align:middle;">&#215;</button></td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Dach</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-dach-uwert" placeholder="0.24" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('dachUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-dach">-</small> <button type="button" onclick="resetHeizlastDefaultField('dachUwert')" title="Wert zur&#252;cksetzen" style="font-size:10px;padding:1px 4px;border:1px solid var(--border);background:none;color:var(--text-sec);cursor:pointer;border-radius:3px;vertical-align:middle;">&#215;</button></td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Bodenplatte</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-bodenplatte-uwert" placeholder="0.35" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('bodenplatteUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-bodenplatte">-</small> <button type="button" onclick="resetHeizlastDefaultField('bodenplatteUwert')" title="Wert zur&#252;cksetzen" style="font-size:10px;padding:1px 4px;border:1px solid var(--border);background:none;color:var(--text-sec);cursor:pointer;border-radius:3px;vertical-align:middle;">&#215;</button></td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Boden/Decke</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-boden-uwert" placeholder="0.50" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('bodenUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-boden">-</small> <button type="button" onclick="resetHeizlastDefaultField('bodenUwert')" title="Wert zur&#252;cksetzen" style="font-size:10px;padding:1px 4px;border:1px solid var(--border);background:none;color:var(--text-sec);cursor:pointer;border-radius:3px;vertical-align:middle;">&#215;</button></td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-size:13px;">Fenster</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-fenster-uwert" placeholder="1.30" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('fensterUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-fenster">-</small> <button type="button" onclick="resetHeizlastDefaultField('fensterUwert')" title="Wert zur&#252;cksetzen" style="font-size:10px;padding:1px 4px;border:1px solid var(--border);background:none;color:var(--text-sec);cursor:pointer;border-radius:3px;vertical-align:middle;">&#215;</button></td></tr>
+            <tr><td style="padding:6px 8px 6px 0;font-size:13px;">T&#252;ren</td><td style="padding:6px 4px;text-align:right;"><input type="number" step="0.01" id="p-hl-tuer-uwert" placeholder="1.80" style="width:75px;text-align:right;" oninput="saveHeizlastDefaultField('tuerUwert', this.value)"></td><td style="padding:6px 0 6px 8px;font-size:11px;color:var(--text-sec);white-space:nowrap;"><small id="hl-src-tuer">-</small> <button type="button" onclick="resetHeizlastDefaultField('tuerUwert')" title="Wert zur&#252;cksetzen" style="font-size:10px;padding:1px 4px;border:1px solid var(--border);background:none;color:var(--text-sec);cursor:pointer;border-radius:3px;vertical-align:middle;">&#215;</button></td></tr>
           </tbody>
         </table>
         <div class="form-row" style="margin-top:8px;">
@@ -770,6 +770,7 @@
 
 <script src="js/config.js"></script>
 <script src="js/uwerte-bundesanzeiger.js"></script>
+<script src="js/uwerte-enev-geg.js"></script>
 <script src="js/heizlast.js"></script>
 <script src="js/state.js"></script>
 <script src="js/export.js"></script>
@@ -1733,18 +1734,21 @@ function renderHeizlastErgebnis(r,geo) {
 }
 function tUnbeheiztQuelleKurz(q){ return q==='Raum-Override'?'Raum-Override':(q==='Projekt-Standard'?'Projekt-Standard':'Standard 7\xb0C'); }
 // Kurze Quellenanzeige je U-Wert-Feld in der Heizlast-Standardwerte-Karte.
-// Keine neue Datenspeicherung - nur Anzeige auf Basis vorhandener Felder.
-// Gibt 'Baujahr/Sanierung' wenn das quelle-Feld auf Bundesanzeiger-Ableitung
-// hindeutet, 'manuell' wenn ein Wert vorhanden aber ohne solchen Hinweis,
-// '-' wenn das Feld leer ist. Aktualisiert sich beim Oeffnen der Projektansicht
-// und nach "U-Werte aus Baujahr/Sanierung ableiten" (beides ruft renderProjektView auf).
+// Gibt 'Baujahr', 'Sanierung', 'Manuelle Eingabe' oder '-' zurueck.
+// Basis: per-Feld-Flags hd[feldKey+'_manuell'] und hd[feldKey+'_ableitungsquelle'],
+// gesetzt von saveHeizlastDefaultField (bei manueller Eingabe) und
+// leiteUWerteAusBaujahrUndSanierungAb (bei automatischer Ableitung).
+// Altdaten ohne Flags (kein _manuell gesetzt): konservativ als 'Manuelle Eingabe'.
+// Aktualisiert sich beim Oeffnen der Projektansicht und nach Ableitung.
 function hlQuelleKurzFuer(feldKey, hd) {
   if (!hd) return '-';
   var v = hd[feldKey];
   if (v === undefined || v === null || String(v).trim() === '') return '-';
-  var q = hd.quelle || '';
-  if (q.indexOf('Bundesanzeiger') >= 0 || q.indexOf('BAnz') >= 0 || q.indexOf('Sanierung') >= 0 || q.indexOf('Baujahr') >= 0) return 'Baujahr/Sanierung';
-  return 'manuell';
+  if (hd[feldKey + '_manuell'] === true) return 'Manuelle Eingabe';
+  var aq = hd[feldKey + '_ableitungsquelle'];
+  if (aq === 'Sanierung') return 'Sanierung';
+  if (aq === 'Baujahr') return 'Baujahr';
+  return 'Manuelle Eingabe';
 }
 
 // ============================================================
@@ -2226,7 +2230,9 @@ function leiteUWerteAusBaujahrUndSanierungAb() {
 
   const verarbeite = (feld, istTransparent) => {
     const label = HEIZLAST_FELD_LABEL[feld];
-    if (!istLeer(hd[feld])) { uebersprungen.push(label); return; }
+    // Feld ueberspringen wenn Wert vorhanden (manuell oder bereits abgeleitet).
+    // _manuell === true: Nutzer hat Wert selbst eingetragen – nicht ueberschreiben.
+    if (!istLeer(hd[feld]) || hd[feld + '_manuell'] === true) { uebersprungen.push(label); return; }
     const sanierung = findeJuengsteSanierungFuerFeld(p, feld);
     let detailtyp, bezugsjahr, herkunft;
     if (sanierung) {
@@ -2241,7 +2247,9 @@ function leiteUWerteAusBaujahrUndSanierungAb() {
     const idx = findeBaualtersklasseIndex(bezugsjahr, klassen);
     if (!kat || idx === -1) { unbekannt.push(label + ' (' + herkunft + ', Jahr keiner Baualtersklasse zuordenbar oder Detailtyp unbekannt)'); return; }
     hd[feld] = kat.werte[idx];
-    uebernommen.push(label + ' = ' + kat.werte[idx] + ' W/(m²K) [' + kat.label + ', Baualtersklasse ' + klassen[idx].label + ', ' + herkunft + ']');
+    hd[feld + '_manuell'] = false;
+    hd[feld + '_ableitungsquelle'] = sanierung ? 'Sanierung' : 'Baujahr';
+    uebernommen.push(label + ' = ' + kat.werte[idx] + ' W/(m\xb2K) [' + kat.label + ', Baualtersklasse ' + klassen[idx].label + ', ' + herkunft + ']');
   };
 
   verarbeite('awUwert', false);
