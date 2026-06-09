@@ -2206,6 +2206,40 @@ function findeJuengsteSanierungFuerFeld(p, feld) {
   return bester;
 }
 
+// Sucht in der Sanierungshistorie nach der juengsten Sanierung, die
+// fuer das angegebene Heizlast-Feld einen direkt nutzbaren U-Wert
+// enthaelt (s.uWert, numerisch, plausibel groesser 0).
+// Zuordnung: erst ueber s.detailtyp (spezifisch), dann ueber s.massnahme
+// (allgemein, sofern kein detailtyp gesetzt). Bei fensterUwert: nur wenn
+// s.uWertArt === 'Uw - Gesamtfenster' (Ug-Glaswert nie als Uw nutzen).
+function findeJuengsteSanierungMitUWertFuerFeld(p, feld) {
+  var istLeerV = function(v) { return v === undefined || v === null || String(v).trim() === ''; };
+  var bester = null;
+  (p.sanierungen || []).forEach(function(s) {
+    if (istLeerV(s.uWert)) return;
+    var num = parseFloat(String(s.uWert).replace(',', '.'));
+    if (isNaN(num) || num <= 0 || num > 20) return; // Plausibilitaet: 0..20 W/(m2K)
+    // Bauteil-Zuordnung: ueber detailtyp (spezifisch) ODER massnahme (allgemein)
+    var feldPasst = false;
+    if (s.detailtyp && DETAILTYP_ZU_HEIZLASTFELD[s.detailtyp] === feld) {
+      feldPasst = true;
+    } else if (!s.detailtyp && s.massnahme && MASSNAHME_DETAILTYPEN[s.massnahme]) {
+      var erlaubt = MASSNAHME_DETAILTYPEN[s.massnahme];
+      for (var i = 0; i < erlaubt.length; i++) {
+        if (DETAILTYP_ZU_HEIZLASTFELD[erlaubt[i]] === feld) { feldPasst = true; break; }
+      }
+    }
+    if (!feldPasst) return;
+    // Fenster: nur Uw-Gesamtfensterwert nutzen, Ug-Glaswert ausdruecklich ausschliessen
+    if (feld === 'fensterUwert' && s.uWertArt !== 'Uw - Gesamtfenster') return;
+    // Juengste Sanierung bevorzugen (hohes Jahr gewinnt; ohne Jahr trotzdem Kandidat)
+    if (!bester || (s.jahr && (!bester.jahr || Number(s.jahr) >= Number(bester.jahr)))) {
+      bester = s;
+    }
+  });
+  return bester;
+}
+
 // Wird bei jeder Änderung des Gebäude-Baujahrs aufgerufen: aktualisiert die
 // angezeigte Baualtersklasse und - sofern die Checkbox "baujahresabhängige
 // U-Wert-Vorschläge nutzen" aktiv ist - befüllt automatisch leere U-Wert-
@@ -2226,10 +2260,11 @@ function pruefeAutoUWerteAusBaujahr() {
 // Prioritätslogik je Bauteil (siehe docs/version-1-scope.md):
 //   1. Raum-Override (separat, hier nicht betroffen)
 //   2. Projektwert manuell gesetzt -> Feld bleibt unverändert (wird übersprungen)
-//   3. automatisch abgeleiteter Wert aus Sanierungshistorie (Detailtyp+Jahr,
-//      jüngster passender Eintrag für GENAU dieses Bauteil)
-//   4. automatisch abgeleiteter Wert aus Gebäude-Baujahr (Standard-Detailtyp)
-//   5. keine Ableitung möglich -> Feld bleibt leer, transparente Meldung
+//   3. Sanierung mit direkt hinterlegtem U-Wert (s.uWert, numerisch nutzbar)
+//      Bei Fenster: nur wenn uWertArt === 'Uw - Gesamtfenster'; Ug wird nicht als Uw genutzt.
+//   4. Sanierung ohne direkten U-Wert, aber mit Detailtyp+Jahr -> aus Baualtersklasse
+//   5. Kein passender Sanierungseintrag -> aus Gebäude-Baujahr (Standard-Detailtyp)
+//   6. keine Ableitung möglich -> Feld bleibt leer, transparente Meldung
 // Schreibt NIE in bereits gefüllte Felder (Stufe 2 hat Vorrang).
 function leiteUWerteAusBaujahrUndSanierungAb() {
   const p = getProjekt(); if (!p) return;
@@ -2247,6 +2282,16 @@ function leiteUWerteAusBaujahrUndSanierungAb() {
     // _manuell === false:   Wert wurde automatisch abgeleitet – darf neu abgeleitet werden.
     // _manuell === undefined: Altdaten ohne Flag – konservativ wie manuell behandeln.
     if (!istLeer(hd[feld]) && hd[feld + '_manuell'] !== false) { uebersprungen.push(label); return; }
+    // Ebene 3: Sanierung mit direkt hinterlegtem U-Wert (Vorrang vor Sanierungsjahr/Baujahr)
+    const sanierungMitUW = findeJuengsteSanierungMitUWertFuerFeld(p, feld);
+    if (sanierungMitUW) {
+      const numUW = parseFloat(String(sanierungMitUW.uWert).replace(',', '.'));
+      hd[feld] = numUW;
+      hd[feld + '_manuell'] = false;
+      hd[feld + '_ableitungsquelle'] = 'Sanierung';
+      uebernommen.push(label + ' = ' + numUW + ' W/(m\xb2K) [Sanierungs-U-Wert' + (sanierungMitUW.jahr ? ' ' + sanierungMitUW.jahr : '') + ']');
+      return;
+    }
     const sanierung = findeJuengsteSanierungFuerFeld(p, feld);
     let detailtyp, bezugsjahr, herkunft;
     if (sanierung) {
