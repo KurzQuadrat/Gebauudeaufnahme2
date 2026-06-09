@@ -1723,7 +1723,23 @@ function hlQuelleKurzFuer(feldKey, hd) {
 // Berechnet und aktualisiert die projektweite Heizlastsumme in hl-summe-box.
 // Wird von renderProjektView() und vom Button "Heizlast neu berechnen" aufgerufen.
 // Nur Anzeige, keine Speicherung.
+// Robustheit: aktiv fokussiertes U-Wert-Eingabefeld wird vor der Berechnung
+// explizit gespeichert (Schutz gegen seltene Faelle wo oninput noch nicht feuerte).
 function aktualisiereHeizlastSummeBox() {
+  var _hlInputMap = [
+    ['p-hl-aw-uwert','awUwert'],['p-hl-iw-uwert','iwUwert'],
+    ['p-hl-dach-uwert','dachUwert'],['p-hl-bodenplatte-uwert','bodenplatteUwert'],
+    ['p-hl-boden-uwert','bodenUwert'],['p-hl-fenster-uwert','fensterUwert'],
+    ['p-hl-tuer-uwert','tuerUwert'],
+    ['p-hl-temp-aussen','tempAussenNorm'],['p-hl-temp-unbeheizt','tempUnbeheiztDefault']
+  ];
+  var _ae = document.activeElement;
+  if (_ae) {
+    _hlInputMap.forEach(function(pair) {
+      var el = document.getElementById(pair[0]);
+      if (el && el === _ae) saveHeizlastDefaultField(pair[1], el.value);
+    });
+  }
   var p = getProjekt();
   var hlSumEl = document.getElementById('hl-summe-box');
   if (!hlSumEl) return;
@@ -2223,9 +2239,11 @@ function leiteUWerteAusBaujahrUndSanierungAb() {
 
   const verarbeite = (feld, istTransparent) => {
     const label = HEIZLAST_FELD_LABEL[feld];
-    // Feld ueberspringen wenn Wert vorhanden (manuell oder bereits abgeleitet).
-    // _manuell === true: Nutzer hat Wert selbst eingetragen – nicht ueberschreiben.
-    if (!istLeer(hd[feld]) || hd[feld + '_manuell'] === true) { uebersprungen.push(label); return; }
+    // Feld ueberspringen wenn manuell gesetzt ODER Wert aus Altdaten ohne _manuell-Flag.
+    // _manuell === true:    Nutzer hat Wert selbst eingetragen – nie ueberschreiben.
+    // _manuell === false:   Wert wurde automatisch abgeleitet – darf neu abgeleitet werden.
+    // _manuell === undefined: Altdaten ohne Flag – konservativ wie manuell behandeln.
+    if (!istLeer(hd[feld]) && hd[feld + '_manuell'] !== false) { uebersprungen.push(label); return; }
     const sanierung = findeJuengsteSanierungFuerFeld(p, feld);
     let detailtyp, bezugsjahr, herkunft;
     if (sanierung) {
