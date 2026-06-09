@@ -71,6 +71,8 @@ function load() {
       if (p.heizlastDefaults.baujahrAbleitungAktiv === undefined) p.heizlastDefaults.baujahrAbleitungAktiv = false;
     }
     if (!p.offenePunkte) p.offenePunkte = [];
+    // bisWann defensiv ergaenzen (fehlend bei Projekten vor v0.2.21-dev)
+    p.offenePunkte.forEach(o => { if (o.bisWann === undefined) o.bisWann = ''; });
     p.geschosse.forEach(g => {
       if (!g.gauben) g.gauben = [];
       if (!g.dachfenster) g.dachfenster = [];

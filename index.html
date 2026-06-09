@@ -808,7 +808,10 @@ function addOffenerPunkt() {
   const p = getProjekt();
   if (!p) return;
   if (!p.offenePunkte) p.offenePunkte = [];
-  p.offenePunkte.push({ id: uuid(), text: '', status: 'offen', prioritaet: 'mittel', bereich: 'Allgemein', notiz: '' });
+  var today = new Date().toISOString().slice(0, 10);
+  // status/prioritaet/bereich/notiz werden fuer Rueckwaertskompatibilitaet
+  // mitgefuehrt, aber in Version 1 nicht angezeigt (siehe docs/version-1-scope.md)
+  p.offenePunkte.push({ id: uuid(), text: '', bisWann: today, status: 'offen', prioritaet: 'mittel', bereich: 'Allgemein', notiz: '' });
   save();
   renderOffenePunkte();
 }
@@ -816,7 +819,12 @@ function addOffenerPunkt() {
 function deleteOffenerPunkt(id) {
   const p = getProjekt();
   if (!p) return;
-  if (!confirm('Offenen Punkt wirklich löschen?')) return;
+  if (!confirm('Offenen Punkt wirklich l\xf6schen?')) return;
+  // Diktat stoppen falls es fuer diesen Punkt laeuft
+  if (_opDiktatId === id && _opRecognition) {
+    try { _opRecognition.stop(); } catch(e) {}
+    _opRecognition = null; _opDiktatId = null;
+  }
   p.offenePunkte = (p.offenePunkte || []).filter(o => o.id !== id);
   save();
   renderOffenePunkte();
@@ -831,23 +839,154 @@ function renderOffenePunkte() {
   if (!c) return;
   if (!list.length) { c.innerHTML = ''; if (l) l.style.display = 'block'; return; }
   if (l) l.style.display = 'none';
-  const statusOpts = ['offen', 'in Prüfung', 'erledigt', 'zurückgestellt'];
-  const prioOpts = ['niedrig', 'mittel', 'hoch'];
-  const bereichOpts = ['Allgemein', 'Projekt', 'Geschoss', 'Raum', 'Wand', 'Fenster', 'Tür', 'Dach', 'Heizung', 'Warmwasser', 'Foto', 'Export', 'Sonstiges'];
+  // Wenn Diktat laeuft: nur Text/Datum aktualisieren, kein komplettes Rebuild
+  if (_opRecognition) {
+    list.forEach(o => {
+      const ta = document.getElementById('op-text-' + o.id);
+      const dt = document.getElementById('op-date-' + o.id);
+      if (ta && ta !== document.activeElement) ta.value = o.text || '';
+      if (dt) dt.value = o.bisWann || '';
+    });
+    return;
+  }
+  // Status/Prioritaet/Bereich/Notiz werden in Version 1 nicht angezeigt.
+  // Die Felder bleiben im Datenobjekt fuer Rueckwaertskompatibilitaet und
+  // spaeteren Einsatz in einem "Baubesprechung"-Feature erhalten.
+  const speechOk = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+  const startDis = speechOk ? '' : ' disabled';
+  const statusText = speechOk ? 'Bereit' : 'Diktat nicht verf\xfcgbar – bitte Text manuell eingeben.';
   c.innerHTML = list.map((o, i) => {
-    const statusSel = statusOpts.map(s => '<option value="' + s + '" ' + (o.status === s ? 'selected' : '') + '>' + s + '</option>').join('');
-    const prioSel = prioOpts.map(pr => '<option value="' + pr + '" ' + (o.prioritaet === pr ? 'selected' : '') + '>' + pr + '</option>').join('');
-    const bereichSel = bereichOpts.map(b => '<option value="' + b + '" ' + (o.bereich === b ? 'selected' : '') + '>' + b + '</option>').join('');
-    return '<div class="sub-item"><div class="sub-item-header"><div class="sub-item-title">Offener Punkt ' + (i + 1) + '</div><button onclick="deleteOffenerPunkt(\'' + o.id + '\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">✕</button></div>'
-      + '<div class="form-group"><label>Offener Punkt</label><textarea placeholder="Was ist offen oder noch zu prüfen?" oninput="saveOffenerPunktField(\'' + o.id + '\',\'text\',this.value)">' + (o.text || '') + '</textarea></div>'
-      + '<div class="form-row-3">'
-      + '<div class="form-group"><label>Status</label><select onchange="saveOffenerPunktField(\'' + o.id + '\',\'status\',this.value)">' + statusSel + '</select></div>'
-      + '<div class="form-group"><label>Priorität</label><select onchange="saveOffenerPunktField(\'' + o.id + '\',\'prioritaet\',this.value)">' + prioSel + '</select></div>'
-      + '<div class="form-group"><label>Bereich</label><select onchange="saveOffenerPunktField(\'' + o.id + '\',\'bereich\',this.value)">' + bereichSel + '</select></div>'
+    const safeText = (o.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const bisWann = o.bisWann || '';
+    return '<div class="sub-item">'
+      + '<div class="sub-item-header">'
+      + '<div class="sub-item-title">Notiz ' + (i + 1) + '</div>'
+      + '<button onclick="deleteOffenerPunkt(\'' + o.id + '\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">&#x2715;</button>'
       + '</div>'
-      + '<div class="form-group"><label>Notiz</label><input type="text" value="' + (o.notiz || '') + '" placeholder="Zusatzinfos..." oninput="saveOffenerPunktField(\'' + o.id + '\',\'notiz\',this.value)"></div>'
+      + '<div class="form-group">'
+      + '<label>Beschreibung / Offener Punkt</label>'
+      + '<textarea id="op-text-' + o.id + '" class="op-textarea" rows="3"'
+      + ' placeholder="Was ist offen oder noch zu pr\xfcfen?"'
+      + ' oninput="saveOffenerPunktField(\'' + o.id + '\',\'text\',this.value)">'
+      + safeText + '</textarea>'
+      + '</div>'
+      + '<div class="op-diktat-row">'
+      + '<button id="op-start-' + o.id + '" class="btn btn-sm btn-secondary"' + startDis
+      + ' onclick="opDiktatStarten(\'' + o.id + '\')">&#127897; Diktat</button>'
+      + '<button id="op-stop-' + o.id + '" class="btn btn-sm btn-secondary"'
+      + ' onclick="opDiktatStoppen()" style="display:none;">&#9209; Stoppen</button>'
+      + '</div>'
+      + '<div id="op-status-' + o.id + '" class="op-status">' + statusText + '</div>'
+      + '<div class="form-group" style="margin-top:8px;">'
+      + '<label>Bis wann</label>'
+      + '<input type="date" id="op-date-' + o.id + '" value="' + bisWann + '"'
+      + ' onchange="saveOffenerPunktField(\'' + o.id + '\',\'bisWann\',this.value)">'
+      + '</div>'
       + '</div>';
   }).join('');
+}
+
+// ============================================================
+//  Diktat fuer Offene Punkte
+//  Eigene Instanz-Verwaltung, da mehrere Punkte existieren koennen.
+//  Kein Zustimmungscheckbox – offene Punkte sind interne Notizen.
+// ============================================================
+var _opRecognition = null;
+var _opDiktatId = null;
+var _opBaseText = '';
+
+function opDiktatStarten(id) {
+  // Verfuegbarkeits-Check (teilt _kwSpeechAvailable aus Kundenwunsch-Block)
+  if (!_kwSpeechAvailable) {
+    opSetStatus(id, 'Diktat wird in diesem Browser nicht unterst\xfctzt. Bitte Text manuell eingeben.');
+    return;
+  }
+  // Guard: nur eine Diktat-Instanz gleichzeitig
+  if (_opRecognition) {
+    if (_opDiktatId === id) { opSetStatus(id, 'Diktat l\xe4uft bereits.'); return; }
+    // Anderer Punkt laeuft: zuerst stoppen
+    try { _opRecognition.stop(); } catch(e) {}
+    _opRecognition = null; _opDiktatId = null;
+  }
+  // Kundenwunsch-Diktat stoppen falls aktiv
+  if (_kwRecognition) { try { _kwRecognition.stop(); } catch(e) {} }
+
+  var SRClass = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var rec = new SRClass();
+  rec.lang = 'de-DE';
+  rec.continuous = true;
+  rec.interimResults = true;
+
+  var ta = document.getElementById('op-text-' + id);
+  _opBaseText = (ta && ta.value) ? ta.value : '';
+  if (_opBaseText && !_opBaseText.endsWith(' ')) _opBaseText += ' ';
+  _opDiktatId = id;
+
+  rec.onstart = function() {
+    _opRecognition = rec;
+    opSetStatus(id, 'Diktat l\xe4uft …');
+    var sb = document.getElementById('op-start-' + id);
+    var stb = document.getElementById('op-stop-' + id);
+    if (sb) sb.style.display = 'none';
+    if (stb) stb.style.display = '';
+  };
+  rec.onresult = function(event) {
+    var interim = '';
+    var finalPart = '';
+    for (var i = event.resultIndex; i < event.results.length; i++) {
+      var t = event.results[i][0].transcript;
+      if (event.results[i].isFinal) { finalPart += t + ' '; }
+      else { interim += t; }
+    }
+    if (finalPart) {
+      _opBaseText += finalPart;
+      saveOffenerPunktField(id, 'text', _opBaseText);
+    }
+    if (ta) ta.value = _opBaseText + interim;
+  };
+  rec.onerror = function(event) {
+    var msg = 'Diktat-Fehler.';
+    if (event.error === 'not-allowed') msg = 'Mikrofonzugriff verweigert.';
+    else if (event.error === 'no-speech') msg = 'Keine Spracheingabe erkannt.';
+    else if (event.error === 'network') msg = 'Netzwerkfehler.';
+    opSetStatus(id, msg);
+    opDiktatReset();
+  };
+  rec.onend = function() {
+    // Absatztrennung nach Stopp (analog Kundenwunsch-Diktat)
+    if (_opBaseText && !_opBaseText.endsWith('\n\n')) {
+      _opBaseText = _opBaseText.trimEnd() + '\n\n';
+      saveOffenerPunktField(id, 'text', _opBaseText);
+    }
+    if (ta) ta.value = _opBaseText;
+    opSetStatus(id, 'Diktat beendet.');
+    opDiktatReset();
+  };
+  try { rec.start(); }
+  catch(e) { opSetStatus(id, 'Fehler: ' + e.message); _opDiktatId = null; opDiktatReset(); }
+}
+
+function opDiktatStoppen() {
+  if (_opRecognition) {
+    try { _opRecognition.stop(); } catch(e) { opDiktatReset(); }
+  }
+}
+
+function opDiktatReset() {
+  var id = _opDiktatId;
+  _opRecognition = null;
+  _opDiktatId = null;
+  if (id) {
+    var sb = document.getElementById('op-start-' + id);
+    var stb = document.getElementById('op-stop-' + id);
+    if (sb) { sb.style.display = ''; sb.disabled = !_kwSpeechAvailable; }
+    if (stb) stb.style.display = 'none';
+  }
+}
+
+function opSetStatus(id, msg) {
+  var el = document.getElementById('op-status-' + id);
+  if (el) el.textContent = msg;
 }
 
 // ============================================================

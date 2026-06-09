@@ -541,3 +541,19 @@ textarea { resize: vertical; min-height: 80px; }
   padding: 6px 10px; background: var(--input-bg);
   border-radius: var(--radius-sm); border-left: 2px solid var(--border);
 }
+
+/* ============================================================================
+   Offene Punkte – Diktat
+   ============================================================================ */
+.op-textarea {
+  width: 100%; min-height: 72px; resize: vertical;
+  padding: 8px 10px; font-size: 15px; line-height: 1.5;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--input-bg); color: var(--text);
+  font-family: inherit; box-sizing: border-box;
+  -webkit-appearance: none;
+}
+.op-textarea:focus { outline: none; border-color: var(--primary); }
+.op-diktat-row { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+.op-diktat-row .btn { flex: 1; min-width: 120px; min-height: 40px; }
+.op-status { font-size: 12px; color: var(--text-sec); margin-top: 4px; min-height: 16px; }

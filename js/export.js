@@ -34,6 +34,7 @@ function generateExportText(p) {
   H('5. FENSTERLISTE'); let fn=1; p.geschosse.forEach(g=>g.raeume.forEach(r=>r.fenster.forEach(f=>L('  F'+(fn++)+': '+g.name+' / '+r.name+' | '+(f.breite&&f.hoehe?f.breite+'x'+f.hoehe:'-x-')+' m | '+(f.verglasung||'-')+(f.uw?' Uw='+f.uw:'')))));
   H('6. HEIZKOERPERLISTE'); let hn=1; p.geschosse.forEach(g=>g.raeume.forEach(r=>r.heizkoerper.forEach(hk=>L('  HK'+(hn++)+': '+g.name+' / '+r.name+' | Typ '+hk.typ+(hk.breite&&hk.hoehe?' | '+hk.breite+'x'+hk.hoehe+' m':'')+(hk.hersteller?' | '+hk.hersteller:'')+(hk.ventil_hersteller?' Ventil: '+hk.ventil_hersteller:'')+(hk.ventil_voreinstellung?' V='+hk.ventil_voreinstellung:'')))));
   H('7. CHECKLISTE'); [['Baujahr',!!p.baujahr],['Heizanlage',!!(p.heizanlagen&&p.heizanlagen.length)||!!p.heizanlage.typ],['PLZ',!!p.plz],['Geschosse',p.geschosse.length>0],['Alle Deckenhoehen',p.geschosse.every(g=>g.raeume.every(r=>r.deckenhoehe))]].forEach(([l,ok])=>L('  '+(ok?'OK':'XX')+' '+l));
+  var opList=p.offenePunkte||[];if(opList.length){H('8. OFFENE PUNKTE / NOTIZEN');opList.forEach(function(o,i){var zeile='  '+(i+1)+'. '+(o.text||'-');if(o.bisWann)zeile+=' [bis: '+o.bisWann+']';L(zeile);});}
   return out;
 }
 
