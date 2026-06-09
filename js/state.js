@@ -54,6 +54,7 @@ function load() {
   state.projekte.forEach(p => {
     if (p.auftragsart === undefined) p.auftragsart = '';
     if (p.gebaeudeArt === undefined) p.gebaeudeArt = '';
+    if (p.createdAt === undefined) p.createdAt = '';
     if (p.wohneinheiten === undefined) p.wohneinheiten = 1;
     if (p.gebaeude_foto === undefined) p.gebaeude_foto = '';
     if (p.kundenwunsch_text === undefined) p.kundenwunsch_text = '';
@@ -152,6 +153,11 @@ function load() {
 }
 
 function uuid() {
+  // crypto.randomUUID() liefert einen echten UUID v4 (ab Chrome 92, Safari 15.4,
+  // Firefox 95). Fallback fuer aeltere Browser oder file://-Umgebungen ohne crypto.
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
   return Date.now().toString(36) + Math.random().toString(36).slice(2);
 }
 

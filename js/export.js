@@ -41,5 +41,62 @@ function generateExportText(p) {
 function exportProjekt() { const p=getProjekt(); document.getElementById('export-content').textContent=generateExportText(p); document.querySelectorAll('.view').forEach(v=>v.classList.remove('active')); document.getElementById('view-export').classList.add('active'); window.scrollTo(0,0); }
 function exportAll() { if(!state.projekte.length){alert('Keine Projekte');return;} const all=state.projekte.map(p=>generateExportText(p)).join('\n\n'+'X'.repeat(60)+'\n\n'); const blob=new Blob([all],{type:'text/plain;charset=utf-8'}); const url=URL.createObjectURL(blob),a=document.createElement('a'); a.href=url;a.download='aufnahme_alle.txt';a.click(); }
 function copyExport() { const text=document.getElementById('export-content').textContent; if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>showToast('Kopiert'));}else{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('Kopiert');} }
-function downloadJSON() { const p=getProjekt()||state.projekte[0]; if(!p){alert('Kein Projekt');return;} const blob=new Blob([JSON.stringify(p,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob),a=document.createElement('a'); a.href=url;a.download=(p.name||'projekt').replace(/[^a-zA-Z0-9]/g,'_')+'.json';a.click(); }
-function importJSON(input) { const file=input.files[0]; if(!file) return; const rd=new FileReader(); rd.onload=e=>{try{const data=JSON.parse(e.target.result);const pjs=Array.isArray(data)?data:[data];pjs.forEach(p=>{if(!p.id)p.id=uuid();const idx=state.projekte.findIndex(ex=>ex.id===p.id);if(idx>=0){if(confirm('Projekt "'+p.name+'" ueberschreiben?'))state.projekte[idx]=p;}else state.projekte.push(p);});save();renderProjektliste();showToast('Importiert: '+pjs.map(p=>p.name).join(', '));}catch(err){alert('Importfehler: '+err.message);}};rd.readAsText(file);input.value=''; }
+function downloadJSON() {
+  var p = getProjekt() || state.projekte[0];
+  if (!p) { alert('Kein Projekt'); return; }
+  // Wrapper mit Schema-Version und Export-Zeitstempel (ab v0.2.29-dev).
+  // _schemaVersion und exportedAt gehoeren nur in den Export-Wrapper,
+  // nicht in den internen State.
+  var wrapper = {
+    '_schemaVersion': 1,
+    'exportedAt': new Date().toISOString(),
+    'projekt': p
+  };
+  var blob = new Blob([JSON.stringify(wrapper, null, 2)], { type: 'application/json' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = (p.name || 'projekt').replace(/[^a-zA-Z0-9]/g, '_') + '.json';
+  a.click();
+}
+
+function importJSON(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var rd = new FileReader();
+  rd.onload = function(e) {
+    try {
+      var raw = JSON.parse(e.target.result);
+      var pjs;
+      // Neues Format (ab v0.2.29-dev): { _schemaVersion, exportedAt, projekt: {...} }
+      if (raw && raw._schemaVersion && raw.projekt && typeof raw.projekt === 'object' && !Array.isArray(raw.projekt)) {
+        pjs = [raw.projekt];
+      } else if (Array.isArray(raw)) {
+        // Altes Format: Array von Projektobjekten
+        pjs = raw;
+      } else if (raw && typeof raw === 'object') {
+        // Altes Format: einzelnes Projektobjekt ohne Wrapper
+        pjs = [raw];
+      } else {
+        alert('Importfehler: Unbekanntes Dateiformat.');
+        return;
+      }
+      pjs.forEach(function(p) {
+        if (!p.id) p.id = uuid();
+        var idx = state.projekte.findIndex(function(ex) { return ex.id === p.id; });
+        if (idx >= 0) {
+          if (confirm('Projekt "' + p.name + '" ueberschreiben?')) state.projekte[idx] = p;
+        } else {
+          state.projekte.push(p);
+        }
+      });
+      save();
+      renderProjektliste();
+      showToast('Importiert: ' + pjs.map(function(p) { return p.name; }).join(', '));
+    } catch (err) {
+      alert('Importfehler: ' + err.message);
+    }
+  };
+  rd.readAsText(file);
+  input.value = '';
+}

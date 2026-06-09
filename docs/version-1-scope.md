@@ -193,7 +193,15 @@ werden, dass spätere externe Nutzung und spätere Funktionserweiterungen nicht 
 erschwert werden:
 
 - Projekt-IDs und Foto-IDs als UUIDs, ohne Kundendaten im Schlüssel.
-- Exportformat mit Versionsfeld, damit spätere Importer rückwärtskompatibel sein können.
+- Exportformat mit Versionsfeld, damit spätere Importer rueckwaertskompatibel sein koennen.
+  Seit v0.2.29-dev: JSON-Export verwendet einen Wrapper mit `_schemaVersion: 1` und
+  `exportedAt` (ISO-8601-Zeitstempel). Das Projektobjekt liegt unter `wrapper.projekt`.
+  Alte Exporte ohne Wrapper (einzelnes Projektobjekt oder Array) bleiben importierbar.
+  `createdAt` (ISO-8601) wird auf Projekt-Ebene sowie bei neuen Geschossen, Raeumen,
+  Sanierungen, Heizanlagen, Warmwasser, Schornsteinen und Offenen Punkten gesetzt.
+  Bestehende Projekte erhalten `createdAt: ''` (defensive Initialisierung, kein erfundenes Datum).
+  `uuid()` verwendet `crypto.randomUUID()` wenn verfuegbar (UUID v4), sonst den bisherigen
+  timestamp-basierten Fallback.
 - Datenmodellerweiterungen defensiv laden (kein Hard-Fail bei unbekannten Feldern).
 - Fotostruktur perspektivisch von localStorage zu IndexedDB und später zu Cloud-Speicher
   migrierbar halten (siehe docs/roadmap.md Etappe Fotomigration).

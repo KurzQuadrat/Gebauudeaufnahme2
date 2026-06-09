@@ -821,6 +821,7 @@ function neuesProjekt() {
     auftragsart: '',
     wohneinheiten: 1,
     datum: new Date().toISOString().split('T')[0],
+    createdAt: new Date().toISOString(),
     plz: '',
     sanierungen: [],
     heizanlage: { hersteller: '', typ: '', baujahr: '', modell: '', notiz: '', energietraeger: 'unbekannt', leistung: '' },
@@ -870,7 +871,7 @@ function deleteProjekt(id, e) {
 function addSanierung() {
   const p = getProjekt();
   if (!p) return;
-  const s = { id: uuid(), jahr: '', massnahme: '', detailtyp: '', details: '' };
+  const s = { id: uuid(), createdAt: new Date().toISOString(), jahr: '', massnahme: '', detailtyp: '', details: '' };
   p.sanierungen.push(s);
   save();
   renderSanierungen();
@@ -897,7 +898,7 @@ function addOffenerPunkt() {
   var today = new Date().toISOString().slice(0, 10);
   // status/prioritaet/bereich/notiz werden fuer Rueckwaertskompatibilitaet
   // mitgefuehrt, aber in Version 1 nicht angezeigt (siehe docs/version-1-scope.md)
-  p.offenePunkte.push({ id: uuid(), text: '', bisWann: today, status: 'offen', prioritaet: 'mittel', bereich: 'Allgemein', notiz: '' });
+  p.offenePunkte.push({ id: uuid(), createdAt: new Date().toISOString(), text: '', bisWann: today, status: 'offen', prioritaet: 'mittel', bereich: 'Allgemein', notiz: '' });
   save();
   renderOffenePunkte();
   _projCardOpen['offenepunkte'] = true;
@@ -1218,7 +1219,7 @@ function selectGeschoss(name) {
   const p = getProjekt();
   const isDG = (name === 'DG' || name === 'DG 1' || name === 'DG 2' || name === 'Spitzboden');
   const g = {
-    id: uuid(), name,
+    id: uuid(), createdAt: new Date().toISOString(), name,
     beheizung: 'beheizt',
     bodendicke: '', dachwinkel: '', lichteHoeheStandard: '',
     isDG, dach_kniestock: '', dach_winkel: '',
@@ -1357,7 +1358,8 @@ function addRaum() {
       awUwert: '', iwUwert: '', dachUwert: '', bodenplatteUwert: '', bodenUwert: '',
       fensterUwert: '', tuerUwert: '', tempUnbeheizt: ''
     },
-    fenster: [], tueren: [], heizkoerper: [], nieschen: []
+    fenster: [], tueren: [], heizkoerper: [], nieschen: [],
+    createdAt: new Date().toISOString()
   };
   g.raeume.push(r);
   state.aktivesRaumId = r.id;
@@ -2314,7 +2316,7 @@ function renderGeschossliste() {
 function addHeizanlage() {
   const p=getProjekt(); if(!p) return;
   if(!p.heizanlagen) p.heizanlagen=[];
-  p.heizanlagen.push({id:uuid(),hersteller:'',typ:'',baujahr:'',modell:'',energietraeger:'unbekannt',leistung:'',notiz:'',foto:null});
+  p.heizanlagen.push({id:uuid(),createdAt:new Date().toISOString(),hersteller:'',typ:'',baujahr:'',modell:'',energietraeger:'unbekannt',leistung:'',notiz:'',foto:null});
   save(); renderHeizanlagenListe();
   _projCardOpen['heizung']=true; applyProjCardState('heizung',p);
 }
@@ -2354,7 +2356,7 @@ function renderHeizanlagenListe() {
 function addWarmwasser() {
   const p=getProjekt(); if(!p) return;
   if(!p.warmwasserEintraege) p.warmwasserEintraege=[];
-  p.warmwasserEintraege.push({id:uuid(),art:'unbekannt',speicherVorhanden:'unbekannt',speichervolumen:'',energietraeger:'unbekannt',versorgung:'unbekannt',baujahr:'',hersteller:'',typ:'',notiz:''});
+  p.warmwasserEintraege.push({id:uuid(),createdAt:new Date().toISOString(),art:'unbekannt',speicherVorhanden:'unbekannt',speichervolumen:'',energietraeger:'unbekannt',versorgung:'unbekannt',baujahr:'',hersteller:'',typ:'',notiz:''});
   save(); renderWarmwasserListe();
   _projCardOpen['warmwasser']=true; applyProjCardState('warmwasser',p);
 }
@@ -2395,7 +2397,7 @@ function renderWarmwasserListe() {
 function addSchornstein() {
   const p=getProjekt(); if(!p) return;
   if(!p.schornsteine) p.schornsteine=[];
-  p.schornsteine.push({id:uuid(),lage:'',form:'',breite:'',tiefe:''});
+  p.schornsteine.push({id:uuid(),createdAt:new Date().toISOString(),lage:'',form:'',breite:'',tiefe:''});
   save(); renderSchornsteineListe();
   _projCardOpen['schornstein']=true; applyProjCardState('schornstein',p);
 }
