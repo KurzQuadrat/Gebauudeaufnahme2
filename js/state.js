@@ -275,7 +275,19 @@ function saveHeizlastOverrideField(field, value) {
 function saveSanierungField(id, field, value) {
   const p = getProjekt();
   const s = p.sanierungen.find(s => s.id === id);
-  if (s) { s[field] = value; save(); }
+  if (!s) return;
+  s[field] = value;
+  if (field === 'massnahme') {
+    // Detailtyp prüfen: wenn nicht mehr zur neuen Maßnahme passend -> zurücksetzen
+    var erlaubt = MASSNAHME_DETAILTYPEN[value];
+    if (s.detailtyp && (!erlaubt || erlaubt.indexOf(s.detailtyp) === -1)) {
+      s.detailtyp = '';
+    }
+    save();
+    if (typeof renderSanierungen === 'function') renderSanierungen();
+    return;
+  }
+  save();
 }
 
 function saveOffenerPunktField(id, field, value) {

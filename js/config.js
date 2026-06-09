@@ -2,8 +2,21 @@
 // Testen über den iPhone-Home-Bildschirm erkennbar ist, ob die aktuellste Version
 // geladen wurde (siehe refresh-bar in index.html). Bei jedem relevanten Update
 // hier anpassen.
-const APP_VERSION = "v0.2.38-dev";
+const APP_VERSION = "v0.2.39-dev";
 const APP_BUILD_DATE = "2026-06-09";
+
+// Erlaubte Detailtypen je Sanierungsma\xdfnahme (aus js/uwerte-bundesanzeiger.js).
+// Steuert, welche Optionen im Detailtyp-Dropdown der Sanierungskarte sichtbar sind.
+// Ma\xdfnahmen ohne Eintrag haben keinen U-Wert-Bezug -> kein Dropdown.
+const MASSNAHME_DETAILTYPEN = {
+  'Dach':        ['dach_massiv', 'dach_holz', 'oberste_geschossdecke_massiv'],
+  'Fenster':     ['fenster_kunststoff_isolierverglasung', 'fenster_holz_zwei_scheiben'],
+  'Fassade':     ['aw_massiv_poroes', 'aw_sonstige_ueber20'],
+  'Bodenplatte': ['boden_erdreich_stahlbeton'],
+  'Kellerdecke': ['kellerdecke_stahlbeton'],
+  // T\xfcren: tu\xefren_* vorhanden, aber kein eigener Ma\xdfnahmen-Key geplant -> nicht aufgef\xfchrt
+  // Heizung, Heizk\xf6rper, L\xfcftung, PV, Sonstiges: kein U-Wert-Bezug
+};
 
 const GESCHOSS_OPTIONEN = [
   { name: 'KG',         label: 'Kellergeschoss',      icon: '⬇' },

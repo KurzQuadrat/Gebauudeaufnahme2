@@ -1970,7 +1970,10 @@ const DETAILTYP_ZU_HEIZLASTFELD = {
   aw_massiv_poroes: 'awUwert', aw_sonstige_ueber20: 'awUwert',
   dach_massiv: 'dachUwert', dach_holz: 'dachUwert',
   boden_erdreich_stahlbeton: 'bodenplatteUwert',
-  kellerdecke_stahlbeton: 'bodenUwert', oberste_geschossdecke_massiv: 'bodenUwert',
+  kellerdecke_stahlbeton: 'bodenUwert',
+  // Oberste Geschossdecke: Waermedaemmung des oberen Gebaeudehuellenabschlusses ->
+  // wirkt wie Dach; wird daher dachUwert zugeordnet (nicht bodenUwert).
+  oberste_geschossdecke_massiv: 'dachUwert',
   fenster_kunststoff_isolierverglasung: 'fensterUwert', fenster_holz_zwei_scheiben: 'fensterUwert',
   tueren_holz_kunststoff: 'tuerUwert', tueren_metall: 'tuerUwert',
 };
@@ -2329,18 +2332,19 @@ function renderSanierungen() {
   const p=getProjekt(),c=document.getElementById('sanierungen-list'),l=document.getElementById('sanierungen-leer');
   if(!p.sanierungen.length){c.innerHTML='';l.style.display='block';return;}
   l.style.display='none';
-  const opts=['','Fenster','Dach','Fassade','Keller','Heizung','Heizkörper','Lüftung','PV','Sonstiges'];
-  // Detailtyp / Aufbau: flaches Dropdown mit allen U-Wert-Kategorien aus
-  // js/uwerte-bundesanzeiger.js (Quelle: Bundesanzeiger BAnz AT 04.12.2020 B1).
-  // Bewusst EIN gemeinsames Dropdown statt von Bauteil abhängiger Listen, um
-  // kein großes Refactoring der Sanierungshistorie zu erzwingen (siehe
-  // docs/version-1-scope.md). Die Auswahl ordnet den Eintrag eindeutig einem
-  // Heizlast-U-Wert-Feld zu und macht das zugehörige Jahr für GENAU dieses
-  // Bauteil als Sanierungs-Bezugsjahr nutzbar - unabhängig vom freien
-  // "Maßnahme"-Feld, dessen Optionen keine stabile Bauteilstruktur abbilden.
-  const detailtypOpts=Object.keys(UWERTE_OPAK).concat(Object.keys(UWERTE_TRANSPARENT));
-  const detailtypSelect=(s)=>'<select onchange="saveSanierungField(\''+s.id+'\',\'detailtyp\',this.value)"><option value="">– kein U-Wert-Bezug / unbekannt –</option>'+detailtypOpts.map(k=>{const kat=UWERTE_OPAK[k]||UWERTE_TRANSPARENT[k];return '<option value="'+k+'" '+(s.detailtyp===k?'selected':'')+'>'+kat.label+'</option>';}).join('')+'</select>';
-  c.innerHTML=p.sanierungen.map(s=>'<div class="sub-item"><div class="sub-item-header"><div class="sub-item-title">Sanierung</div><button onclick="deleteSanierung(\''+s.id+'\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">✕</button></div><div class="form-row"><div class="form-group"><label>Maßnahme</label><select onchange="saveSanierungField(\''+s.id+'\',\'massnahme\',this.value)">'+opts.map(m=>'<option value="'+m+'" '+(s.massnahme===m?'selected':'')+'>'+(m||'Wählen...')+'</option>').join('')+'</select></div><div class="form-group"><label>Jahr</label>'+buildYearSelectHtml(s.jahr, p.baujahr ? Math.max(1850, parseInt(p.baujahr)) : 1850, new Date().getFullYear(), 'saveSanierungField(\''+s.id+'\',\'jahr\',this.value)')+'</div></div><div class="form-group"><label>Detailtyp / Aufbau (für U-Wert-Ableitung Heizlast, optional)</label>'+detailtypSelect(s)+'<div style="color:var(--text-sec);font-size:11px;margin-top:3px;">Quelle: Bundesanzeiger BAnz AT 04.12.2020 B1 (siehe docs/quellen/README.md). Wird genutzt, um aus dieser Sanierung + Jahr einen U-Wert-Vorschlag fuer GENAU das betroffene Bauteil abzuleiten (siehe "U-Werte aus Baujahr/Sanierung ableiten" bei den Heizlast-Standardwerten).</div></div><div class="form-group"><label>Details</label><input type="text" value="'+(s.details||'')+'" placeholder="z.B. 2-fach Verglasung" oninput="saveSanierungField(\''+s.id+'\',\'details\',this.value)"></div></div>').join('');
+  const opts=['','Dach','Fenster','Fassade','Bodenplatte','Kellerdecke','Heizung','Heizkörper','Lüftung','PV','Sonstiges'];
+  // Detailtyp-Optionen werden je Maßnahme bauteilspezifisch gefiltert (MASSNAHME_DETAILTYPEN
+  // in js/config.js). Nur fachlich passende Kategorien aus js/uwerte-bundesanzeiger.js werden
+  // angeboten. Maßnahmen ohne U-Wert-Bezug (Heizung, Lüftung, PV usw.) zeigen kein Dropdown.
+  const detailtypSelectFuer=(s)=>{
+    const erlaubt=MASSNAHME_DETAILTYPEN[s.massnahme];
+    if(!erlaubt){
+      return '<div style="color:var(--text-sec);font-size:12px;padding:4px 0;">Kein U-Wert-Bezug f\xfcr diese Ma\xdfnahme – kein Detailtyp erforderlich.</div>';
+    }
+    const dtOpts=erlaubt.map(k=>{const kat=UWERTE_OPAK[k]||UWERTE_TRANSPARENT[k];return '<option value="'+k+'" '+(s.detailtyp===k?'selected':'')+'>'+kat.label+'</option>';}).join('');
+    return '<select onchange="saveSanierungField(\''+s.id+'\',\'detailtyp\',this.value)"><option value="">– kein U-Wert-Bezug / unbekannt –</option>'+dtOpts+'</select>';
+  };
+  c.innerHTML=p.sanierungen.map(s=>'<div class="sub-item"><div class="sub-item-header"><div class="sub-item-title">Sanierung</div><button onclick="deleteSanierung(\''+s.id+'\')" style="background:#ffe5e4;border:none;color:var(--danger);font-size:13px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;">✕</button></div><div class="form-row"><div class="form-group"><label>Maßnahme</label><select onchange="saveSanierungField(\''+s.id+'\',\'massnahme\',this.value)">'+opts.map(m=>'<option value="'+m+'" '+(s.massnahme===m?'selected':'')+'>'+(m||'Wählen...')+'</option>').join('')+'</select></div><div class="form-group"><label>Jahr</label>'+buildYearSelectHtml(s.jahr, p.baujahr ? Math.max(1850, parseInt(p.baujahr)) : 1850, new Date().getFullYear(), 'saveSanierungField(\''+s.id+'\',\'jahr\',this.value)')+'</div></div><div class="form-group"><label>Detailtyp / Aufbau (für U-Wert-Ableitung Heizlast, optional)</label>'+detailtypSelectFuer(s)+'<div style="color:var(--text-sec);font-size:11px;margin-top:3px;">Quelle: Bundesanzeiger BAnz AT 04.12.2020 B1 (siehe docs/quellen/README.md). Wird genutzt, um aus dieser Sanierung + Jahr einen U-Wert-Vorschlag f\xfcr GENAU das betroffene Bauteil abzuleiten.</div></div><div class="form-group"><label>Notiz (kein U-Wert-Bezug)</label><input type="text" value="'+(s.details||'')+'" placeholder="z.B. 2-fach Verglasung" oninput="saveSanierungField(\''+s.id+'\',\'details\',this.value)"></div></div>').join('');
 }
 
 function renderGeschossliste() {
